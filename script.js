@@ -22,7 +22,9 @@
 ================================================================= */
 const CONFIG = {
   WEBHOOK_URL: '',              // [PREENCHER] ex: 'https://seu-n8n.exemplo.com/webhook/trilhas-futuro'
-  WHATSAPP_NUMERO: '',          // [PREENCHER] ex: '5531999999999'
+  // Número do técnico da Conhecer, (31) 3222-9330, confirmado pelo Gabriel.
+  // É fixo com WhatsApp — o mesmo que o site deles usa nos links wa.me.
+  WHATSAPP_NUMERO: '553132229330',
   URL_INSCRICAO_OFICIAL: '',    // [PREENCHER] quando o edital abrir
   MENSAGEM_WHATSAPP_PADRAO: 'Olá! Vim pela página do Trilhas de Futuro e queria ajuda com a inscrição.'
 };
@@ -160,9 +162,11 @@ function configuraFormulario(){
 function preencheBadgeStatus(){
   const badge = document.getElementById('badgeStatus');
   if(!badge) return;
+  // texto curto de propósito: o badge do hero é um pill de uma linha.
+  // O convite pra se cadastrar já está no subtítulo e nos botões.
   badge.textContent = CONFIG.URL_INSCRICAO_OFICIAL
     ? 'Inscrições abertas'
-    : 'Inscrições abrem em breve. Cadastre-se pra ser avisado primeiro';
+    : 'Inscrições abrem em breve';
 }
 
 document.addEventListener('DOMContentLoaded', () => {
