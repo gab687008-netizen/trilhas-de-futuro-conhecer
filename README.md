@@ -23,13 +23,12 @@ direto no navegador pra testar.
     | `--acento` | `#9FBCFF` | acento de título sobre fundo escuro |
     | `--logo-azul` / `--logo-navy` / `--logo-cinza` | `#1988E2` / `#01335D` / `#838A8E` | cores do arquivo da logo |
   - Logos em `assets/`:
-    - `logo-conhecer-horizontal.png` — lockup horizontal (símbolo + texto lado a
-      lado), usado no header. Gerado a partir do lockup vertical original, porque o
-      vertical é alto demais pra uma barra de topo.
-    - `logo-conhecer-horizontal-branco.png` — mesma coisa em branco, pro rodapé roxo.
-    - `logo-conhecer-branco.png` — lockup vertical em branco (reserva).
-    - `logo-conhecer-azul-transparente.png` / `logo-conhecer-fundo-azul.png` —
-      arquivos originais, mantidos.
+    - `logo-conhecer-oficial.webp` — lockup horizontal colorido, usado no header.
+      É o arquivo do próprio site da Conhecer.
+    - `logo-conhecer-oficial-branco.png` — mesma logo em branco, para o rodapé azul.
+    - `logo-conhecer-azul-transparente.png` — lockup vertical, usado só como favicon.
+    - `logo-conhecer-fundo-azul.png` — arquivo original que a Brota enviou. Não é
+      usado na página; mantido como fonte.
   - Fontes: **Sora** (títulos) + **Instrument Sans** (corpo), ambas Google Fonts.
     Não são mais aproximação — são as fontes que o próprio site da Conhecer usa
     (`unifecaf-conhecer/tecnico/css/tema.css`).
