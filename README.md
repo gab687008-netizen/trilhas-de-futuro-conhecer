@@ -10,18 +10,37 @@ direto no navegador pra testar.
 
 ## Decisões já tomadas (não precisa perguntar de novo)
 
-- **Identidade visual**: aplicada a marca real da Conhecer.
-  - Cor: `#0B3DAE`, extraída por pixel do arquivo oficial da logo (não é chute) —
-    em `style.css`, `:root { --cor-primaria: ... }`.
-  - Logo: `assets/logo-conhecer-azul-transparente.png` (recortada e recolorida a
-    partir do arquivo `Logos Conhecer e UniFECAF.png` que a Brota enviou — original
-    era branco sobre fundo azul; essa versão é azul sólido com fundo transparente,
-    pra usar em qualquer seção clara do site). O arquivo original azul (para uso em
-    fundos escuros) também ficou salvo em `assets/logo-conhecer-fundo-azul.png`.
-  - Fonte dos títulos: **Fredoka** (Google Fonts) — é uma **aproximação visual** da
-    fonte usada no logo (terminais arredondados parecidos). Se a Conhecer tiver o
-    manual de marca com o nome exato da fonte, trocar é uma linha só em `style.css`,
-    `:root { --fonte-titulo: ... }`.
+- **Identidade visual**: alinhada ao **site institucional da Conhecer**, não a uma
+  paleta genérica. As cores foram amostradas pixel a pixel de um print do site oficial.
+  - **A marca é ROXA, a logo é AZUL.** Não é inconsistência — é assim que o
+    institucional usa. Manter.
+  - Paleta (em `style.css`, `:root`):
+    | token | hex | uso |
+    |---|---|---|
+    | `--roxo-900` | `#20006D` | início do gradiente, rodapé |
+    | `--roxo-800` | `#2D098D` | linha de acento dos títulos de seção |
+    | `--roxo-700` | `#3601AB` | **cor de ação**: botões, links, ícones |
+    | `--roxo-600` | `#4613D0` | fim do gradiente |
+    | `--lilas` | `#A2B0FF` | acento de título sobre fundo escuro |
+    | `--azul-marca` | `#0B3DAE` | a logo (só ela) |
+  - Logos em `assets/`:
+    - `logo-conhecer-horizontal.png` — lockup horizontal (símbolo + texto lado a
+      lado), usado no header. Gerado a partir do lockup vertical original, porque o
+      vertical é alto demais pra uma barra de topo.
+    - `logo-conhecer-horizontal-branco.png` — mesma coisa em branco, pro rodapé roxo.
+    - `logo-conhecer-branco.png` — lockup vertical em branco (reserva).
+    - `logo-conhecer-azul-transparente.png` / `logo-conhecer-fundo-azul.png` —
+      arquivos originais, mantidos.
+  - Fonte: **Plus Jakarta Sans** (Google Fonts) — é uma **aproximação visual** da
+    fonte do institucional (geométrica, bold, x-height alto). A fonte real parece ser
+    paga e não foi identificada com certeza. Se a Conhecer tiver o manual de marca,
+    trocar é uma linha em `style.css`, `:root { --fonte: ... }` + o `<link>` no
+    `index.html`. (Substituiu Fredoka, que era arredondada demais e destoava.)
+  - Linguagem visual copiada do institucional: gradiente roxo diagonal no hero com
+    arcos decorativos, olho-mágico `— SEÇÃO` em caixa alta acima dos títulos, títulos
+    de duas linhas com a segunda em roxo (`.t-acento`), botões em pill, cartão branco
+    sobrepondo o fim do hero, cards com raio grande e sombra suave.
+
 - **Página pronta agora, publicação depois**: o texto já assume que o edital "abre em
   breve" — a página funciona tanto no modo "lista de espera" quanto no modo "inscrições
   abertas" (o `script.js` decide sozinho com base em `CONFIG.URL_INSCRICAO_OFICIAL`
@@ -41,6 +60,10 @@ Tudo marcado com `[PREENCHER]` no código, mais:
 - [ ] **`script.js` → `CONFIG.WHATSAPP_NUMERO`**: número único, só dígitos com DDI+DDD.
 - [ ] **`script.js` → `CONFIG.URL_INSCRICAO_OFICIAL`**: preencher só quando o edital
       abrir de verdade — antes disso, deixar vazio (a página já lida com isso sozinha).
+- [ ] **Foto do hero**: `index.html` → `.hero-midia`. Hoje é um placeholder que não
+      quebra o layout. Pedir à Conhecer a foto dos alunos no mesmo estilo do site
+      institucional (uniforme, fundo limpo), salvar em `assets/` e descomentar a tag
+      `<img>` que já está lá. Recomendado 1200x900px, `.webp` ou `.jpg`.
 - [ ] **`index.html` → seção `.unidades`**: lista real de cursos e endereço de cada
       unidade (Belo Horizonte, Ribeirão das Neves, Santa Luzia).
 - [ ] **`index.html` → benefício "Auxílio financeiro"**: valor e regras reais,

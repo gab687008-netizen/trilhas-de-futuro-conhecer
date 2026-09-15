@@ -160,9 +160,11 @@ function configuraFormulario(){
 function preencheBadgeStatus(){
   const badge = document.getElementById('badgeStatus');
   if(!badge) return;
+  // texto curto de propósito: o badge do hero é um pill de uma linha.
+  // O convite pra se cadastrar já está no subtítulo e nos botões.
   badge.textContent = CONFIG.URL_INSCRICAO_OFICIAL
     ? 'Inscrições abertas'
-    : 'Inscrições abrem em breve. Cadastre-se pra ser avisado primeiro';
+    : 'Inscrições abrem em breve';
 }
 
 document.addEventListener('DOMContentLoaded', () => {

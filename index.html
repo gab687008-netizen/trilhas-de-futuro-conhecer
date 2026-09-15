@@ -5,10 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Trilhas de Futuro na Escola Técnica Conhecer</title>
 <meta name="description" content="Curso técnico gratuito pelo programa Trilhas de Futuro. Cadastre-se antes de fazer sua inscrição oficial.">
+<meta name="theme-color" content="#20006D">
 <link rel="icon" type="image/png" href="assets/logo-conhecer-azul-transparente.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<!-- Plus Jakarta Sans: aproximação da fonte do site institucional da Conhecer.
+     Se a Conhecer mandar o manual de marca, trocar aqui e em style.css (--fonte). -->
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 
 <!-- ============================================================
@@ -36,10 +39,21 @@
 
 <header class="topo">
   <div class="wrap topo-inner">
-    <div class="marca">
-      <img class="marca-logo" src="assets/logo-conhecer-azul-transparente.png" alt="Escola Técnica Conhecer">
+    <a href="#" class="marca" aria-label="Escola Técnica Conhecer">
+      <img class="marca-logo" src="assets/logo-conhecer-horizontal.png" alt="Escola Técnica Conhecer">
+    </a>
+
+    <nav class="topo-nav">
+      <a href="#beneficios">Vantagens</a>
+      <a href="#unidades">Unidades</a>
+      <a href="#passos">Como funciona</a>
+      <a href="#faq">Dúvidas</a>
+    </nav>
+
+    <div class="topo-acoes">
+      <span class="topo-selo">Trilhas de Futuro · Governo de MG</span>
+      <a class="btn btn-primario topo-cta" href="#form">Quero me inscrever</a>
     </div>
-    <a class="topo-cta" href="#form">Quero me inscrever</a>
   </div>
 </header>
 
@@ -48,37 +62,79 @@
   <!-- ============ HERO ============ -->
   <section class="hero">
     <div class="wrap">
-      <div class="badge-urgencia" id="badgeStatus">Inscrições abrem em breve</div>
-      <h1>Curso técnico <span class="acento">gratuito</span><br>pelo Trilhas de Futuro</h1>
-      <p class="hero-sub">Programa do Governo de Minas Gerais em parceria com a Escola Técnica Conhecer. Deixe seu contato aqui antes de ir para o site oficial. A gente te ajuda em cada passo da inscrição.</p>
-      <a href="#form" class="btn-primario">Quero garantir minha vaga</a>
-      <p class="hero-nota">Vagas limitadas por unidade · Belo Horizonte · Ribeirão das Neves · Santa Luzia</p>
+      <div class="hero-grid">
+
+        <div class="hero-texto">
+          <div class="badge-urgencia" id="badgeStatus">Inscrições abrem em breve</div>
+          <h1>Curso técnico<br><span class="acento">gratuito</span> pelo<br>Trilhas de Futuro</h1>
+          <p class="hero-sub">Programa do Governo de Minas Gerais em parceria com a Escola Técnica Conhecer. Deixe seu contato aqui antes de ir para o site oficial — a gente te acompanha em cada passo da inscrição.</p>
+          <div class="hero-acoes">
+            <a href="#form" class="btn btn-claro">Quero garantir minha vaga</a>
+            <a href="#passos" class="btn btn-contorno-claro">Ver como funciona</a>
+          </div>
+          <p class="hero-nota">Vagas limitadas por unidade · Belo Horizonte · Ribeirão das Neves · Santa Luzia</p>
+        </div>
+
+        <!-- [PREENCHER] Foto real dos alunos da Conhecer (mesmo estilo do site
+             institucional: alunos de uniforme, fundo recortado ou limpo).
+             Pra trocar: salve o arquivo em assets/ e descomente a linha abaixo,
+             apagando o <span> do placeholder. Recomendado: 1200x900px, .webp ou .jpg. -->
+        <div class="hero-midia">
+          <!-- <img src="assets/hero-alunos.jpg" alt="Alunos da Escola Técnica Conhecer"> -->
+          <span>Espaço reservado para a foto dos alunos<br>(mesmo estilo do site institucional)</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- faixa branca sobrepondo o hero — assinatura visual do institucional -->
+    <div class="wrap hero-strip-wrap">
+      <div class="hero-strip">
+        <div><strong>100%</strong><span>Gratuito</span></div>
+        <div><strong>MEC</strong><span>Diploma reconhecido</span></div>
+        <div><strong>3</strong><span>Unidades na Grande BH</span></div>
+        <div><strong>MG</strong><span>Programa do Estado</span></div>
+      </div>
     </div>
   </section>
 
   <!-- ============ POR QUE SE INSCREVER ============ -->
-  <section class="beneficios">
+  <section class="beneficios" id="beneficios">
     <div class="wrap">
-      <h2>Por que fazer sua inscrição agora</h2>
+      <span class="eyebrow">Por que a Conhecer</span>
+      <h2>Formação técnica de verdade,<span class="t-acento">sem custo nenhum pra você</span></h2>
+      <p class="section-intro">O programa Trilhas de Futuro banca o curso. A Conhecer entrega a estrutura, os professores e o acompanhamento.</p>
+
       <div class="beneficios-grid">
         <div class="beneficio-card">
-          <div class="beneficio-icone">🎓</div>
+          <div class="beneficio-icone">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg>
+          </div>
           <h3>100% gratuito</h3>
           <p>Mensalidade e material do curso pagos pelo programa do Governo de Minas Gerais.</p>
         </div>
+
         <div class="beneficio-card">
-          <div class="beneficio-icone">💳</div>
+          <div class="beneficio-icone">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20"/><path d="M6 15h4"/></svg>
+          </div>
           <h3>Auxílio financeiro</h3>
           <!-- [PREENCHER: valor e regras reais do auxílio. Confirmar no edital oficial antes de publicar] -->
           <p>Auxílio por frequência nas aulas. <em>Valor e regras conforme o edital oficial, ainda em confirmação.</em></p>
         </div>
+
         <div class="beneficio-card">
-          <div class="beneficio-icone">📜</div>
+          <div class="beneficio-icone">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="6"/><path d="M8.5 14.5 7 22l5-2.5L17 22l-1.5-7.5"/></svg>
+          </div>
           <h3>Certificado reconhecido</h3>
           <p>Diploma técnico reconhecido pelo MEC, válido em todo o Brasil.</p>
         </div>
+
         <div class="beneficio-card">
-          <div class="beneficio-icone">💼</div>
+          <div class="beneficio-icone">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="3"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M2 13h20"/></svg>
+          </div>
           <h3>Direto pro mercado</h3>
           <p>Cursos nas áreas mais procuradas, preparando você para começar a trabalhar.</p>
         </div>
@@ -89,37 +145,54 @@
   <!-- ============ CURSOS POR UNIDADE ============ -->
   <section class="unidades" id="unidades">
     <div class="wrap">
-      <h2>Escolha sua unidade</h2>
+      <span class="eyebrow">Nossas unidades</span>
+      <h2>Escolha a unidade que vai<span class="t-acento">abrir as portas do seu futuro</span></h2>
       <p class="section-intro">Os cursos disponíveis podem variar por unidade. Confira e escolha a mais perto de você.</p>
+
       <div class="unidades-grid">
 
         <div class="unidade-card">
-          <h3>Belo Horizonte</h3>
-          <!-- [PREENCHER: endereço real da unidade] -->
-          <p class="unidade-endereco">Endereço a confirmar</p>
-          <ul class="unidade-cursos">
-            <!-- [PREENCHER: lista real de cursos ofertados nesta unidade] -->
-            <li>Curso técnico (a confirmar)</li>
-            <li>Curso técnico (a confirmar)</li>
-          </ul>
+          <div class="unidade-topo">
+            <h3>Belo Horizonte</h3>
+            <!-- [PREENCHER: endereço real da unidade] -->
+            <p class="unidade-endereco">Endereço a confirmar</p>
+          </div>
+          <div class="unidade-corpo">
+            <p class="unidade-rotulo">Cursos ofertados</p>
+            <ul class="unidade-cursos">
+              <!-- [PREENCHER: lista real de cursos ofertados nesta unidade] -->
+              <li>Curso técnico (a confirmar)</li>
+              <li>Curso técnico (a confirmar)</li>
+            </ul>
+          </div>
         </div>
 
         <div class="unidade-card">
-          <h3>Ribeirão das Neves</h3>
-          <p class="unidade-endereco">Endereço a confirmar</p>
-          <ul class="unidade-cursos">
-            <li>Curso técnico (a confirmar)</li>
-            <li>Curso técnico (a confirmar)</li>
-          </ul>
+          <div class="unidade-topo">
+            <h3>Ribeirão das Neves</h3>
+            <p class="unidade-endereco">Endereço a confirmar</p>
+          </div>
+          <div class="unidade-corpo">
+            <p class="unidade-rotulo">Cursos ofertados</p>
+            <ul class="unidade-cursos">
+              <li>Curso técnico (a confirmar)</li>
+              <li>Curso técnico (a confirmar)</li>
+            </ul>
+          </div>
         </div>
 
         <div class="unidade-card">
-          <h3>Santa Luzia</h3>
-          <p class="unidade-endereco">Endereço a confirmar</p>
-          <ul class="unidade-cursos">
-            <li>Curso técnico (a confirmar)</li>
-            <li>Curso técnico (a confirmar)</li>
-          </ul>
+          <div class="unidade-topo">
+            <h3>Santa Luzia</h3>
+            <p class="unidade-endereco">Endereço a confirmar</p>
+          </div>
+          <div class="unidade-corpo">
+            <p class="unidade-rotulo">Cursos ofertados</p>
+            <ul class="unidade-cursos">
+              <li>Curso técnico (a confirmar)</li>
+              <li>Curso técnico (a confirmar)</li>
+            </ul>
+          </div>
         </div>
 
       </div>
@@ -129,11 +202,14 @@
   <!-- ============ PASSO A PASSO ============ -->
   <section class="passos" id="passos">
     <div class="wrap">
-      <h2>Como funciona a inscrição</h2>
-      <p class="section-intro">A inscrição oficial é feita no site do Governo de Minas. Preenchendo o formulário abaixo primeiro, alguém da nossa equipe te acompanha em cada etapa.</p>
+      <span class="eyebrow">Passo a passo</span>
+      <h2>Como funciona<span class="t-acento">a sua inscrição</span></h2>
+      <p class="section-intro">A inscrição oficial é feita no site do Governo de Minas. Preenchendo o formulário aqui primeiro, alguém da nossa equipe te acompanha em cada etapa.</p>
 
-      <!-- [PREENCHER: vídeo real com o passo a passo gravado, quando disponível] -->
+      <!-- [PREENCHER: vídeo real com o passo a passo gravado. Trocar esta div
+           inteira por um <iframe> do YouTube/Vimeo quando o vídeo existir] -->
       <div class="video-placeholder">
+        <span class="play" aria-hidden="true"></span>
         <span>Vídeo com o passo a passo (em produção)</span>
       </div>
 
@@ -153,6 +229,7 @@
       <div class="form-card">
 
         <div id="formEstado1">
+          <span class="eyebrow">Falta pouco</span>
           <h2>Cadastre seu contato</h2>
           <p class="section-intro">Preenche rapidinho, depois disso você já pode seguir pra inscrição oficial.</p>
 
@@ -187,7 +264,7 @@
               <span>Concordo em ser contatado por WhatsApp sobre esta inscrição.</span>
             </label>
 
-            <button type="submit" class="btn-primario btn-full" id="botaoEnviar">Quero me cadastrar</button>
+            <button type="submit" class="btn btn-primario btn-full" id="botaoEnviar">Quero me cadastrar</button>
             <p class="form-erro" id="formErro" hidden></p>
           </form>
         </div>
@@ -195,8 +272,8 @@
         <div id="formEstado2" hidden>
           <h2>Cadastro recebido! 🎉</h2>
           <p class="section-intro">Agora falta só um passo: finalizar sua inscrição oficial no site do Governo de Minas Gerais.</p>
-          <!-- [PREENCHER: URL real de inscrição do governo] -->
-          <a href="#" id="linkInscricaoOficial" target="_blank" rel="noopener" class="btn-primario btn-full">Continuar inscrição oficial</a>
+          <!-- [PREENCHER: URL real de inscrição do governo — via script.js, CONFIG.URL_INSCRICAO_OFICIAL] -->
+          <a href="#" id="linkInscricaoOficial" target="_blank" rel="noopener" class="btn btn-primario btn-full">Continuar inscrição oficial</a>
           <p class="form-aviso">Lembra: na hora de escolher a instituição, procure por <strong>Escola Técnica Conhecer</strong>, unidade que você escolheu.</p>
           <p class="form-aviso">Qualquer dúvida no meio do caminho, chama a gente no WhatsApp.</p>
         </div>
@@ -206,9 +283,10 @@
   </section>
 
   <!-- ============ FAQ ============ -->
-  <section class="faq">
+  <section class="faq" id="faq">
     <div class="wrap">
-      <h2>Perguntas frequentes</h2>
+      <span class="eyebrow">Tirando dúvidas</span>
+      <h2>Perguntas<span class="t-acento">frequentes</span></h2>
       <div class="faq-lista">
         <details class="faq-item">
           <summary>O curso é mesmo gratuito?</summary>
@@ -235,7 +313,7 @@
 
 <footer class="rodape">
   <div class="wrap">
-    <img class="rodape-logo" src="assets/logo-conhecer-azul-transparente.png" alt="Escola Técnica Conhecer">
+    <img class="rodape-logo" src="assets/logo-conhecer-horizontal-branco.png" alt="Escola Técnica Conhecer">
     <p>Escola Técnica Conhecer · Programa Trilhas de Futuro</p>
     <p class="rodape-nota">Ao se cadastrar, você concorda em receber contato por WhatsApp sobre esta inscrição. Seus dados não são compartilhados com terceiros.</p>
     <a class="rodape-dev" href="https://brotaweb.com" target="_blank" rel="noopener">Desenvolvido por Brota Web</a>
