@@ -22,7 +22,11 @@
 ================================================================= */
 const CONFIG = {
   WEBHOOK_URL: '',              // [PREENCHER] ex: 'https://seu-n8n.exemplo.com/webhook/trilhas-futuro'
-  WHATSAPP_NUMERO: '',          // [PREENCHER] ex: '5531999999999'
+  // [PREENCHER] O site da Conhecer usa '553132229330' para o técnico
+  // (aparece como "Técnico (31) 3222-9330" e em links wa.me).
+  // CONFIRMAR com a Conhecer se esse é o número que deve receber estes leads
+  // antes de publicar — é fixo, não celular.
+  WHATSAPP_NUMERO: '',          // ex: '5531999999999'
   URL_INSCRICAO_OFICIAL: '',    // [PREENCHER] quando o edital abrir
   MENSAGEM_WHATSAPP_PADRAO: 'Olá! Vim pela página do Trilhas de Futuro e queria ajuda com a inscrição.'
 };

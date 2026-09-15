@@ -9,9 +9,9 @@
 <link rel="icon" type="image/png" href="assets/logo-conhecer-azul-transparente.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<!-- Plus Jakarta Sans: aproximação da fonte do site institucional da Conhecer.
-     Se a Conhecer mandar o manual de marca, trocar aqui e em style.css (--fonte). -->
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Fontes OFICIAIS da Conhecer, confirmadas no código do site deles
+     (unifecaf-conhecer/tecnico/css/tema.css): Sora nos títulos, Instrument Sans no corpo. -->
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 
 <!-- ============================================================
@@ -40,7 +40,7 @@
 <header class="topo">
   <div class="wrap topo-inner">
     <a href="#" class="marca" aria-label="Escola Técnica Conhecer">
-      <img class="marca-logo" src="assets/logo-conhecer-horizontal.png" alt="Escola Técnica Conhecer">
+      <img class="marca-logo" src="assets/logo-conhecer-oficial.webp" alt="Conhecer Escola Técnica" width="520" height="147">
     </a>
 
     <nav class="topo-nav">
@@ -75,14 +75,145 @@
           <p class="hero-nota">Vagas limitadas por unidade · Belo Horizonte · Ribeirão das Neves · Santa Luzia</p>
         </div>
 
-        <!-- [PREENCHER] Foto real dos alunos da Conhecer (mesmo estilo do site
-             institucional: alunos de uniforme, fundo recortado ou limpo).
-             Pra trocar: salve o arquivo em assets/ e descomente a linha abaixo,
-             apagando o <span> do placeholder. Recomendado: 1200x900px, .webp ou .jpg. -->
-        <div class="hero-midia">
-          <!-- <img src="assets/hero-alunos.jpg" alt="Alunos da Escola Técnica Conhecer"> -->
-          <span>Espaço reservado para a foto dos alunos<br>(mesmo estilo do site institucional)</span>
+        <!-- Foto oficial da Conhecer (a mesma do carrossel do site deles), já
+             recortada com fundo transparente. A versão mobile é mais fechada. -->
+        <picture class="hero-midia">
+          <source media="(max-width: 560px)" srcset="assets/hero-alunas-mobile.webp">
+          <img src="assets/hero-alunas.webp" alt="Alunas da Conhecer Escola Técnica" width="858" height="563" fetchpriority="high">
+        </picture>
+
+      </div>
+    </div>
+
+    <!-- faixa branca sobrepondo o hero — assinatura visual do institucional -->
+    <div class="wrap hero-strip-wrap">
+      <div class="hero-strip">
+        <div><strong>100%</strong><span>Gratuito</span></div>
+        <div><strong>MEC</strong><span>Diploma reconhecido</span></div>
+        <div><strong>3</strong><span>Unidades na Grande BH</span></div>
+        <div><strong>MG</strong><span>Programa do Estado</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ POR QUE SE INSCREVER ============ -->
+  <section class="beneficios" id="beneficios">
+    <div class="wrap">
+      <span class="eyebrow">Por que a Conhecer</span>
+      <h2>Formação técnica de verdade,<span class="t-acento">sem custo nenhum pra você</span></h2>
+      <p class="section-intro">O programa Trilhas de Futuro banca o curso. A Conhecer entrega a estrutura, os professores e o acompanhamento.</p>
+
+      <div class="beneficios-grid">
+        <div class="beneficio-card">
+          <div class="beneficio-icone">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg>
+          </div>
+          <h3>100% gratuito</h3>
+          <p>Mensalidade e material do curso pagos pelo programa do Governo de Minas Gerais.</p>
         </div>
+
+        <div class="beneficio-card">
+          <div class="beneficio-icone">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20"/><path d="M6 15h4"/></svg>
+          </div>
+          <h3>Auxílio financeiro</h3>
+          <!-- [PREENCHER: valor e regras reais do auxílio. Confirmar no edital oficial antes de publicar] -->
+          <p>Auxílio por frequência nas aulas. <em>Valor e regras conforme o edital oficial, ainda em confirmação.</em></p>
+        </div>
+
+        <div class="beneficio-card">
+          <div class="beneficio-icone">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="6"/><path d="M8.5 14.5 7 22l5-2.5L17 22l-1.5-7.5"/></svg>
+          </div>
+          <h3>Certificado reconhecido</h3>
+          <p>Diploma técnico reconhecido pelo MEC, válido em todo o Brasil.</p>
+        </div>
+
+        <div class="beneficio-card">
+          <div class="beneficio-icone">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="3"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M2 13h20"/></svg>
+          </div>
+          <h3>Direto pro mercado</h3>
+          <p>Cursos nas áreas mais procuradas, preparando você para começar a trabalhar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CURSOS POR UNIDADE ============ -->
+  <section class="unidades" id="unidades">
+    <div class="wrap">
+      <span class="eyebrow">Nossas unidades</span>
+      <h2>Escolha a unidade que vai<span class="t-acento">abrir as portas do seu futuro</span></h2>
+      <p class="section-intro">Os cursos disponíveis podem variar por unidade. Confira e escolha a mais perto de você.</p>
+
+      <div class="unidades-grid">
+
+        <div class="unidade-card">
+          <div class="unidade-topo">
+            <h3>Belo Horizonte</h3>
+            <p class="unidade-endereco">Rua dos Caetés, 123 — Centro, Belo Horizonte/MG</p>
+          </div>
+          <div class="unidade-corpo">
+            <p class="unidade-rotulo">Cursos ofertados</p>
+            <ul class="unidade-cursos">
+              <li>Técnico em Enfermagem</li>
+              <li>Técnico em Radiologia</li>
+              <li>Técnico em Análises Clínicas</li>
+              <li>Técnico em Segurança do Trabalho</li>
+              <li>Cuidador de Idosos</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="unidade-card">
+          <div class="unidade-topo">
+            <h3>Ribeirão das Neves</h3>
+            <p class="unidade-endereco">Av. Dionísio Gomes, 159 — Veneza, Ribeirão das Neves/MG</p>
+          </div>
+          <div class="unidade-corpo">
+            <p class="unidade-rotulo">Cursos ofertados</p>
+            <ul class="unidade-cursos">
+              <li>Técnico em Enfermagem</li>
+              <li>Técnico em Radiologia</li>
+              <li>Técnico em Segurança do Trabalho</li>
+              <li>Cuidador de Idosos</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="unidade-card">
+          <div class="unidade-topo">
+            <h3>Santa Luzia</h3>
+            <p class="unidade-endereco">R. Ataláia, 37 — São Benedito, Santa Luzia/MG</p>
+          </div>
+          <div class="unidade-corpo">
+            <p class="unidade-rotulo">Cursos ofertados</p>
+            <ul class="unidade-cursos">
+              <li>Técnico em Enfermagem</li>
+              <li>Técnico em Radiologia</li>
+              <li>Técnico em Administração</li>
+              <li>Técnico em Segurança do Trabalho</li>
+              <li>Cuidador de Idosos</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Endereços e cursos por unidade vieram de
+           unifecaf-conhecer/tecnico/js/cursos-tecnicos-data.js (site da Conhecer).
+           Os 11 cursos de Gestão/Tecnologia daquele arquivo não têm unidade
+           atribuída, por isso não aparecem aqui. Confirmar com a Conhecer quais
+           deles entram no Trilhas de Futuro e em que unidade. -->
+      <p class="unidades-nota">A oferta de cursos pode mudar conforme o edital do Trilhas de Futuro. Confirme a disponibilidade na unidade escolhida.</p>
+
+        <!-- Foto oficial da Conhecer (a mesma do carrossel do site deles), já
+             recortada com fundo transparente. A versão mobile é mais fechada. -->
+        <picture class="hero-midia">
+          <source media="(max-width: 560px)" srcset="assets/hero-alunas-mobile.webp">
+          <img src="assets/hero-alunas.webp" alt="Alunas da Conhecer Escola Técnica" width="858" height="563" fetchpriority="high">
+        </picture>
 
       </div>
     </div>
@@ -256,7 +387,15 @@
 
             <label class="campo">
               <span>Curso de interesse</span>
-              <input type="text" name="curso" id="campoCurso" autocomplete="off" placeholder="Se já souber qual">
+              <select name="curso" id="campoCurso">
+                <option value="" selected>Ainda não decidi</option>
+                <option value="Técnico em Enfermagem">Técnico em Enfermagem</option>
+                <option value="Técnico em Radiologia">Técnico em Radiologia</option>
+                <option value="Técnico em Análises Clínicas">Técnico em Análises Clínicas</option>
+                <option value="Técnico em Segurança do Trabalho">Técnico em Segurança do Trabalho</option>
+                <option value="Técnico em Administração">Técnico em Administração</option>
+                <option value="Cuidador de Idosos">Cuidador de Idosos</option>
+              </select>
             </label>
 
             <label class="campo campo-check">
@@ -313,7 +452,7 @@
 
 <footer class="rodape">
   <div class="wrap">
-    <img class="rodape-logo" src="assets/logo-conhecer-horizontal-branco.png" alt="Escola Técnica Conhecer">
+    <img class="rodape-logo" src="assets/logo-conhecer-oficial-branco.png" alt="Conhecer Escola Técnica" width="520" height="147">
     <p>Escola Técnica Conhecer · Programa Trilhas de Futuro</p>
     <p class="rodape-nota">Ao se cadastrar, você concorda em receber contato por WhatsApp sobre esta inscrição. Seus dados não são compartilhados com terceiros.</p>
     <a class="rodape-dev" href="https://brotaweb.com" target="_blank" rel="noopener">Desenvolvido por Brota Web</a>

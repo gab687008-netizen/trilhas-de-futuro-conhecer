@@ -10,8 +10,14 @@ direto no navegador pra testar.
 
 ## Decisões já tomadas (não precisa perguntar de novo)
 
-- **Identidade visual**: alinhada ao **site institucional da Conhecer**, não a uma
-  paleta genérica. As cores foram amostradas pixel a pixel de um print do site oficial.
+- **Identidade visual**: alinhada ao site da Conhecer.
+
+  > **EM ABERTO — roxo ou azul?** A página está em ROXO, amostrado de um print do
+  > site da Conhecer no ar. Mas o código-fonte do site deles
+  > (`github.com/henriquemendes089-blip/unifecaf-conhecer`, pasta `tecnico/`) está em
+  > AZUL `#0a3dae`, e nenhum commit do histórico tem roxo. As duas referências
+  > discordam. A paleta azul já está pronta em `style.css` num bloco comentado —
+  > é só descomentar. Decidir com a Conhecer antes de publicar.
   - **A marca é ROXA, a logo é AZUL.** Não é inconsistência — é assim que o
     institucional usa. Manter.
   - Paleta (em `style.css`, `:root`):
@@ -31,11 +37,9 @@ direto no navegador pra testar.
     - `logo-conhecer-branco.png` — lockup vertical em branco (reserva).
     - `logo-conhecer-azul-transparente.png` / `logo-conhecer-fundo-azul.png` —
       arquivos originais, mantidos.
-  - Fonte: **Plus Jakarta Sans** (Google Fonts) — é uma **aproximação visual** da
-    fonte do institucional (geométrica, bold, x-height alto). A fonte real parece ser
-    paga e não foi identificada com certeza. Se a Conhecer tiver o manual de marca,
-    trocar é uma linha em `style.css`, `:root { --fonte: ... }` + o `<link>` no
-    `index.html`. (Substituiu Fredoka, que era arredondada demais e destoava.)
+  - Fontes: **Sora** (títulos) + **Instrument Sans** (corpo), ambas Google Fonts.
+    Não são mais aproximação — são as fontes que o próprio site da Conhecer usa
+    (`unifecaf-conhecer/tecnico/css/tema.css`).
   - Linguagem visual copiada do institucional: gradiente roxo diagonal no hero com
     arcos decorativos, olho-mágico `— SEÇÃO` em caixa alta acima dos títulos, títulos
     de duas linhas com a segunda em roxo (`.t-acento`), botões em pill, cartão branco
@@ -45,6 +49,14 @@ direto no navegador pra testar.
   breve" — a página funciona tanto no modo "lista de espera" quanto no modo "inscrições
   abertas" (o `script.js` decide sozinho com base em `CONFIG.URL_INSCRICAO_OFICIAL`
   estar preenchido ou não).
+- **Dados reais vindos do site da Conhecer** (repo `henriquemendes089-blip/unifecaf-conhecer`):
+  - Foto do hero: `assets/hero-alunas.webp` + `hero-alunas-mobile.webp`, recortadas
+    com fundo transparente (as mesmas do carrossel deles).
+  - Logo oficial colorida: `assets/logo-conhecer-oficial.webp` (símbolo azul claro
+    `#1988E2` + navy `#01335D`, "Escola Técnica" em cinza `#838A8E`) e a versão
+    branca gerada a partir dela. Substituem a logo achatada em azul sólido, que
+    tinha perdido as duas cores do símbolo.
+  - Endereços e cursos por unidade: de `tecnico/js/cursos-tecnicos-data.js`.
 - **WhatsApp único** para todas as unidades (não um número por unidade).
 - **Lead vai pro Brota Flow / CRM da Conhecer** — mas como a chave de API não pode
   ficar exposta no código da página (é público), o caminho é: página → webhook
@@ -60,12 +72,14 @@ Tudo marcado com `[PREENCHER]` no código, mais:
 - [ ] **`script.js` → `CONFIG.WHATSAPP_NUMERO`**: número único, só dígitos com DDI+DDD.
 - [ ] **`script.js` → `CONFIG.URL_INSCRICAO_OFICIAL`**: preencher só quando o edital
       abrir de verdade — antes disso, deixar vazio (a página já lida com isso sozinha).
-- [ ] **Foto do hero**: `index.html` → `.hero-midia`. Hoje é um placeholder que não
-      quebra o layout. Pedir à Conhecer a foto dos alunos no mesmo estilo do site
-      institucional (uniforme, fundo limpo), salvar em `assets/` e descomentar a tag
-      `<img>` que já está lá. Recomendado 1200x900px, `.webp` ou `.jpg`.
-- [ ] **`index.html` → seção `.unidades`**: lista real de cursos e endereço de cada
-      unidade (Belo Horizonte, Ribeirão das Neves, Santa Luzia).
+- [ ] **Decidir roxo x azul** (ver aviso acima) — muda a página inteira, 1 bloco
+      comentado em `style.css`.
+- [ ] **Cursos de Gestão e Tecnologia**: o arquivo de dados da Conhecer lista 11
+      cursos (Contabilidade, Comércio, Condomínio, Vendas, Transações Imobiliárias,
+      Logística, Desenvolvimento de Sistemas, Computação Gráfica, Informática, Jogos
+      Digitais, Redes de Computadores) **sem unidade atribuída**. Por isso não estão
+      na página nem no select do formulário. Confirmar quais entram no Trilhas de
+      Futuro e em que unidade.
 - [ ] **`index.html` → benefício "Auxílio financeiro"**: valor e regras reais,
       conforme o edital oficial — **não publicar um valor sem confirmar no edital**.
 - [ ] **`index.html` → FAQ**: pré-requisitos reais (ensino médio concluído? idade
