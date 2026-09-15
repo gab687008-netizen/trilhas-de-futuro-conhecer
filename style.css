@@ -1,5 +1,5 @@
 /* ============================================================
-   DESIGN SYSTEM — Conhecer Escola Técnica
+   DESIGN SYSTEM: Conhecer Escola Técnica
    Azul oficial da Conhecer, o mesmo do site deles
    (unifecaf-conhecer/tecnico/css/tema.css, --cor: #0a3dae).
    ============================================================ */
@@ -58,10 +58,10 @@ h1, h2, h3{ font-family: var(--fonte-titulo); color: var(--tinta); line-height: 
 h2{ font-size: clamp(27px, 3.8vw, 40px); text-align: center; margin-bottom: 14px; text-wrap: balance; }
 h3{ font-size: 19px; letter-spacing: -.01em; margin-bottom: 8px; text-wrap: balance; }
 
-/* acento roxo na 2ª linha do título — assinatura do institucional */
+/* acento azul na 2ª linha do título, assinatura do institucional */
 .t-acento{ color: var(--marca-800); display: block; }
 
-/* olho-mágico: "— NOSSOS CURSOS" */
+/* olho-mágico, no estilo "NOSSOS CURSOS" em caixa alta */
 .eyebrow{
   display: block; text-align: center;
   font-size: 12px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase;
@@ -189,7 +189,7 @@ h3{ font-size: 19px; letter-spacing: -.01em; margin-bottom: 8px; text-wrap: bala
 }
 
 /* mídia do hero: foto oficial da Conhecer, recortada com fundo transparente.
-   Não usa moldura nem fundo — a foto "flutua" sobre o gradiente, igual ao site deles. */
+   Não usa moldura nem fundo: a foto "flutua" sobre o gradiente, igual ao site deles. */
 .hero-midia{ display: block; position: relative; }
 .hero-midia img{
   display: block; width: 100%; height: auto; max-height: 460px;
@@ -200,7 +200,7 @@ h3{ font-size: 19px; letter-spacing: -.01em; margin-bottom: 8px; text-wrap: bala
 @media (max-width: 900px){ .hero-midia{ max-width: 420px; margin: 0 auto; } }
 @media (max-width: 560px){ .hero-midia img{ max-height: 300px; } }
 
-/* faixa branca sobrepondo o fim do hero — assinatura visual do institucional */
+/* faixa branca sobrepondo o fim do hero, assinatura visual do institucional */
 .hero-strip-wrap{ position: relative; z-index: 2; margin-top: clamp(-56px, -5vw, -40px); }
 .hero-strip{
   background: #fff; border-radius: var(--raio-g); box-shadow: var(--sombra-g);
@@ -298,7 +298,7 @@ h3{ font-size: 19px; letter-spacing: -.01em; margin-bottom: 8px; text-wrap: bala
 .passos-lista strong{ color: var(--tinta); font-weight: 700; }
 
 /* ============================================================
-   FORMULÁRIO — seção escura pra puxar o olho pra conversão
+   FORMULÁRIO: seção escura pra puxar o olho pra conversão
    ============================================================ */
 .form-section{
   position: relative; overflow: hidden;
