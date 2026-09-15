@@ -10,25 +10,18 @@ direto no navegador pra testar.
 
 ## Decisões já tomadas (não precisa perguntar de novo)
 
-- **Identidade visual**: alinhada ao site da Conhecer.
-
-  > **EM ABERTO — roxo ou azul?** A página está em ROXO, amostrado de um print do
-  > site da Conhecer no ar. Mas o código-fonte do site deles
-  > (`github.com/henriquemendes089-blip/unifecaf-conhecer`, pasta `tecnico/`) está em
-  > AZUL `#0a3dae`, e nenhum commit do histórico tem roxo. As duas referências
-  > discordam. A paleta azul já está pronta em `style.css` num bloco comentado —
-  > é só descomentar. Decidir com a Conhecer antes de publicar.
-  - **A marca é ROXA, a logo é AZUL.** Não é inconsistência — é assim que o
-    institucional usa. Manter.
-  - Paleta (em `style.css`, `:root`):
+- **Identidade visual**: azul oficial da Conhecer, o mesmo do site deles
+  (`unifecaf-conhecer/tecnico/css/tema.css`, `--cor: #0a3dae`). O roxo do print
+  inicial foi descartado — nenhum commit do site da Conhecer tem roxo.
+  - Paleta (em `style.css`, `:root`, num bloco único):
     | token | hex | uso |
     |---|---|---|
-    | `--roxo-900` | `#20006D` | início do gradiente, rodapé |
-    | `--roxo-800` | `#2D098D` | linha de acento dos títulos de seção |
-    | `--roxo-700` | `#3601AB` | **cor de ação**: botões, links, ícones |
-    | `--roxo-600` | `#4613D0` | fim do gradiente |
-    | `--lilas` | `#A2B0FF` | acento de título sobre fundo escuro |
-    | `--azul-marca` | `#0B3DAE` | a logo (só ela) |
+    | `--marca-900` | `#041C57` | início do gradiente, rodapé |
+    | `--marca-800` | `#072D85` | linha de acento dos títulos de seção |
+    | `--marca-700` | `#0A3DAE` | **cor de ação**: botões, links, ícones |
+    | `--marca-600` | `#2A63E0` | fim do gradiente |
+    | `--acento` | `#9FBCFF` | acento de título sobre fundo escuro |
+    | `--logo-azul` / `--logo-navy` / `--logo-cinza` | `#1988E2` / `#01335D` / `#838A8E` | cores do arquivo da logo |
   - Logos em `assets/`:
     - `logo-conhecer-horizontal.png` — lockup horizontal (símbolo + texto lado a
       lado), usado no header. Gerado a partir do lockup vertical original, porque o
@@ -69,17 +62,10 @@ Tudo marcado com `[PREENCHER]` no código, mais:
 
 - [ ] **`script.js` → `CONFIG.WEBHOOK_URL`**: endpoint do N8N (ou equivalente) que
       recebe o POST do formulário e cria o contato no Brota Flow.
-- [ ] **`script.js` → `CONFIG.WHATSAPP_NUMERO`**: número único, só dígitos com DDI+DDD.
 - [ ] **`script.js` → `CONFIG.URL_INSCRICAO_OFICIAL`**: preencher só quando o edital
       abrir de verdade — antes disso, deixar vazio (a página já lida com isso sozinha).
-- [ ] **Decidir roxo x azul** (ver aviso acima) — muda a página inteira, 1 bloco
-      comentado em `style.css`.
-- [ ] **Cursos de Gestão e Tecnologia**: o arquivo de dados da Conhecer lista 11
-      cursos (Contabilidade, Comércio, Condomínio, Vendas, Transações Imobiliárias,
-      Logística, Desenvolvimento de Sistemas, Computação Gráfica, Informática, Jogos
-      Digitais, Redes de Computadores) **sem unidade atribuída**. Por isso não estão
-      na página nem no select do formulário. Confirmar quais entram no Trilhas de
-      Futuro e em que unidade.
+- [ ] **Confirmar com a Conhecer se ela está credenciada na 7ª edição** e para quais
+      cursos e unidades. Sem isso a página não tem destino. Ver a seção de pesquisa.
 - [ ] **`index.html` → benefício "Auxílio financeiro"**: valor e regras reais,
       conforme o edital oficial — **não publicar um valor sem confirmar no edital**.
 - [ ] **`index.html` → FAQ**: pré-requisitos reais (ensino médio concluído? idade
@@ -95,6 +81,48 @@ Tudo marcado com `[PREENCHER]` no código, mais:
       `?canal=outdoor-bh`, `?canal=panfleto-neves`) — a página já captura isso sozinha
       e manda junto com o lead. UTMs padrão (`utm_source`, `utm_medium`,
       `utm_campaign`) também são capturados automaticamente.
+
+## Pesquisa sobre o edital (base de referência, NÃO publicar ainda)
+
+Levantado em 15/09/2026 por busca web. O acesso direto a `trilhasdefuturo.mg.gov.br`
+está bloqueado pela rede desta sessão, então **nada aqui foi lido do edital oficial** —
+é imprensa e material da SEE/MG. Serve de base para conversar com a Conhecer, não
+para escrever na página.
+
+**Razoavelmente consistente entre fontes:**
+
+- **Auxílio: R$ 20 por dia de aula**, para alimentação e transporte. O pagamento é
+  **vinculado à comprovação de frequência** (critério definido pela SEE/MG), repassado
+  depois que a instituição envia o relatório de frequência no fim de cada mês. Isso
+  vale desde a 3ª edição.
+- **Gratuidade total**: sem matrícula, mensalidade, uniforme ou material didático.
+- O candidato escolhe **até duas opções de curso** na inscrição.
+- 6ª edição (2025): inscrições de 10/09 a 01/10/2025, ~50 mil vagas.
+
+**Contraditório entre fontes — resolver antes de escrever o FAQ:**
+
+- **Quem pode se inscrever.** Uma fonte diz "estudantes da rede pública e egressos do
+  ensino médio"; outra diz "rede pública ou privada". A diferença muda o público-alvo
+  da campanha inteira. Não escrever nada no FAQ até confirmar no edital.
+- **Idade mínima**: não encontrada em nenhuma fonte.
+
+**Dois pontos de prazo que valem checagem imediata:**
+
+1. A janela de inscrição do ano passado foi **10/09 a 01/10**. Se a 7ª edição repetir o
+   calendário, a inscrição de estudante **estaria aberta agora**. Vale abrir
+   `trilhasdefuturo.mg.gov.br` hoje e confirmar.
+2. A lista de cursos e municípios prioritários da 7ª edição saiu em **abril/2026**, e o
+   **edital de credenciamento das instituições seria reaberto no 2º semestre de 2026**.
+   Ou seja: antes de a Conhecer receber aluno pelo programa, ela precisa estar
+   credenciada nesta edição. **Confirmar com a Conhecer se o credenciamento dela já
+   saiu e para quais cursos e unidades** — se não saiu, a página não tem para onde
+   mandar o lead, e isso muda o prazo do projeto inteiro.
+
+Fontes: [SEE/MG — cursos prioritários da 7ª edição](https://www.educacao.mg.gov.br/governo-de-minas-publica-lista-de-cursos-profissionalizantes-prioritarios-para-a-7a-edicao-do-trilhas-de-futuro/) ·
+[SEE/MG — dúvidas frequentes](https://www.educacao.mg.gov.br/veja-respostas-as-principais-duvidas-sobre-o-programa-trilhas-de-futuro/) ·
+[Agência Minas — cursos prioritários 7ª edição](https://agenciamg.com.br/2026/04/24/governo-de-minas-divulga-cursos-prioritarios-para-a-7a-edicao-do-programa-trilhas-de-futuro/) ·
+[SEE/MG — inscrições ampliadas até 1º de outubro](https://www.educacao.mg.gov.br/inscricoes-do-trilhas-de-futuro-sao-ampliadas-ate-1o-de-outubro/) ·
+[Site oficial do programa](https://www.trilhasdefuturo.mg.gov.br/)
 
 ## Como testar localmente
 
