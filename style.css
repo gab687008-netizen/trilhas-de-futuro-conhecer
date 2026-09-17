@@ -96,12 +96,24 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
 }
 .marcas img{ display: block; width: auto; }
 .marcas .m-conhecer{ height: 40px; }
-.marcas .m-trilhas{ height: 56px; }
-.marcas .divisor{ width: 1px; height: 44px; background: rgba(255,255,255,.28); flex-shrink: 0; }
+
+/* selo do programa: a marca do Trilhas na cor original sobre fundo claro */
+.selo-trilhas{
+  display: flex; align-items: center; gap: 11px;
+  background: #fff; border-radius: 14px; padding: 8px 14px;
+  box-shadow: 0 6px 18px rgba(4,28,87,.24);
+}
+.selo-trilhas img{ height: 30px; width: auto; display: block; }
+.selo-trilhas em{
+  font-style: normal; font-size: 9.5px; font-weight: 800; letter-spacing: .07em;
+  text-transform: uppercase; color: var(--texto-suave); line-height: 1.32;
+}
 @media (max-width: 480px){
   .marcas{ gap: 12px; }
-  .marcas .m-conhecer{ height: 32px; }
-  .marcas .m-trilhas{ height: 44px; }
+  .marcas .m-conhecer{ height: 30px; }
+  .selo-trilhas{ gap: 8px; padding: 6px 11px; border-radius: 12px; }
+  .selo-trilhas img{ height: 24px; }
+  .selo-trilhas em{ font-size: 8.5px; letter-spacing: .05em; }
 }
 
 /* ============================================================
