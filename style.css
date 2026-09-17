@@ -445,3 +445,45 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
   .depoimentos .dica-arrasta{ color: rgba(255,255,255,.62); }
   .dica-arrasta::after{ content: " →"; }
 }
+
+/* ============================================================
+   FAIXA DE PARCEIROS
+   Loop infinito de verdade, só com CSS: dois grupos idênticos lado a lado e
+   uma animação que desloca o trilho em metade da largura total, que é
+   exatamente a largura de um grupo. Ao terminar, o quadro é idêntico ao
+   inicial, então a volta não tem emenda.
+   ============================================================ */
+.parceiros{ background: var(--fundo); padding: clamp(36px, 4vw, 52px) 0; }
+.parceiros-titulo{
+  text-align: center; font-size: 12px; font-weight: 800; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--texto-suave); margin-bottom: 26px;
+}
+.parceiros-janela{
+  overflow: hidden;
+  /* desvanece nas pontas para as logos não aparecerem e sumirem no talho */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+}
+.parceiros-trilho{
+  display: flex; width: max-content;
+  animation: desfila 52s linear infinite;
+}
+.parceiros-janela:hover .parceiros-trilho{ animation-play-state: paused; }
+.parceiros-grupo{ display: flex; align-items: center; gap: clamp(30px, 4vw, 52px); padding-right: clamp(30px, 4vw, 52px); }
+.parceiros-grupo img{
+  height: 38px; width: auto; display: block; flex-shrink: 0;
+  opacity: .88;
+}
+@keyframes desfila{
+  from{ transform: translate3d(0,0,0); }
+  to{   transform: translate3d(-50%,0,0); }
+}
+@media (max-width: 620px){
+  .parceiros-grupo img{ height: 30px; }
+  .parceiros-trilho{ animation-duration: 38s; }
+}
+/* quem pede menos movimento não recebe animação nenhuma */
+@media (prefers-reduced-motion: reduce){
+  .parceiros-trilho{ animation: none; }
+  .parceiros-janela{ overflow-x: auto; }
+}

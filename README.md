@@ -56,6 +56,20 @@ direto no navegador pra testar.
   o override do mobile não pegava: as dicas não apareciam e o botão do WhatsApp
   ficava grudado na barra fixa. Se for mexer nesses dois blocos, mantenha a
   regra base antes do media query.
+- **Faixa de parceiros: esse sim é infinito, e de propósito.** Os carrosséis
+  de pilares, áreas, depoimentos e galeria são finitos, porque são conteúdo de
+  decisão: a pessoa compara antes de escolher, e saber que acabou é
+  informação útil. A faixa de parceiros é o contrário, é prova social: o que
+  comunica é a quantidade, não cada logo lida uma a uma. Por isso ela desliza
+  sozinha, sem fim.
+  Também é só CSS: dois grupos idênticos lado a lado e uma animação que
+  desloca o trilho em metade da largura total, que é exatamente a largura de
+  um grupo. Ao terminar, o quadro é idêntico ao inicial, então a volta não tem
+  emenda. **Se editar a lista de logos, edite os dois grupos.**
+  Para em `prefers-reduced-motion` e ao passar o mouse.
+  São 22 logos, vindas de `tecnico/img/parceiros/` do repositório da Conhecer.
+  A `parceiro-19` ficou de fora: é um banner publicitário com foto, não uma
+  logo, e destoava da faixa.
 - **No mobile os blocos de cards viram carrossel.** Pilares, áreas, depoimentos
   e galeria deixam de empilhar e passam a deslizar para o lado, em telas de até
   760px. É só CSS com `scroll-snap`: sem JS e sem biblioteca, continua
