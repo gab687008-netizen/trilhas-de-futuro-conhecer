@@ -13,17 +13,51 @@
 <link rel="stylesheet" href="style.css">
 
 <!-- ============================================================
-     PIXELS DE RASTREAMENTO. Preencher os IDs quando existirem
+     RASTREAMENTO
+     Preencha os dois IDs abaixo e pronto: o carregador logo em seguida
+     injeta o Google Analytics 4 e o Meta Pixel sozinho. Deixe vazio o que
+     ainda não existir e aquele pixel simplesmente não carrega.
+
+     ga4        Google Analytics 4. Formato G-XXXXXXXXXX.
+                Onde achar: analytics.google.com > Admin > Fluxos de dados >
+                clique no fluxo do site > "ID da métrica".
+
+     metaPixel  Meta (Facebook/Instagram). Só dígitos, uns 15 números.
+                Onde achar: business.facebook.com > Gerenciador de Eventos >
+                Fontes de dados > o pixel > o número aparece sob o nome.
+
+     O evento de conversão é disparado em script.js, na função
+     eventoConversao: 'generate_lead' no GA4 e 'Lead' no Meta.
      ============================================================ -->
-<!--
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-XXXXXXXXXX');
+  window.RASTREIO = {
+    ga4: '',          // [PREENCHER] ex: 'G-AB12CD34EF'
+    metaPixel: ''     // [PREENCHER] ex: '123456789012345'
+  };
 </script>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
--->
+<script>
+  (function (cfg) {
+    if (cfg.ga4) {
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(cfg.ga4);
+      document.head.appendChild(s);
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { window.dataLayer.push(arguments); };
+      window.gtag('js', new Date());
+      window.gtag('config', cfg.ga4);
+    }
+    if (cfg.metaPixel) {
+      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+      n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+      (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+      window.fbq('init', cfg.metaPixel);
+      window.fbq('track', 'PageView');
+    }
+  })(window.RASTREIO);
+</script>
 </head>
 <body>
 
@@ -125,10 +159,10 @@
 <!-- ============ FAIXA DE PROVA ============ -->
 <div class="provas">
   <div class="wrap provas-grid">
-    <div><strong>100%</strong><span>Gratuito</span></div>
+    <div><strong>100%</strong><span>Gratuito, do início ao fim</span></div>
+    <div><strong>R$ 20</strong><span>Por dia de aula, até R$ 400/mês</span></div>
     <div><strong>MEC</strong><span>Diploma reconhecido</span></div>
     <div><strong>3</strong><span>Unidades na região de BH</span></div>
-    <div><strong>MG</strong><span>Programa do Estado</span></div>
   </div>
 </div>
 
@@ -137,39 +171,46 @@
   <div class="wrap">
     <span class="eyebrow">Por que a Conhecer</span>
     <h2>Não é só aula.<span class="t-acento">É prática desde o primeiro módulo.</span></h2>
-    <p class="section-intro">O programa banca o curso. A Conhecer entrega a estrutura, os professores e o acompanhamento até você entrar no mercado.</p>
+    <p class="section-intro">O programa do Governo banca o curso. Estes quatro são o que a Conhecer coloca em cima disso, e é aqui que uma escola credenciada se diferencia da outra.</p>
 
+    <!-- Os quatro pilares são o que a Conhecer entrega ALÉM do programa.
+         Gratuidade, auxílio, uniforme e material didático são cobertos pelo
+         próprio Trilhas de Futuro e valem para qualquer escola credenciada,
+         então ficam na faixa de provas e no FAQ, não aqui. -->
     <div class="porque-grid">
       <div class="pilar">
         <div class="pilar-icone i-amarelo">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18V8a2 2 0 0 1 2-2h1"/><path d="M3 18h18"/><rect x="6" y="10" width="15" height="8" rx="2"/><path d="M10 10V7h6"/></svg>
         </div>
-        <h3>Laboratórios de verdade</h3>
-        <p>Leitos de UTI, equipamentos e materiais reais para treinar antes de encarar o campo.</p>
+        <h3>UTI própria</h3>
+        <p>Laboratório com leitos de UTI dentro da escola. Você treina no equipamento real antes de encostar num paciente.</p>
       </div>
 
       <div class="pilar">
         <div class="pilar-icone i-azul">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
         </div>
-        <h3>Professores que atuam na área</h3>
-        <p>Quem dá aula trabalha no mercado e traz o caso real para dentro da sala.</p>
+        <h3>Estágio garantido</h3>
+        <!-- [CONFIRMAR] "Garantido" é promessa com peso jurídico. A Conhecer
+             precisa confirmar por escrito, e o escopo (só Enfermagem e
+             Radiologia) tem que ficar visível, como está aqui. -->
+        <p>Em hospitais e clínicas de Belo Horizonte e região, para quem cursa Enfermagem ou Radiologia.</p>
       </div>
 
       <div class="pilar">
         <div class="pilar-icone i-rosa">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="6"/><path d="M8.5 14.5 7 22l5-2.5L17 22l-1.5-7.5"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg>
         </div>
-        <h3>Diploma reconhecido</h3>
-        <p>Certificação técnica reconhecida pelo MEC, válida em todo o Brasil.</p>
+        <h3>Mestres e doutores</h3>
+        <p>Professores com titulação de mestrado e doutorado dando aula em curso técnico, não só em faculdade.</p>
       </div>
 
       <div class="pilar">
         <div class="pilar-icone i-ciano">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="3"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M2 13h20"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-6h6v6"/></svg>
         </div>
-        <h3>Rede de parceiros</h3>
-        <p>Clínicas e hospitais parceiros para estágio e para a primeira vaga.</p>
+        <h3>Estrutura de verdade</h3>
+        <p>Salas climatizadas, laboratórios equipados e material completo. Sem improviso e sem custo extra.</p>
       </div>
     </div>
 
@@ -270,7 +311,7 @@
     <div class="faq-lista">
       <details class="faq-item">
         <summary>O curso é mesmo gratuito?</summary>
-        <p>Sim. É um programa do Governo de Minas Gerais: você não paga matrícula, mensalidade nem material do curso.</p>
+        <p>Sim, do início ao fim. Não tem taxa de inscrição, matrícula nem mensalidade. Apostilas, material didático, uniforme e squeeze também são gratuitos.</p>
       </details>
       <details class="faq-item">
         <summary>Quem pode se inscrever?</summary>
@@ -280,8 +321,11 @@
       </details>
       <details class="faq-item">
         <summary>Existe algum auxílio financeiro?</summary>
-        <!-- [PREENCHER: valor e regra reais do edital. Não publicar valor sem confirmar. -->
-        <p>O programa costuma oferecer auxílio para transporte e alimentação, com regras definidas no edital de cada edição. Confirmamos os valores assim que o edital for publicado.</p>
+        <!-- [CONFIRMAR NO EDITAL] Valor informado pela Conhecer: R$ 20 por dia
+             letivo presencial, chegando a R$ 400 em um mês de 20 dias de aula.
+             O pagamento depende de frequência. Conferir contra o edital da
+             edição antes de anunciar. -->
+        <p>Sim: R$ 20 por dia de aula presencial, para transporte e alimentação, o que pode chegar a R$ 400 por mês. O pagamento é feito pelo programa e depende da sua frequência nas aulas, conforme as regras do edital.</p>
       </details>
       <details class="faq-item">
         <summary>Onde ficam as unidades da Conhecer?</summary>

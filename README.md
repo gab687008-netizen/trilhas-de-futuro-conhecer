@@ -50,6 +50,16 @@ direto no navegador pra testar.
   (IDs do YouTube em `script.js`, `CONFIG.DEPOIMENTOS_YOUTUBE`). A capa só vira
   player quando a pessoa clica, para não entregar cookie de terceiro sem
   interação. Nenhum depoimento escrito foi inventado, e não deve ser.
+- **Os quatro pilares são só o que a Conhecer entrega ALÉM do programa**:
+  UTI própria, estágio garantido (Enfermagem e Radiologia), professores mestres
+  e doutores, e estrutura. Gratuidade, auxílio de R$ 20 por dia, uniforme e
+  material didático são cobertos pelo próprio Trilhas de Futuro e valem para
+  qualquer escola credenciada, então ficam na faixa de provas e no FAQ. Se os
+  anúncios liderarem com eles, a Conhecer compete de igual para igual com todas
+  as concorrentes e não ganha em nada.
+- **"Estágio garantido" precisa de confirmação por escrito da Conhecer.** É
+  promessa com peso jurídico e vale só para dois cursos. O escopo aparece na
+  própria frase da página, e tem que continuar aparecendo.
 - **Áreas em vez de cursos**: a página mostra as quatro áreas de formação, não uma
   lista de cursos. A oferta do Trilhas de Futuro é definida pelo edital de cada
   edição e não é a mesma do catálogo técnico pago da Conhecer.
@@ -75,8 +85,10 @@ direto no navegador pra testar.
 
 Tudo marcado com `[PREENCHER]` no código, mais:
 
-- [ ] **`script.js` → `CONFIG.WEBHOOK_URL`**: endpoint do N8N (ou equivalente) que
-      recebe o POST do formulário e cria o contato no Brota Flow.
+- [ ] **`script.js` → `CONFIG.DESTINOS_LEAD.planilha`**: URL do Apps Script.
+      Passo a passo em `apps-script.js`. **Enquanto isso estiver vazio, o lead
+      some**: a pessoa vê a confirmação e nada é gravado.
+- [ ] **`index.html` → `window.RASTREIO`**: IDs do GA4 e do Meta Pixel.
 - [ ] **`script.js` → `CONFIG.URL_INSCRICAO_OFICIAL`**: preencher só quando o edital
       abrir de verdade. Antes disso, deixar vazio (a página já lida com isso sozinha).
 - [ ] **Confirmar com a Conhecer se ela está credenciada na 7ª edição** e para quais
@@ -91,12 +103,50 @@ Tudo marcado com `[PREENCHER]` no código, mais:
 - [ ] **Domínio**: publicar em domínio/hospedagem da própria Conhecer (decidido
       anteriormente). A proposta comercial sugeriu `grupoconhecer.com.br/trilhas-de-
       futuro`, mas isso ainda não está confirmado/registrado.
-- [ ] **Pixels**: descomentar e preencher os IDs do Google Analytics e do Meta Pixel
-      no `<head>` do `index.html` quando existirem.
+
 - [ ] **QR Codes / mídias offline**: gerar cada QR/link com `?canal=` diferente (ex:
       `?canal=outdoor-bh`, `?canal=panfleto-neves`). A página já captura isso sozinha
       e manda junto com o lead. UTMs padrão (`utm_source`, `utm_medium`,
       `utm_campaign`) também são capturados automaticamente.
+
+## Como o lead é enviado
+
+Página → Google Apps Script → planilha do Google. Mesmo caminho que o site da
+Conhecer já usa hoje.
+
+O N8N saiu do plano. Ele existia para guardar a chave da API do Brota Flow, mas
+o próprio site da Conhecer tem `brotaFlowEndpoint` vazio com a nota "o CRM ainda
+não expõe essa rota". Guardar a chave de uma porta que não existe não se paga.
+Quando o Brota Flow expuser a rota, é só preencher `CONFIG.DESTINOS_LEAD.crm`:
+os dois destinos recebem o mesmo envio.
+
+**Por que `mode: 'no-cors'` e `Content-Type: text/plain`**
+
+O navegador tem uma regra de segurança, o CORS. Um POST com
+`Content-Type: application/json` para outro domínio dispara antes um pedido de
+permissão, o preflight `OPTIONS`. O Apps Script não responde a `OPTIONS`, então
+o envio morre antes de chegar lá. Com `text/plain` o navegador trata como pedido
+simples e manda direto. O corpo continua sendo JSON, e o `doPost` faz
+`JSON.parse` normalmente.
+
+**O preço:** `no-cors` devolve resposta opaca. A página não consegue saber se o
+destino aceitou, então o envio é "dispara e segue" e a confirmação aparece de
+qualquer jeito. Se o Apps Script quebrar, o lead some em silêncio. **Confira a
+planilha periodicamente** e refaça o teste abaixo depois de qualquer mudança.
+
+**Teste obrigatório depois de configurar:** abra a página, preencha com o nome
+"TESTE" e envie. A linha tem que aparecer na planilha em segundos.
+
+## Rastreamento
+
+`index.html` tem um bloco `window.RASTREIO` com dois campos, `ga4` e
+`metaPixel`. Preencheu, o carregador injeta o script sozinho. Deixou vazio,
+aquele pixel não carrega. Não precisa descomentar nada.
+
+O evento de conversão sai em `script.js`, na função `eventoConversao`:
+`generate_lead` no GA4 e `Lead` no Meta, os dois com unidade, curso e canal.
+Verificado em navegador: com os IDs preenchidos o `generate_lead` entra no
+`dataLayer` com os campos certos.
 
 ## Pesquisa sobre o edital (base de referência, NÃO publicar ainda)
 

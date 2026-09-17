@@ -21,7 +21,24 @@
      inscrição no Trilhas de Futuro. Só existe quando o edital abrir.
 ================================================================= */
 const CONFIG = {
-  WEBHOOK_URL: '',              // [PREENCHER] ex: 'https://seu-n8n.exemplo.com/webhook/trilhas-futuro'
+  /* Destinos do lead. Todos os preenchidos recebem a mesma informação.
+     Vazio = não envia para aquele destino.
+
+     planilha: URL do Google Apps Script publicado como app da web
+       ("Executar como: eu" e "Quem pode acessar: qualquer pessoa").
+       O código para colar está em apps-script.js, neste repositório.
+       É o caminho que o próprio site da Conhecer usa hoje.
+
+     crm: rota de entrada de lead do Brota Flow, quando o CRM passar a
+       expor uma. Hoje o site da Conhecer deixa esse campo vazio com a
+       nota "o CRM ainda não expõe essa rota".
+
+     NUNCA coloque api-key aqui: o código desta página é público. */
+  DESTINOS_LEAD: {
+    planilha: '',               // [PREENCHER] ex: 'https://script.google.com/macros/s/AKfy.../exec'
+    crm: ''                     // [PREENCHER] quando o Brota Flow expuser a rota
+  },
+
   // Número do técnico da Conhecer, (31) 3222-9330, confirmado pelo Gabriel.
   // É fixo com WhatsApp, o mesmo que o site deles usa nos links wa.me.
   WHATSAPP_NUMERO: '553132229330',
@@ -101,22 +118,61 @@ function limpaTelefone(valor){
   return valor.replace(/\D+/g, '');
 }
 
-/* ---------- envio do formulário ---------- */
+/* ---------- envio do formulário ----------
+
+   Por que 'no-cors' e 'text/plain':
+
+   O navegador tem uma regra de segurança (CORS). Quando uma página manda
+   um POST com Content-Type 'application/json' para outro domínio, ele
+   primeiro dispara um pedido de permissão (preflight OPTIONS). O Google
+   Apps Script não responde a OPTIONS, então o envio morre antes de chegar
+   lá. Com 'text/plain' o navegador considera o pedido simples e manda
+   direto, sem preflight. O corpo continua sendo JSON: o doPost do Apps
+   Script lê e-postData.contents e faz JSON.parse normalmente.
+
+   O preço disso é que 'no-cors' devolve uma resposta opaca: não dá para
+   saber se o destino aceitou. Então este envio é "dispara e segue". Se o
+   Apps Script estiver quebrado, a pessoa ainda vê a tela de confirmação.
+   Por isso a planilha precisa ser conferida de vez em quando, e é por isso
+   que existe o teste descrito no README.
+*/
+function destinosAtivos(){
+  return Object.values(CONFIG.DESTINOS_LEAD || {}).filter(Boolean);
+}
+
 async function enviaLead(dados){
-  if(!CONFIG.WEBHOOK_URL){
-    // sem webhook configurado ainda: não bloqueia o fluxo, só avisa no console
-    console.warn('CONFIG.WEBHOOK_URL não definido. Lead não foi enviado a lugar nenhum. Preencha o script.js antes de publicar.');
-    return { ok: true, semWebhook: true };
+  const destinos = destinosAtivos();
+
+  if(!destinos.length){
+    console.warn('Nenhum destino configurado em CONFIG.DESTINOS_LEAD. O lead NÃO foi enviado a lugar nenhum. Preencha antes de publicar.');
+    return { ok: true, semDestino: true };
   }
-  try{
-    const resp = await fetch(CONFIG.WEBHOOK_URL, {
+
+  const corpo = JSON.stringify(dados);
+  destinos.forEach(url => {
+    fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(dados)
+      mode: 'no-cors',
+      keepalive: true,                                   // sobrevive se a pessoa sair da página
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: corpo
+    }).catch(() => {});                                  // resposta opaca: não há o que tratar
+  });
+
+  return { ok: true };
+}
+
+/* ---------- eventos de conversão (GA4 e Meta) ---------- */
+function eventoConversao(dados){
+  if(typeof window.gtag === 'function'){
+    window.gtag('event', 'generate_lead', {
+      unidade: dados.unidade,
+      curso: dados.curso || 'nao informado',
+      canal: dados.canal || ''
     });
-    return { ok: resp.ok };
-  }catch(e){
-    return { ok: false, erro: e };
+  }
+  if(typeof window.fbq === 'function'){
+    window.fbq('track', 'Lead', { content_name: 'Trilhas de Futuro', unidade: dados.unidade });
   }
 }
 
@@ -184,6 +240,7 @@ function configuraFormulario(){
     botao.textContent = 'Quero me cadastrar';
 
     if(resultado.ok){
+      eventoConversao(dados);
       mostraConfirmacao();
     } else {
       erroEl.textContent = 'Não conseguimos enviar agora. Tenta de novo, ou chama no WhatsApp que a gente cadastra você direto.';
