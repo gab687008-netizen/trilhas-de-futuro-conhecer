@@ -27,18 +27,21 @@ direto no navegador pra testar.
     | `--ciano` | `#23B2D0` | acento |
     | `--laranja` | `#F48222` | acento |
     | `--grafite` | `#343838` | cor do wordmark do Trilhas |
-  - **Assinatura no topo**: a Conhecer aparece em branco sobre o azul, e o
-    Trilhas de Futuro aparece **na cor original, dentro de um selo branco**,
-    com o texto "Instituição credenciada" ao lado.
-    Duas razões. Primeira: manual de marca de programa de governo costuma
-    exigir a versão original sobre fundo claro, e recolorir é justamente o que
-    proíbem. A versão em amarelo ficava mais bonita, mas destruía o acento rosa
-    do "A" e mudava a cor da marca. Segunda: o "Instituição credenciada" deixa
-    explícito que a página é da Conhecer e não do Governo, o que é verdade e
-    evita que o material pareça oficial do programa.
-    Arquivos: `logo-trilhas.png` (original), `logo-trilhas-branco.png` e
-    `logo-trilhas-amarelo.png` ficam disponíveis caso a Conhecer confirme que
-    o manual permite outra versão.
+  - **Assinatura no topo**: Conhecer e Trilhas de Futuro lado a lado,
+    separadas por um divisor, as duas sobre o azul do hero.
+  - **A Conhecer usa `logo-conhecer-escuro.png`, não a versão toda branca.**
+    O símbolo original tem duas fitas: a da frente em `#1988E2` e a de trás em
+    `#01335D`. Sobre o azul escuro do hero a fita navy sumia, e a versão toda
+    branca virava um bloco chapado sem leitura nenhuma. Nesta versão a fita da
+    frente é branca e a de trás é `#1988E2`, então a frente continua sendo a
+    mais clara e as duas fitas voltam a aparecer. O wordmark fica branco e o
+    "Escola Técnica" num branco suave.
+    O script que gera esse arquivo separa símbolo e texto pelo vão real entre
+    eles, nas colunas 120 a 165 do arquivo original.
+  - Arquivos de logo disponíveis: `logo-conhecer-oficial.webp` (original, para
+    fundo claro), `logo-conhecer-escuro.png` (para o hero),
+    `logo-conhecer-oficial-branco.png`, `logo-trilhas.png`,
+    `logo-trilhas-branco.png` e `logo-trilhas-amarelo.png`.
   - Fontes: **Sora** (títulos) + **Instrument Sans** (corpo), ambas Google Fonts.
     Não são mais aproximação. São as fontes que o próprio site da Conhecer usa
     (`unifecaf-conhecer/tecnico/css/tema.css`).
