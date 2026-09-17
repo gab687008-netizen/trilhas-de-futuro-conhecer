@@ -374,3 +374,64 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
 .assinatura{ text-align: center; padding: 0 20px 28px; }
 .assinatura a{ font-size: 11.5px; color: var(--texto-suave); text-decoration: none; font-weight: 600; }
 .assinatura a:hover{ color: var(--azul-700); }
+
+/* ============================================================
+   CARROSSÉIS NO MOBILE
+   Em telas pequenas os blocos de cards deixam de empilhar e passam a
+   deslizar para o lado. Só CSS, com scroll-snap: nenhum JS, nenhuma
+   biblioteca, e continua funcionando se o JS falhar.
+
+   Os cards ficam com menos de 100% de largura de propósito: a fatia do
+   próximo aparecendo na borda é o que avisa a pessoa que dá para arrastar.
+
+   A margem negativa faz o trilho sangrar até as bordas da tela, e o padding
+   devolve o respiro no começo e no fim.
+   ============================================================ */
+/* escondida por padrão. A regra vem ANTES do media query de propósito:
+   em CSS, com a mesma especificidade, quem vem depois vence. */
+.dica-arrasta{ display: none; }
+
+@media (max-width: 760px){
+  .porque-grid,
+  .areas-grid,
+  .depo-grid,
+  .galeria{
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 14px;
+    margin-inline: -20px;
+    padding: 4px 20px 10px;
+    scrollbar-width: none;
+  }
+  .porque-grid::-webkit-scrollbar,
+  .areas-grid::-webkit-scrollbar,
+  .depo-grid::-webkit-scrollbar,
+  .galeria::-webkit-scrollbar{ display: none; }
+
+  .porque-grid > *,
+  .areas-grid > *,
+  .depo-grid > *,
+  .galeria > *{
+    scroll-snap-align: center;
+    flex: 0 0 auto;
+  }
+
+  .porque-grid > .pilar{ width: 78%; }
+  .areas-grid > .area-card{ width: 72%; }
+  .galeria > figure{ width: 76%; }
+  /* depoimento é vertical (9/14), então precisa ser mais estreito para
+     não estourar a altura da tela */
+  .depo-grid > .depo{ width: 56%; }
+
+  /* a dica de arrastar só existe no mobile */
+  .dica-arrasta{
+    display: block; text-align: center; margin-top: 14px;
+    font-size: 12.5px; font-weight: 600; color: var(--texto-suave);
+  }
+  .depoimentos .dica-arrasta{ color: rgba(255,255,255,.62); }
+  .dica-arrasta::after{ content: " →"; }
+}

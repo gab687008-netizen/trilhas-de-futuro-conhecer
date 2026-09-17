@@ -39,6 +39,15 @@ direto no navegador pra testar.
     de duas linhas com a segunda em azul (`.t-acento`), botões em pill, cartão branco
     sobrepondo o fim do hero, cards com raio grande e sombra suave.
 
+- **No mobile os blocos de cards viram carrossel.** Pilares, áreas, depoimentos
+  e galeria deixam de empilhar e passam a deslizar para o lado, em telas de até
+  760px. É só CSS com `scroll-snap`: sem JS e sem biblioteca, continua
+  funcionando se o JS falhar. Os cards têm menos de 100% de largura de
+  propósito, porque a fatia do próximo aparecendo na borda é o que avisa que dá
+  para arrastar. Isso encurtou a página de 9.936px para 5.758px, 42% a menos.
+  A dica "Arraste para ver todos" fica escondida no desktop, e a regra que a
+  esconde vem ANTES do media query: em CSS, com a mesma especificidade, quem
+  vem depois vence.
 - **Estrutura da página** (decidida com o Gabriel): sem cabeçalho de navegação e
   sem rodapé. Só as duas marcas no topo. A ordem é hero com vídeo e formulário,
   faixa de provas, por que a Conhecer, estrutura em fotos, áreas de formação,
