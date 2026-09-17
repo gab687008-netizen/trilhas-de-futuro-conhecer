@@ -39,6 +39,12 @@ direto no navegador pra testar.
     de duas linhas com a segunda em azul (`.t-acento`), botões em pill, cartão branco
     sobrepondo o fim do hero, cards com raio grande e sombra suave.
 
+- **Ordem no CSS importa, e já mordeu duas vezes.** As regras base de
+  `.dica-arrasta` e de `.whatsapp-flutuante` estavam DEPOIS dos media queries
+  que as sobrescreviam. Com a mesma especificidade, quem vem depois vence, então
+  o override do mobile não pegava: as dicas não apareciam e o botão do WhatsApp
+  ficava grudado na barra fixa. Se for mexer nesses dois blocos, mantenha a
+  regra base antes do media query.
 - **No mobile os blocos de cards viram carrossel.** Pilares, áreas, depoimentos
   e galeria deixam de empilhar e passam a deslizar para o lado, em telas de até
   760px. É só CSS com `scroll-snap`: sem JS e sem biblioteca, continua

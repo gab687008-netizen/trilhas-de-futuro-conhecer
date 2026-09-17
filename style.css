@@ -346,6 +346,8 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
 
 /* ============================================================
    BARRA FIXA DE AÇÃO (mobile) + WHATSAPP
+   A ordem aqui importa: as regras base vêm ANTES do media query, senão
+   elas vencem por serem as últimas e o override do mobile não pega.
    ============================================================ */
 .barra-fixa{
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 45;
@@ -355,11 +357,6 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
   box-shadow: 0 -8px 28px rgba(0,0,0,.24);
 }
 .barra-fixa .btn{ flex: 1; padding: 14px 18px; font-size: 15px; }
-@media (max-width: 940px){
-  .barra-fixa{ display: flex; }
-  body{ padding-bottom: 78px; }
-  .whatsapp-flutuante{ bottom: 88px; }
-}
 
 .whatsapp-flutuante{
   position: fixed; right: 18px; bottom: 18px; z-index: 50;
@@ -369,6 +366,14 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
   transition: transform .15s ease;
 }
 .whatsapp-flutuante:hover{ transform: scale(1.07); }
+
+@media (max-width: 940px){
+  .barra-fixa{ display: flex; }
+  body{ padding-bottom: 82px; }
+  /* sobe o WhatsApp para cima da barra, em vez de deixar os dois grudados.
+     A barra mede 76px, então 88px dá folga e ainda respeita o safe-area. */
+  .whatsapp-flutuante{ bottom: calc(88px + env(safe-area-inset-bottom)); }
+}
 
 /* assinatura discreta, sem rodapé */
 .assinatura{ text-align: center; padding: 0 20px 28px; }
@@ -420,6 +425,11 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
     flex: 0 0 auto;
   }
 
+  /* zera a margem que o grid do desktop deixa embaixo, senão a dica de
+     arrastar fica jogada 40px para baixo, longe dos cards */
+  .porque-grid{ margin-bottom: 0; }
+  .porque-grid + .dica-arrasta{ margin-bottom: 26px; }
+
   .porque-grid > .pilar{ width: 78%; }
   .areas-grid > .area-card{ width: 72%; }
   .galeria > figure{ width: 76%; }
@@ -429,7 +439,7 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
 
   /* a dica de arrastar só existe no mobile */
   .dica-arrasta{
-    display: block; text-align: center; margin-top: 14px;
+    display: block; text-align: center; margin-top: 6px;
     font-size: 12.5px; font-weight: 600; color: var(--texto-suave);
   }
   .depoimentos .dica-arrasta{ color: rgba(255,255,255,.62); }
