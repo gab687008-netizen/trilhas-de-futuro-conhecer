@@ -97,6 +97,11 @@ Tudo marcado com `[PREENCHER]` no código, mais:
 - [ ] **`script.js` → `CONFIG.DESTINOS_LEAD.planilha`**: URL do Apps Script.
       Passo a passo em `apps-script.js`. **Enquanto isso estiver vazio, o lead
       some**: a pessoa vê a confirmação e nada é gravado.
+- [ ] **Documentação da rota de entrada de leads do Brota Flow** (URL, formato do
+      corpo, como autentica), para ligar o CRM. Perguntar também se existe
+      endpoint público de formulário, sem chave.
+- [ ] **Propriedades do Script** no Apps Script: `BROTA_FLOW_URL` e
+      `BROTA_FLOW_TOKEN`. A chave nunca vai no código do repositório.
 - [ ] **`index.html` → `window.RASTREIO`**: IDs do GA4 e do Meta Pixel.
 - [ ] **`script.js` → `CONFIG.URL_INSCRICAO_OFICIAL`**: preencher só quando o edital
       abrir de verdade. Antes disso, deixar vazio (a página já lida com isso sozinha).
@@ -120,16 +125,34 @@ Tudo marcado com `[PREENCHER]` no código, mais:
 
 ## Como o lead é enviado
 
-Página → Google Apps Script → planilha do Google. Mesmo caminho que o site da
-Conhecer já usa hoje.
+    página  →  Apps Script  →  planilha (cópia de segurança)
+                            →  CRM Brota Flow
 
-O N8N saiu do plano. Ele existia para guardar a chave da API do Brota Flow, mas
-o próprio site da Conhecer tem `brotaFlowEndpoint` vazio com a nota "o CRM ainda
-não expõe essa rota". Guardar a chave de uma porta que não existe não se paga.
-Quando o Brota Flow expuser a rota, é só preencher `CONFIG.DESTINOS_LEAD.crm`:
-os dois destinos recebem o mesmo envio.
+**A página não pode falar direto com o CRM.** Ela é pública: qualquer visitante
+abre "ver código-fonte" e lê tudo. Se a chave de API do CRM estivesse ali, essa
+pessoa teria acesso ao CRM inteiro da Conhecer. Por isso existe um intermediário
+que guarda a chave do lado do servidor.
 
-**Por que `mode: 'no-cors'` e `Content-Type: text/plain`**
+O intermediário é o próprio **Apps Script**, não o N8N. Ele roda nos servidores
+do Google, guarda a chave nas Propriedades do Script e chama o CRM com
+`UrlFetchApp`. Uma ferramenta a menos, custo zero, e é a mesma que a Conhecer já
+opera no site dela.
+
+A planilha continua sendo gravada mesmo quando o CRM aceita o lead. É de
+propósito: se o CRM cair, o lead não se perde. A coluna **Status CRM** registra
+se o encaminhamento deu certo, então dá para auditar lead a lead.
+
+**Exceção:** se o Brota Flow oferecer um endpoint público de formulário, sem
+chave, a página pode chamar direto e o Apps Script vira só a cópia de segurança.
+Vale perguntar à Brota se existe.
+
+**O que falta para ligar o CRM:** a documentação da rota de entrada de leads do
+Brota Flow (URL, formato do corpo, como autentica). O `enviarParaCRM` em
+`apps-script.js` já está escrito, com um corpo genérico marcado `[AJUSTAR]`.
+A chave **nunca** vai no código: vai em Propriedades do Script, em
+`BROTA_FLOW_URL` e `BROTA_FLOW_TOKEN`.
+
+**Por que `mode: 'no-cors'` e `Content-Type: text/plain` no `script.js`**
 
 O navegador tem uma regra de segurança, o CORS. Um POST com
 `Content-Type: application/json` para outro domínio dispara antes um pedido de
@@ -140,11 +163,12 @@ simples e manda direto. O corpo continua sendo JSON, e o `doPost` faz
 
 **O preço:** `no-cors` devolve resposta opaca. A página não consegue saber se o
 destino aceitou, então o envio é "dispara e segue" e a confirmação aparece de
-qualquer jeito. Se o Apps Script quebrar, o lead some em silêncio. **Confira a
-planilha periodicamente** e refaça o teste abaixo depois de qualquer mudança.
+qualquer jeito. Se o Apps Script quebrar, o lead some em silêncio.
 
 **Teste obrigatório depois de configurar:** abra a página, preencha com o nome
-"TESTE" e envie. A linha tem que aparecer na planilha em segundos.
+"TESTE" e envie. A linha tem que aparecer na planilha em segundos, e a coluna
+Status CRM mostra se o encaminhamento funcionou. Para testar só o CRM, sem
+formulário, rode a função `testarCRM` pelo editor do Apps Script.
 
 ## Rastreamento
 
