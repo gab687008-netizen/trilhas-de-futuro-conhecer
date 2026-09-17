@@ -10,25 +10,27 @@ direto no navegador pra testar.
 
 ## Decisões já tomadas (não precisa perguntar de novo)
 
-- **Identidade visual**: azul oficial da Conhecer, o mesmo do site deles
-  (`unifecaf-conhecer/tecnico/css/tema.css`, `--cor: #0a3dae`). O roxo do print
-  inicial foi descartado, já que nenhum commit do site da Conhecer tem roxo.
-  - Paleta (em `style.css`, `:root`, num bloco único):
+- **Identidade visual**: colaboração de duas marcas.
+  - **Conhecer** é a base: azul `#0A3DAE` e família, estrutura, texto, fundos.
+  - **Trilhas de Futuro** é a ação: amarelo `#FCB815` nos CTAs, selos e destaques,
+    com rosa, ciano e laranja como acentos pontuais. Amostrados por pixel do
+    material oficial do programa.
+  - O Gabriel confirmou que a Conhecer tem autorização para usar a marca do
+    Trilhas de Futuro.
+  - Paleta (em `style.css`, `:root`):
     | token | hex | uso |
     |---|---|---|
-    | `--marca-900` | `#041C57` | início do gradiente, rodapé |
-    | `--marca-800` | `#072D85` | linha de acento dos títulos de seção |
-    | `--marca-700` | `#0A3DAE` | **cor de ação**: botões, links, ícones |
-    | `--marca-600` | `#2A63E0` | fim do gradiente |
-    | `--acento` | `#9FBCFF` | acento de título sobre fundo escuro |
-    | `--logo-azul` / `--logo-navy` / `--logo-cinza` | `#1988E2` / `#01335D` / `#838A8E` | cores do arquivo da logo |
-  - Logos em `assets/`:
-    - `logo-conhecer-oficial.webp`: lockup horizontal colorido, usado no header.
-      É o arquivo do próprio site da Conhecer.
-    - `logo-conhecer-oficial-branco.png`: mesma logo em branco, para o rodapé azul.
-    - `logo-conhecer-azul-transparente.png`: lockup vertical, usado só como favicon.
-    - `logo-conhecer-fundo-azul.png`: arquivo original que a Brota enviou. Não é
-      usado na página; mantido como fonte.
+    | `--azul-900` | `#041C57` | gradiente do hero, seção de depoimentos |
+    | `--azul-700` | `#0A3DAE` | azul de marca da Conhecer |
+    | `--amarelo` | `#FCB815` | **cor de ação**: botões, selos, números dos passos |
+    | `--rosa` | `#DB5C93` | acento |
+    | `--ciano` | `#23B2D0` | acento |
+    | `--laranja` | `#F48222` | acento |
+    | `--grafite` | `#343838` | cor do wordmark do Trilhas |
+  - Logos: `logo-conhecer-oficial.webp` e `logo-trilhas.png`, mais as versões
+    brancas de cada uma. No topo as duas aparecem lado a lado, separadas por um
+    divisor. A logo do Trilhas é quase quadrada e a da Conhecer é larga, então
+    elas têm alturas diferentes no CSS para ficarem equilibradas.
   - Fontes: **Sora** (títulos) + **Instrument Sans** (corpo), ambas Google Fonts.
     Não são mais aproximação. São as fontes que o próprio site da Conhecer usa
     (`unifecaf-conhecer/tecnico/css/tema.css`).
@@ -37,6 +39,20 @@ direto no navegador pra testar.
     de duas linhas com a segunda em azul (`.t-acento`), botões em pill, cartão branco
     sobrepondo o fim do hero, cards com raio grande e sombra suave.
 
+- **Estrutura da página** (decidida com o Gabriel): sem cabeçalho de navegação e
+  sem rodapé. Só as duas marcas no topo. A ordem é hero com vídeo e formulário,
+  faixa de provas, por que a Conhecer, estrutura em fotos, áreas de formação,
+  depoimentos em vídeo, passo a passo e FAQ. Em telas pequenas aparece uma barra
+  fixa de ação no rodapé da tela.
+- **O aviso de uso de dados saiu do rodapé** e foi para o pé do formulário, que é
+  onde ele tem efeito. Não pode ser removido: é LGPD, não decoração.
+- **Depoimentos são vídeos reais** de alunos, os mesmos do site da Conhecer
+  (IDs do YouTube em `script.js`, `CONFIG.DEPOIMENTOS_YOUTUBE`). A capa só vira
+  player quando a pessoa clica, para não entregar cookie de terceiro sem
+  interação. Nenhum depoimento escrito foi inventado, e não deve ser.
+- **Áreas em vez de cursos**: a página mostra as quatro áreas de formação, não uma
+  lista de cursos. A oferta do Trilhas de Futuro é definida pelo edital de cada
+  edição e não é a mesma do catálogo técnico pago da Conhecer.
 - **Página pronta agora, publicação depois**: o texto já assume que o edital "abre em
   breve". A página funciona tanto no modo "lista de espera" quanto no modo "inscrições
   abertas" (o `script.js` decide sozinho com base em `CONFIG.URL_INSCRICAO_OFICIAL`
@@ -69,8 +85,9 @@ Tudo marcado com `[PREENCHER]` no código, mais:
       conforme o edital oficial. **Não publicar um valor sem confirmar no edital**.
 - [ ] **`index.html` → FAQ**: pré-requisitos reais (ensino médio concluído? idade
       mínima?) conforme o edital.
-- [ ] **`index.html` → vídeo do passo a passo**: gravar e substituir o placeholder
-      (`.video-placeholder`) por um `<iframe>` de verdade.
+- [ ] **Vídeo de apresentação**: gravar e trocar o bloco `.video-espera` no
+      `index.html` por um `<iframe>` do YouTube. A instrução exata está no
+      comentário ao lado. Recomendado 60 a 90 segundos, horizontal.
 - [ ] **Domínio**: publicar em domínio/hospedagem da própria Conhecer (decidido
       anteriormente). A proposta comercial sugeriu `grupoconhecer.com.br/trilhas-de-
       futuro`, mas isso ainda não está confirmado/registrado.

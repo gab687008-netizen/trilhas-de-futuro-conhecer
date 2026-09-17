@@ -26,8 +26,41 @@ const CONFIG = {
   // É fixo com WhatsApp, o mesmo que o site deles usa nos links wa.me.
   WHATSAPP_NUMERO: '553132229330',
   URL_INSCRICAO_OFICIAL: '',    // [PREENCHER] quando o edital abrir
-  MENSAGEM_WHATSAPP_PADRAO: 'Olá! Vim pela página do Trilhas de Futuro e queria ajuda com a inscrição.'
+  MENSAGEM_WHATSAPP_PADRAO: 'Olá! Vim pela página do Trilhas de Futuro e queria ajuda com a inscrição.',
+
+  // Depoimentos em vídeo de alunos, os mesmos que a Conhecer usa no site dela
+  // (unifecaf-conhecer/tecnico/js/cursos-ui.js). São vídeos reais: nenhum
+  // depoimento desta página é escrito por nós.
+  DEPOIMENTOS_YOUTUBE: ['NqhLLb2UfaM', 'OGjDdv7uhBY', 'X39J3C-ZSAY', 'j_aSTsi5jwA']
 };
+
+/* ---------- depoimentos em vídeo ----------
+   Só carrega a capa. O iframe do YouTube entra quando a pessoa clica, para
+   não pesar o carregamento nem entregar cookie de terceiro sem interação. */
+function montaDepoimentos(){
+  const alvo = document.getElementById('depoimentos');
+  if(!alvo || !CONFIG.DEPOIMENTOS_YOUTUBE.length) return;
+
+  alvo.innerHTML = CONFIG.DEPOIMENTOS_YOUTUBE.map((id, i) => `
+    <button type="button" class="depo" data-youtube="${id}" aria-label="Assistir ao depoimento ${i + 1} de aluno da Conhecer">
+      <img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="" loading="lazy">
+      <span class="play-mini" aria-hidden="true"></span>
+    </button>`).join('');
+
+  alvo.addEventListener('click', (e) => {
+    const botao = e.target.closest('button.depo[data-youtube]');
+    if(!botao) return;
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(botao.dataset.youtube)}?autoplay=1&rel=0`;
+    iframe.title = botao.getAttribute('aria-label') || 'Depoimento';
+    iframe.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen';
+    iframe.allowFullscreen = true;
+    const caixa = document.createElement('div');
+    caixa.className = botao.className;
+    caixa.appendChild(iframe);
+    botao.replaceWith(caixa);
+  });
+}
 
 /* ---------- captura de UTM / origem (QR Code, mídias offline) ---------- */
 function capturaOrigem(){
@@ -167,10 +200,14 @@ function preencheBadgeStatus(){
   badge.textContent = CONFIG.URL_INSCRICAO_OFICIAL
     ? 'Inscrições abertas'
     : 'Inscrições abrem em breve';
+  document.title = CONFIG.URL_INSCRICAO_OFICIAL
+    ? 'Inscrições abertas | Curso técnico gratuito na Conhecer'
+    : document.title;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   aplicaLinksWhatsapp();
   configuraFormulario();
   preencheBadgeStatus();
+  montaDepoimentos();
 });
