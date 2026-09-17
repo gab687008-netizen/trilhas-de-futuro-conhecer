@@ -38,10 +38,13 @@ direto no navegador pra testar.
     "Escola Técnica" num branco suave.
     O script que gera esse arquivo separa símbolo e texto pelo vão real entre
     eles, nas colunas 120 a 165 do arquivo original.
-  - Arquivos de logo disponíveis: `logo-conhecer-oficial.webp` (original, para
-    fundo claro), `logo-conhecer-escuro.png` (para o hero),
-    `logo-conhecer-oficial-branco.png`, `logo-trilhas.png`,
-    `logo-trilhas-branco.png` e `logo-trilhas-amarelo.png`.
+  - Arquivos de logo. **Em uso na página**: `logo-conhecer-escuro.png` (hero) e
+    `logo-trilhas-branco.png` (hero). **Mantidos de propósito, fora da página**:
+    `logo-conhecer-oficial.webp` e `logo-trilhas.png` são os originais e as
+    fontes de onde as versões acima foram geradas, então apagar impede
+    regerar; `logo-conhecer-oficial-branco.png` é uma variante legítima para
+    outros materiais; `logo-conhecer-fundo-azul.png` é o arquivo original que
+    a Brota enviou e não foi gerado aqui.
   - Fontes: **Sora** (títulos) + **Instrument Sans** (corpo), ambas Google Fonts.
     Não são mais aproximação. São as fontes que o próprio site da Conhecer usa
     (`unifecaf-conhecer/tecnico/css/tema.css`).

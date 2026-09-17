@@ -83,8 +83,6 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
 /* CTA principal: o amarelo do Trilhas sobre o azul da Conhecer */
 .btn-acao{ background: var(--amarelo); color: var(--azul-900); }
 .btn-acao:hover{ background: var(--amarelo-escuro); transform: translateY(-2px); box-shadow: 0 14px 30px rgba(252,184,21,.42); }
-.btn-contorno-claro{ background: transparent; color: #fff; border-color: rgba(255,255,255,.5); }
-.btn-contorno-claro:hover{ background: rgba(255,255,255,.12); border-color: #fff; }
 .btn-full{ display: flex; width: 100%; }
 
 /* ============================================================
