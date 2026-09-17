@@ -27,10 +27,18 @@ direto no navegador pra testar.
     | `--ciano` | `#23B2D0` | acento |
     | `--laranja` | `#F48222` | acento |
     | `--grafite` | `#343838` | cor do wordmark do Trilhas |
-  - Logos: `logo-conhecer-oficial.webp` e `logo-trilhas.png`, mais as versões
-    brancas de cada uma. No topo as duas aparecem lado a lado, separadas por um
-    divisor. A logo do Trilhas é quase quadrada e a da Conhecer é larga, então
-    elas têm alturas diferentes no CSS para ficarem equilibradas.
+  - **Assinatura no topo**: a Conhecer aparece em branco sobre o azul, e o
+    Trilhas de Futuro aparece **na cor original, dentro de um selo branco**,
+    com o texto "Instituição credenciada" ao lado.
+    Duas razões. Primeira: manual de marca de programa de governo costuma
+    exigir a versão original sobre fundo claro, e recolorir é justamente o que
+    proíbem. A versão em amarelo ficava mais bonita, mas destruía o acento rosa
+    do "A" e mudava a cor da marca. Segunda: o "Instituição credenciada" deixa
+    explícito que a página é da Conhecer e não do Governo, o que é verdade e
+    evita que o material pareça oficial do programa.
+    Arquivos: `logo-trilhas.png` (original), `logo-trilhas-branco.png` e
+    `logo-trilhas-amarelo.png` ficam disponíveis caso a Conhecer confirme que
+    o manual permite outra versão.
   - Fontes: **Sora** (títulos) + **Instrument Sans** (corpo), ambas Google Fonts.
     Não são mais aproximação. São as fontes que o próprio site da Conhecer usa
     (`unifecaf-conhecer/tecnico/css/tema.css`).
