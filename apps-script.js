@@ -58,6 +58,7 @@
 
 var COLUNAS = [
   'Data', 'Nome', 'WhatsApp', 'Unidade', 'Curso', 'Consentimento',
+  'Bloco',                      // "hero" ou "fechamento": de qual formulário veio
   'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'canal',
   'Página', 'Enviado em (ISO)', 'Status CRM'
 ];
@@ -78,6 +79,7 @@ function doPost(e) {
       d.unidade || '',
       d.curso || 'Não informado',
       d.consentimento ? 'Sim' : 'Não',
+      d.bloco || '',
       d.utm_source || '',
       d.utm_medium || '',
       d.utm_campaign || '',
@@ -118,6 +120,7 @@ function enviarParaCRM(d) {
     origem: 'Landing Page Trilhas de Futuro',
     unidade: d.unidade,
     curso: d.curso || null,
+    bloco: d.bloco || null,
     utm_source: d.utm_source || null,
     utm_medium: d.utm_medium || null,
     utm_campaign: d.utm_campaign || null,
