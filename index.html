@@ -79,7 +79,7 @@
     <div class="hero-topo">
       <span class="selo-programa" id="badgeStatus">Inscrições abrem em breve</span>
       <h1>Curso técnico <span class="destaque">100% gratuito</span> pelo Trilhas de Futuro</h1>
-      <p class="hero-sub">Programa do Governo de Minas Gerais na Conhecer Escola Técnica. Deixe seu contato aqui antes de ir para o site oficial. A gente te acompanha em cada passo da inscrição.</p>
+      <p class="hero-sub">Programa do Governo de Minas Gerais na Conhecer Escola Técnica. Cadastre-se e a nossa equipe te acompanha na inscrição do começo ao fim, pra você não perder a vaga por detalhe.</p>
     </div>
 
     <div class="hero-grid">
@@ -99,27 +99,31 @@
         <p class="video-legenda">Em 1 minuto: o que é o programa, quem pode participar e como a Conhecer te ajuda.</p>
       </div>
 
-      <!-- ============ FORMULÁRIO ============ -->
-      <div class="form-card" id="form">
+      <!-- ============ FORMULÁRIO ============
+           Estrutura sem IDs de propósito: a página tem DOIS blocos destes,
+           este e o de fechamento depois do FAQ. IDs repetidos quebrariam o
+           JS, que enxergaria só o primeiro. O script varre por
+           [data-conversao] e trata cada um isoladamente. -->
+      <div class="form-card" data-conversao id="form">
 
-        <div id="formEstado1">
-          <h2>Garanta sua vaga</h2>
-          <p class="form-lead">Preenche rapidinho. Depois disso você já segue pra inscrição oficial.</p>
+        <div data-estado="inicial">
+          <h2>Quero ser avisado</h2>
+          <p class="form-lead">Preenche rapidinho. A gente te avisa assim que abrir e te acompanha na inscrição.</p>
 
-          <form id="formLead" novalidate>
+          <form novalidate>
             <label class="campo">
               <span>Nome completo</span>
-              <input type="text" name="nome" id="campoNome" required autocomplete="name">
+              <input type="text" name="nome" required autocomplete="name">
             </label>
 
             <label class="campo">
               <span>WhatsApp</span>
-              <input type="tel" name="whatsapp" id="campoWhatsapp" required autocomplete="tel" placeholder="(31) 9 9999-9999">
+              <input type="tel" name="whatsapp" required autocomplete="tel" placeholder="(31) 9 9999-9999">
             </label>
 
             <label class="campo">
               <span>Unidade de interesse</span>
-              <select name="unidade" id="campoUnidade" required>
+              <select name="unidade" required>
                 <option value="" disabled selected>Selecione</option>
                 <option value="Belo Horizonte">Belo Horizonte</option>
                 <option value="Ribeirão das Neves">Ribeirão das Neves</option>
@@ -131,25 +135,25 @@
               <span>Curso de interesse</span>
               <!-- Texto livre: a oferta do Trilhas sai no edital e não é a mesma
                    do catálogo técnico pago da Conhecer. -->
-              <input type="text" name="curso" id="campoCurso" autocomplete="off" placeholder="Se já souber qual">
+              <input type="text" name="curso" autocomplete="off" placeholder="Se já souber qual">
             </label>
 
             <label class="campo campo-check">
-              <input type="checkbox" name="consentimento" id="campoConsentimento" required>
+              <input type="checkbox" name="consentimento" required>
               <span>Concordo em ser contatado por WhatsApp sobre esta inscrição.</span>
             </label>
 
-            <button type="submit" class="btn btn-acao btn-full" id="botaoEnviar">Quero me cadastrar</button>
-            <p class="form-erro" id="formErro" hidden></p>
+            <button type="submit" class="btn btn-acao btn-full">Quero me cadastrar</button>
+            <p class="form-erro" hidden></p>
           </form>
 
           <p class="form-lgpd">Seus dados são usados apenas para te ajudar nesta inscrição e não são compartilhados com terceiros.</p>
         </div>
 
-        <div id="formEstado2" hidden>
+        <div data-estado="confirmado" hidden>
           <h2>Cadastro recebido!</h2>
           <p class="form-lead" style="text-align:center">Agora falta um passo: finalizar a inscrição oficial no site do Governo de Minas Gerais.</p>
-          <a href="#" id="linkInscricaoOficial" target="_blank" rel="noopener" class="btn btn-acao btn-full">Continuar inscrição oficial</a>
+          <a href="#" data-link-oficial target="_blank" rel="noopener" class="btn btn-acao btn-full">Continuar inscrição oficial</a>
           <p class="form-aviso">Na hora de escolher a instituição, procure por <strong>Conhecer Escola Técnica</strong> e a unidade que você selecionou.</p>
           <p class="form-aviso">Travou em alguma parte? Chama a gente no WhatsApp.</p>
         </div>
@@ -168,6 +172,52 @@
     <div><strong>3</strong><span>Unidades na região de BH</span></div>
   </div>
 </div>
+
+
+
+
+
+
+
+
+
+<!-- ============ ÁREAS ============ -->
+<section class="areas">
+  <div class="wrap">
+    <span class="eyebrow">Áreas de formação</span>
+    <h2>Escolha a área que<span class="t-acento">abre as portas do seu futuro</span></h2>
+    <p class="section-intro">A Conhecer forma técnicos em quatro grandes áreas. Os cursos ofertados pelo Trilhas de Futuro saem no edital de cada edição.</p>
+
+    <div class="areas-grid">
+      <div class="area-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 13H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/></svg>
+        <h3>Saúde</h3>
+        <p>Enfermagem, Radiologia, Análises Clínicas, Cuidador de Idosos</p>
+      </div>
+      <div class="area-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="7" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><path d="M2 13h20"/></svg>
+        <h3>Gestão e Negócios</h3>
+        <p>Administração, Logística, Contabilidade, Vendas</p>
+      </div>
+      <div class="area-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3.5" width="20" height="13" rx="2"/><path d="m9.5 8-2 2.5 2 2.5"/><path d="m14.5 8 2 2.5-2 2.5"/><path d="M8 20.5h8"/><path d="M12 16.5v4"/></svg>
+        <h3>Tecnologia</h3>
+        <p>Desenvolvimento de Sistemas, Informática, Redes, Jogos Digitais</p>
+      </div>
+      <div class="area-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 18a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v2Z"/><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5"/><path d="M4 15v-3a6 6 0 0 1 6-6"/><path d="M14 6a6 6 0 0 1 6 6v3"/></svg>
+        <h3>Segurança</h3>
+        <p>Segurança do Trabalho</p>
+      </div>
+    </div>
+    <p class="dica-arrasta">Arraste para ver todas as áreas</p>
+
+    <!-- Lista de áreas e exemplos vinda do catálogo da Conhecer. A oferta do
+         Trilhas de Futuro é definida pelo edital de cada edição e pode ser
+         diferente. Trocar por cursos reais quando o edital sair. -->
+    <p class="areas-nota">Os cursos disponíveis variam por unidade e por edição do programa. Cadastre-se e a gente te avisa assim que a lista da sua unidade sair.</p>
+  </div>
+</section>
 
 <!-- ============ POR QUE A CONHECER ============ -->
 <section class="porque">
@@ -310,44 +360,6 @@
   </div>
 </section>
 
-<!-- ============ ÁREAS ============ -->
-<section class="areas">
-  <div class="wrap">
-    <span class="eyebrow">Áreas de formação</span>
-    <h2>Escolha a área que<span class="t-acento">abre as portas do seu futuro</span></h2>
-    <p class="section-intro">A Conhecer forma técnicos em quatro grandes áreas. Os cursos ofertados pelo Trilhas de Futuro saem no edital de cada edição.</p>
-
-    <div class="areas-grid">
-      <div class="area-card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 13H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/></svg>
-        <h3>Saúde</h3>
-        <p>Enfermagem, Radiologia, Análises Clínicas, Cuidador de Idosos</p>
-      </div>
-      <div class="area-card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="7" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><path d="M2 13h20"/></svg>
-        <h3>Gestão e Negócios</h3>
-        <p>Administração, Logística, Contabilidade, Vendas</p>
-      </div>
-      <div class="area-card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3.5" width="20" height="13" rx="2"/><path d="m9.5 8-2 2.5 2 2.5"/><path d="m14.5 8 2 2.5-2 2.5"/><path d="M8 20.5h8"/><path d="M12 16.5v4"/></svg>
-        <h3>Tecnologia</h3>
-        <p>Desenvolvimento de Sistemas, Informática, Redes, Jogos Digitais</p>
-      </div>
-      <div class="area-card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 18a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v2Z"/><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5"/><path d="M4 15v-3a6 6 0 0 1 6-6"/><path d="M14 6a6 6 0 0 1 6 6v3"/></svg>
-        <h3>Segurança</h3>
-        <p>Segurança do Trabalho</p>
-      </div>
-    </div>
-    <p class="dica-arrasta">Arraste para ver todas as áreas</p>
-
-    <!-- Lista de áreas e exemplos vinda do catálogo da Conhecer. A oferta do
-         Trilhas de Futuro é definida pelo edital de cada edição e pode ser
-         diferente. Trocar por cursos reais quando o edital sair. -->
-    <p class="areas-nota">Os cursos disponíveis variam por unidade e por edição do programa. Cadastre-se e a gente te avisa assim que a lista da sua unidade sair.</p>
-  </div>
-</section>
-
 <!-- ============ DEPOIMENTOS ============ -->
 <section class="depoimentos">
   <div class="wrap">
@@ -412,11 +424,77 @@
   </div>
 </section>
 
+<!-- ============ FECHAMENTO ============
+     Segundo ponto de conversão. Sem ele a pessoa lê a página inteira,
+     se convence, e não tem onde agir: a barra fixa só existe no mobile
+     e joga de volta pro topo. É o mesmo bloco do hero, com outro título. -->
+<section class="fechamento">
+  <div class="wrap">
+    <span class="eyebrow">Última chamada</span>
+    <h2>Sua vaga no Trilhas de Futuro<span class="t-acento">começa com um cadastro</span></h2>
+    <p class="section-intro">Leva menos de um minuto. Depois disso a Conhecer te acompanha em cada etapa da inscrição oficial.</p>
+    <div class="form-card" data-conversao>
+
+      <div data-estado="inicial">
+        <!-- sem h2 aqui: a seção já tem o título logo acima, e dois títulos
+             empilhados só empurram o formulário para baixo -->
+        <p class="form-lead">Deixa teu contato que a gente te avisa quando abrir e te acompanha até a inscrição estar feita.</p>
+
+        <form novalidate>
+          <label class="campo">
+            <span>Nome completo</span>
+            <input type="text" name="nome" required autocomplete="name">
+          </label>
+
+          <label class="campo">
+            <span>WhatsApp</span>
+            <input type="tel" name="whatsapp" required autocomplete="tel" placeholder="(31) 9 9999-9999">
+          </label>
+
+          <label class="campo">
+            <span>Unidade de interesse</span>
+            <select name="unidade" required>
+              <option value="" disabled selected>Selecione</option>
+              <option value="Belo Horizonte">Belo Horizonte</option>
+              <option value="Ribeirão das Neves">Ribeirão das Neves</option>
+              <option value="Santa Luzia">Santa Luzia</option>
+            </select>
+          </label>
+
+          <label class="campo">
+            <span>Curso de interesse</span>
+            <!-- Texto livre: a oferta do Trilhas sai no edital e não é a mesma
+                 do catálogo técnico pago da Conhecer. -->
+            <input type="text" name="curso" autocomplete="off" placeholder="Se já souber qual">
+          </label>
+
+          <label class="campo campo-check">
+            <input type="checkbox" name="consentimento" required>
+            <span>Concordo em ser contatado por WhatsApp sobre esta inscrição.</span>
+          </label>
+
+          <button type="submit" class="btn btn-acao btn-full">Quero me cadastrar</button>
+          <p class="form-erro" hidden></p>
+        </form>
+
+        <p class="form-lgpd">Seus dados são usados apenas para te ajudar nesta inscrição e não são compartilhados com terceiros.</p>
+      </div>
+
+      <div data-estado="confirmado" hidden>
+        <h2>Cadastro recebido!</h2>
+        <p class="form-lead" style="text-align:center">Agora falta um passo: finalizar a inscrição oficial no site do Governo de Minas Gerais.</p>
+        <a href="#" data-link-oficial target="_blank" rel="noopener" class="btn btn-acao btn-full">Continuar inscrição oficial</a>
+        <p class="form-aviso">Na hora de escolher a instituição, procure por <strong>Conhecer Escola Técnica</strong> e a unidade que você selecionou.</p>
+        <p class="form-aviso">Travou em alguma parte? Chama a gente no WhatsApp.</p>
+      </div>
+  </div>
+</section>
+
 <p class="assinatura"><a href="https://brotaweb.com" target="_blank" rel="noopener">Desenvolvido por Brota Web</a></p>
 
 <!-- ============ BARRA FIXA (mobile) ============ -->
 <div class="barra-fixa">
-  <a href="#form" class="btn btn-acao">Quero minha vaga</a>
+  <a href="#form" class="btn btn-acao">Quero me cadastrar</a>
 </div>
 
 <!-- ============ WHATSAPP ============ -->

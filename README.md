@@ -79,6 +79,25 @@ direto no navegador pra testar.
   A dica "Arraste para ver todos" fica escondida no desktop, e a regra que a
   esconde vem ANTES do media query: em CSS, com a mesma especificidade, quem
   vem depois vence.
+- **A página tem DOIS blocos de conversão**, o do hero e o de fechamento,
+  depois do FAQ. Por isso nenhum campo de formulário tem `id`: IDs repetidos
+  fariam o JS enxergar só o primeiro e o segundo bloco ficaria morto. O
+  `script.js` varre por `[data-conversao]` e trata cada bloco isoladamente.
+  Cada lead carrega o campo `bloco`, com "hero" ou "fechamento", que vai para
+  a planilha, para o CRM e para o evento do GA4. Dá para medir onde a página
+  converte.
+- **Ordem das seções, pensada como funil**: hero, áreas, por que a Conhecer,
+  parceiros, estrutura, depoimentos, passo a passo, FAQ, fechamento.
+  As áreas vêm cedo porque a segunda pergunta de quem vê "curso técnico
+  gratuito" é "qual curso?". Depois vêm as provas em escala (parceiros,
+  estrutura, depoimentos), depois a mecânica, depois as objeções, e só então
+  o pedido de ação.
+- **A página não promete vaga.** O cadastro não garante vaga nenhuma: ela
+  depende da inscrição oficial no site do Governo. Por isso o formulário diz
+  "Quero ser avisado" e a barra fixa diz "Quero me cadastrar". Não voltar para
+  "garanta sua vaga": é promessa que a página não tem como cumprir, e que
+  gera frustração e reclamação quando a pessoa descobre que precisa se
+  inscrever em outro lugar.
 - **Estrutura da página** (decidida com o Gabriel): sem cabeçalho de navegação e
   sem rodapé. Só as duas marcas no topo. A ordem é hero com vídeo e formulário,
   faixa de provas, por que a Conhecer, estrutura em fotos, áreas de formação,

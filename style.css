@@ -193,7 +193,7 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
   font-size: 11.5px; color: var(--texto-suave); text-align: center;
   margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--borda); line-height: 1.5;
 }
-#formEstado2 h2{ color: var(--sucesso); text-align: center; font-size: 23px; }
+[data-estado="confirmado"] h2{ color: var(--sucesso); text-align: center; font-size: 23px; }
 
 /* ============================================================
    FAIXA DE PROVA
@@ -487,3 +487,24 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
   .parceiros-trilho{ animation: none; }
   .parceiros-janela{ overflow-x: auto; }
 }
+
+/* ============================================================
+   FECHAMENTO
+   Segundo ponto de conversão, depois do FAQ. O card branco reaproveita
+   .form-card, então só falta o fundo e o espaçamento da seção.
+   ============================================================ */
+.fechamento{
+  position: relative; overflow: hidden;
+  background: linear-gradient(150deg, var(--azul-900) 0%, var(--azul-800) 52%, var(--azul-700) 100%);
+  padding: clamp(52px, 6vw, 80px) 0;
+}
+.fechamento::before{
+  content: ""; position: absolute; width: 720px; height: 720px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.10); left: -260px; bottom: -340px; pointer-events: none;
+}
+.fechamento .wrap{ position: relative; z-index: 1; }
+.fechamento .eyebrow{ color: var(--amarelo); }
+.fechamento > .wrap > h2{ color: #fff; }
+.fechamento > .wrap > h2 .t-acento{ color: var(--amarelo); }
+.fechamento .section-intro{ color: rgba(255,255,255,.76); margin-bottom: 32px; }
+.fechamento .form-card{ max-width: 520px; margin: 0 auto; }

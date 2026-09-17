@@ -168,7 +168,8 @@ function eventoConversao(dados){
     window.gtag('event', 'generate_lead', {
       unidade: dados.unidade,
       curso: dados.curso || 'nao informado',
-      canal: dados.canal || ''
+      canal: dados.canal || '',
+      bloco: dados.bloco
     });
   }
   if(typeof window.fbq === 'function'){
@@ -176,13 +177,21 @@ function eventoConversao(dados){
   }
 }
 
-function mostraConfirmacao(){
-  document.getElementById('formEstado1').hidden = true;
-  const estado2 = document.getElementById('formEstado2');
-  estado2.hidden = false;
-  estado2.scrollIntoView({ behavior: 'smooth', block: 'start' });
+/* ---------- formulários ----------
+   A página tem DOIS blocos de conversão: um no hero e um no fechamento,
+   depois do FAQ. Por isso nada aqui usa getElementById: IDs teriam que ser
+   únicos e o segundo bloco ficaria morto. Cada bloco é encontrado por
+   [data-conversao] e tratado isoladamente, com querySelector dentro dele. */
 
-  const linkOficial = document.getElementById('linkInscricaoOficial');
+function mostraConfirmacao(bloco){
+  bloco.querySelector('[data-estado="inicial"]').hidden = true;
+  const confirmado = bloco.querySelector('[data-estado="confirmado"]');
+  confirmado.hidden = false;
+  confirmado.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  const linkOficial = confirmado.querySelector('[data-link-oficial]');
+  if(!linkOficial) return;
+
   if(CONFIG.URL_INSCRICAO_OFICIAL){
     linkOficial.href = CONFIG.URL_INSCRICAO_OFICIAL;
   } else {
@@ -194,24 +203,24 @@ function mostraConfirmacao(){
   }
 }
 
-function configuraFormulario(){
-  const form = document.getElementById('formLead');
+function configuraFormulario(bloco, origem){
+  const form = bloco.querySelector('form');
   if(!form) return;
 
-  const origem = capturaOrigem();
-  const erroEl = document.getElementById('formErro');
-  const botao = document.getElementById('botaoEnviar');
+  const erroEl = bloco.querySelector('.form-erro');
+  const botao  = form.querySelector('button[type="submit"]');
+  const rotuloBotao = botao ? botao.textContent : 'Quero me cadastrar';
+  const campo = (nome) => form.querySelector('[name="' + nome + '"]');
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     erroEl.hidden = true;
 
-    const nome = document.getElementById('campoNome').value.trim();
-    const whatsappBruto = document.getElementById('campoWhatsapp').value.trim();
-    const whatsapp = limpaTelefone(whatsappBruto);
-    const unidade = document.getElementById('campoUnidade').value;
-    const curso = document.getElementById('campoCurso').value.trim();
-    const consentimento = document.getElementById('campoConsentimento').checked;
+    const nome     = campo('nome').value.trim();
+    const whatsapp = limpaTelefone(campo('whatsapp').value.trim());
+    const unidade  = campo('unidade').value;
+    const curso    = campo('curso').value.trim();
+    const consentimento = campo('consentimento').checked;
 
     if(!nome || whatsapp.length < 10 || !unidade || !consentimento){
       erroEl.textContent = 'Confira: nome, WhatsApp válido, unidade e a concordância acima são obrigatórios.';
@@ -229,6 +238,8 @@ function configuraFormulario(){
       unidade,
       curso: curso || null,
       consentimento: true,
+      // de qual dos dois blocos veio, para medir onde a página converte
+      bloco: bloco.id === 'form' ? 'hero' : 'fechamento',
       ...origem,
       pagina_url: window.location.href,
       enviado_em: new Date().toISOString()
@@ -237,16 +248,21 @@ function configuraFormulario(){
     const resultado = await enviaLead(dados);
 
     botao.disabled = false;
-    botao.textContent = 'Quero me cadastrar';
+    botao.textContent = rotuloBotao;
 
     if(resultado.ok){
       eventoConversao(dados);
-      mostraConfirmacao();
+      mostraConfirmacao(bloco);
     } else {
       erroEl.textContent = 'Não conseguimos enviar agora. Tenta de novo, ou chama no WhatsApp que a gente cadastra você direto.';
       erroEl.hidden = false;
     }
   });
+}
+
+function configuraFormularios(){
+  const origem = capturaOrigem();
+  document.querySelectorAll('[data-conversao]').forEach(bloco => configuraFormulario(bloco, origem));
 }
 
 function preencheBadgeStatus(){
@@ -264,7 +280,7 @@ function preencheBadgeStatus(){
 
 document.addEventListener('DOMContentLoaded', () => {
   aplicaLinksWhatsapp();
-  configuraFormulario();
+  configuraFormularios();
   preencheBadgeStatus();
   montaDepoimentos();
 });
