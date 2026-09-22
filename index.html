@@ -99,66 +99,15 @@
         <p class="video-legenda">Em 1 minuto: o que é o programa, quem pode participar e como a Conhecer te ajuda.</p>
       </div>
 
-      <!-- ============ FORMULÁRIO ============
-           Estrutura sem IDs de propósito: a página tem DOIS blocos destes,
-           este e o de fechamento depois do FAQ. IDs repetidos quebrariam o
-           JS, que enxergaria só o primeiro. O script varre por
-           [data-conversao] e trata cada um isoladamente. -->
-      <div class="form-card" data-conversao id="form">
-
-        <div data-estado="inicial">
-          <h2>Quero ser avisado</h2>
-          <p class="form-lead">Preenche rapidinho. A gente te avisa assim que abrir e te acompanha na inscrição.</p>
-
-          <form novalidate>
-            <label class="campo">
-              <span>Nome completo</span>
-              <input type="text" name="nome" required autocomplete="name">
-            </label>
-
-            <label class="campo">
-              <span>WhatsApp</span>
-              <input type="tel" name="whatsapp" required autocomplete="tel" placeholder="(31) 9 9999-9999">
-            </label>
-
-            <label class="campo">
-              <span>Unidade de interesse</span>
-              <select name="unidade" required>
-                <option value="" disabled selected>Selecione</option>
-                <option value="Belo Horizonte">Belo Horizonte</option>
-                <option value="Ribeirão das Neves">Ribeirão das Neves</option>
-                <option value="Santa Luzia">Santa Luzia</option>
-              </select>
-            </label>
-
-            <label class="campo">
-              <span>Curso de interesse</span>
-              <!-- Texto livre: a oferta do Trilhas sai no edital e não é a mesma
-                   do catálogo técnico pago da Conhecer. -->
-              <input type="text" name="curso" autocomplete="off" placeholder="Se já souber qual">
-            </label>
-
-            <label class="campo campo-check">
-              <input type="checkbox" name="consentimento" required>
-              <span>Concordo em ser contatado por WhatsApp sobre esta inscrição.</span>
-            </label>
-
-            <button type="submit" class="btn btn-acao btn-full">Quero me cadastrar</button>
-            <p class="form-erro" hidden></p>
-          </form>
-
-          <p class="form-lgpd">Seus dados são usados apenas para te ajudar nesta inscrição e não são compartilhados com terceiros.</p>
-        </div>
-
-        <div data-estado="confirmado" hidden>
-          <h2>Cadastro recebido!</h2>
-          <p class="form-lead" style="text-align:center">Agora falta um passo: finalizar a inscrição oficial no site do Governo de Minas Gerais.</p>
-          <a href="#" data-link-oficial target="_blank" rel="noopener" class="btn btn-acao btn-full">Continuar inscrição oficial</a>
-          <p class="form-aviso">Na hora de escolher a instituição, procure por <strong>Conhecer Escola Técnica</strong> e a unidade que você selecionou.</p>
-          <p class="form-aviso">Travou em alguma parte? Chama a gente no WhatsApp.</p>
-        </div>
-
+      <!-- O lead nasce na conversa do WhatsApp, não aqui. Todo CTA da página
+           abre o WhatsApp com uma mensagem já escrita, diferente por seção,
+           para o agente de IA do CRM saber de onde a pessoa veio e o que ela
+           estava olhando. Ver CONFIG.CONVERSAS em script.js. -->
+      <div class="hero-acao">
+        <a class="btn btn-acao btn-grande" data-whatsapp="hero">Falar no WhatsApp agora</a>
+        <p class="hero-acao-nota">Atendimento a qualquer hora. A gente confirma se você pode participar, qual curso tem na sua unidade e te acompanha até a inscrição estar feita.</p>
       </div>
+
     </div>
   </div>
 </section>
@@ -218,7 +167,8 @@
     <!-- Lista de áreas e exemplos vinda do catálogo da Conhecer. A oferta do
          Trilhas de Futuro é definida pelo edital de cada edição e pode ser
          diferente. Trocar por cursos reais quando o edital sair. -->
-    <p class="areas-nota">Os cursos disponíveis variam por unidade e por edição do programa. Cadastre-se e a gente te avisa assim que a lista da sua unidade sair.</p>
+    <p class="areas-nota">Os cursos disponíveis variam por unidade e por edição do programa.</p>
+    <p class="secao-acao"><a class="btn btn-acao" data-whatsapp="areas">Ver os cursos da minha unidade</a></p>
   </div>
 </section>
 
@@ -341,6 +291,7 @@
         <img src="assets/parceiros/parceiro-23.webp" alt="" loading="lazy" width="120" height="50">
       </div>
     </div>
+    <p class="secao-acao"><a class="btn btn-acao" data-whatsapp="parceiros">Saber do estágio garantido</a></p>
   </div>
 </section>
 
@@ -374,20 +325,26 @@
   </div>
 </section>
 
-<!-- ============ PASSO A PASSO ============ -->
+<!-- ============ PASSO A PASSO ============
+     Reescrito para o fluxo novo: o lead nasce no WhatsApp, não num
+     formulário. O passo 4 existe de propósito: é onde as pessoas somem, ao
+     sair para o site do Governo. Deixar combinado ANTES que ela volta e
+     manda o print é o que fecha o ciclo. -->
 <section class="passos">
   <div class="wrap">
     <span class="eyebrow">Passo a passo</span>
-    <h2>Como funciona<span class="t-acento">a sua inscrição</span></h2>
-    <p class="section-intro">A inscrição oficial é no site do Governo de Minas. Preenchendo o formulário aqui primeiro, alguém da nossa equipe te acompanha em cada etapa.</p>
+    <h2>Da primeira mensagem<span class="t-acento">até a vaga garantida</span></h2>
+    <p class="section-intro">A inscrição oficial é no site do Governo de Minas. Você não faz isso sozinho: a gente acompanha do começo ao fim.</p>
 
     <ol class="passos-lista">
-      <li><strong>Cadastre seu contato aqui.</strong> Assim já ficamos de prontidão pra te ajudar.</li>
-      <li><strong>Acesse o site oficial do Trilhas de Futuro.</strong> O link aparece assim que você preencher o formulário.</li>
-      <li><strong>Na hora de escolher a instituição, procure por "Conhecer Escola Técnica"</strong> e selecione a unidade mais perto de você.</li>
-      <li><strong>Escolha o curso</strong> e confirme seus dados pessoais.</li>
-      <li><strong>Pronto.</strong> Se travar em qualquer parte, chama a gente no WhatsApp.</li>
+      <li><strong>Você manda mensagem no WhatsApp.</strong> Pode ser agora, a qualquer hora do dia.</li>
+      <li><strong>A gente confere se você pode participar</strong> e quais cursos têm na unidade mais perto de você.</li>
+      <li><strong>Você recebe o link oficial e o passo a passo</strong> do que preencher, campo por campo.</li>
+      <li><strong>Faz a inscrição no site do Governo e manda o print pra gente.</strong> A gente confere se ficou tudo certo, porque erro de preenchimento custa a vaga.</li>
+      <li><strong>Depois disso é só aguardar o resultado.</strong> A gente te avisa de cada etapa.</li>
     </ol>
+
+    <p class="secao-acao"><a class="btn btn-acao" data-whatsapp="passos">Começar agora</a></p>
   </div>
 </section>
 
@@ -431,74 +388,21 @@
      Segundo ponto de conversão. Sem ele a pessoa lê a página inteira,
      se convence, e não tem onde agir: a barra fixa só existe no mobile
      e joga de volta pro topo. É o mesmo bloco do hero, com outro título. -->
+<!-- ============ FECHAMENTO ============ -->
 <section class="fechamento">
   <div class="wrap">
     <span class="eyebrow">Última chamada</span>
-    <h2>Sua vaga no Trilhas de Futuro<span class="t-acento">começa com um cadastro</span></h2>
-    <p class="section-intro">Leva menos de um minuto. Depois disso a Conhecer te acompanha em cada etapa da inscrição oficial.</p>
-    <div class="form-card" data-conversao>
-
-      <div data-estado="inicial">
-        <!-- sem h2 aqui: a seção já tem o título logo acima, e dois títulos
-             empilhados só empurram o formulário para baixo -->
-        <p class="form-lead">Deixa teu contato que a gente te avisa quando abrir e te acompanha até a inscrição estar feita.</p>
-
-        <form novalidate>
-          <label class="campo">
-            <span>Nome completo</span>
-            <input type="text" name="nome" required autocomplete="name">
-          </label>
-
-          <label class="campo">
-            <span>WhatsApp</span>
-            <input type="tel" name="whatsapp" required autocomplete="tel" placeholder="(31) 9 9999-9999">
-          </label>
-
-          <label class="campo">
-            <span>Unidade de interesse</span>
-            <select name="unidade" required>
-              <option value="" disabled selected>Selecione</option>
-              <option value="Belo Horizonte">Belo Horizonte</option>
-              <option value="Ribeirão das Neves">Ribeirão das Neves</option>
-              <option value="Santa Luzia">Santa Luzia</option>
-            </select>
-          </label>
-
-          <label class="campo">
-            <span>Curso de interesse</span>
-            <!-- Texto livre: a oferta do Trilhas sai no edital e não é a mesma
-                 do catálogo técnico pago da Conhecer. -->
-            <input type="text" name="curso" autocomplete="off" placeholder="Se já souber qual">
-          </label>
-
-          <label class="campo campo-check">
-            <input type="checkbox" name="consentimento" required>
-            <span>Concordo em ser contatado por WhatsApp sobre esta inscrição.</span>
-          </label>
-
-          <button type="submit" class="btn btn-acao btn-full">Quero me cadastrar</button>
-          <p class="form-erro" hidden></p>
-        </form>
-
-        <p class="form-lgpd">Seus dados são usados apenas para te ajudar nesta inscrição e não são compartilhados com terceiros.</p>
-      </div>
-
-      <div data-estado="confirmado" hidden>
-        <h2>Cadastro recebido!</h2>
-        <p class="form-lead" style="text-align:center">Agora falta um passo: finalizar a inscrição oficial no site do Governo de Minas Gerais.</p>
-        <a href="#" data-link-oficial target="_blank" rel="noopener" class="btn btn-acao btn-full">Continuar inscrição oficial</a>
-        <p class="form-aviso">Na hora de escolher a instituição, procure por <strong>Conhecer Escola Técnica</strong> e a unidade que você selecionou.</p>
-        <p class="form-aviso">Travou em alguma parte? Chama a gente no WhatsApp.</p>
-      </div>
-
-    </div>
+    <h2>Sua vaga no Trilhas de Futuro<span class="t-acento">começa com uma conversa</span></h2>
+    <p class="section-intro">Manda mensagem que a gente confirma tudo com você e te acompanha até a inscrição estar feita no site do Governo.</p>
+    <a class="btn btn-acao btn-grande" data-whatsapp="fechamento">Quero minha vaga</a>
+    <p class="fechamento-nota">Resposta na hora, todos os dias.</p>
   </div>
 </section>
 
 <p class="assinatura"><a href="https://brotaweb.com" target="_blank" rel="noopener">Desenvolvido por Brota Web</a></p>
 
 <!-- ============ WHATSAPP ============ -->
-<a href="#" id="botaoWhatsapp" class="whatsapp-flutuante" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
+<a href="#" id="botaoWhatsapp" data-whatsapp="flutuante" class="whatsapp-flutuante" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
   <svg width="27" height="27" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347M12.05 21.785h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884M20.463 3.488A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
 </a>
 
