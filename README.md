@@ -82,6 +82,23 @@ direto no navegador pra testar.
   A dica "Arraste para ver todos" fica escondida no desktop, e a regra que a
   esconde vem ANTES do media query: em CSS, com a mesma especificidade, quem
   vem depois vence.
+- **Números da faixa de provas contam quando entram na tela.** O valor final
+  está escrito no HTML, então sem JS a pessoa vê o número certo, parado. Não
+  anima em `prefers-reduced-motion`.
+- **Os carrosséis passam sozinhos** (`data-auto-passa`, em milissegundos) e
+  **param de vez no primeiro toque, clique ou arrasto**. É de propósito: se a
+  pessoa interagiu foi porque quer ler com calma, e voltar a andar sozinho
+  atrapalharia. A esteira de parceiros segue a mesma regra.
+- **As fotos abrem ampliadas** ao clique, num visor que fecha no X, no fundo
+  ou no Esc.
+- **Sobre "bloquear download": não existe bloqueio real numa página web.**
+  Qualquer pessoa tira print, abre o código-fonte ou usa o inspetor. O que
+  está feito é tirar os caminhos fáceis: menu do botão direito, arrastar para
+  a área de trabalho e toque longo no celular. É dissuasão, não proteção. Se
+  alguma foto não puder circular de jeito nenhum, ela não pode estar numa
+  página pública.
+- **A barra fixa de ação saiu.** Ficou só o botão flutuante do WhatsApp, sem
+  fundo atrás.
 - **A página tem DOIS blocos de conversão**, o do hero e o de fechamento,
   depois do FAQ. Por isso nenhum campo de formulário tem `id`: IDs repetidos
   fariam o JS enxergar só o primeiro e o segundo bloco ficaria morto. O
