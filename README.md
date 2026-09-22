@@ -99,25 +99,18 @@ direto no navegador pra testar.
   página pública.
 - **A barra fixa de ação saiu.** Ficou só o botão flutuante do WhatsApp, sem
   fundo atrás.
-- **A página tem DOIS blocos de conversão**, o do hero e o de fechamento,
-  depois do FAQ. Por isso nenhum campo de formulário tem `id`: IDs repetidos
-  fariam o JS enxergar só o primeiro e o segundo bloco ficaria morto. O
-  `script.js` varre por `[data-conversao]` e trata cada bloco isoladamente.
-  Cada lead carrega o campo `bloco`, com "hero" ou "fechamento", que vai para
-  a planilha, para o CRM e para o evento do GA4. Dá para medir onde a página
-  converte.
+- **A página não tem formulário.** Todo CTA abre o WhatsApp. Ver a seção
+  "Como o lead chega" acima.
 - **Ordem das seções, pensada como funil**: hero, áreas, por que a Conhecer,
   parceiros, estrutura, depoimentos, passo a passo, FAQ, fechamento.
   As áreas vêm cedo porque a segunda pergunta de quem vê "curso técnico
   gratuito" é "qual curso?". Depois vêm as provas em escala (parceiros,
   estrutura, depoimentos), depois a mecânica, depois as objeções, e só então
   o pedido de ação.
-- **A página não promete vaga.** O cadastro não garante vaga nenhuma: ela
-  depende da inscrição oficial no site do Governo. Por isso o formulário diz
-  "Quero ser avisado" e a barra fixa diz "Quero me cadastrar". Não voltar para
-  "garanta sua vaga": é promessa que a página não tem como cumprir, e que
-  gera frustração e reclamação quando a pessoa descobre que precisa se
-  inscrever em outro lugar.
+- **A página não promete vaga por si só.** Falar com a Conhecer não garante
+  vaga: ela depende da inscrição oficial no site do Governo. O passo a passo
+  deixa isso explícito. Não transformar os CTAs em "garanta sua vaga agora"
+  como se o clique resolvesse: é promessa que a página não tem como cumprir.
 - **Estrutura da página** (decidida com o Gabriel): sem cabeçalho de navegação e
   sem rodapé. Só as duas marcas no topo. A ordem é hero com vídeo e formulário,
   faixa de provas, por que a Conhecer, estrutura em fotos, áreas de formação,
@@ -164,14 +157,8 @@ direto no navegador pra testar.
 
 Tudo marcado com `[PREENCHER]` no código, mais:
 
-- [ ] **`script.js` → `CONFIG.DESTINOS_LEAD.planilha`**: URL do Apps Script.
-      Passo a passo em `apps-script.js`. **Enquanto isso estiver vazio, o lead
-      some**: a pessoa vê a confirmação e nada é gravado.
-- [ ] **Documentação da rota de entrada de leads do Brota Flow** (URL, formato do
-      corpo, como autentica), para ligar o CRM. Perguntar também se existe
-      endpoint público de formulário, sem chave.
-- [ ] **Propriedades do Script** no Apps Script: `BROTA_FLOW_URL` e
-      `BROTA_FLOW_TOKEN`. A chave nunca vai no código do repositório.
+- [ ] **API oficial do WhatsApp ligada ao CRM**, com o agente de IA atendendo.
+      É por aí que o lead entra agora.
 - [ ] **`index.html` → `window.RASTREIO`**: IDs do GA4 e do Meta Pixel.
 - [ ] **`script.js` → `CONFIG.URL_INSCRICAO_OFICIAL`**: preencher só quando o edital
       abrir de verdade. Antes disso, deixar vazio (a página já lida com isso sozinha).
@@ -193,52 +180,42 @@ Tudo marcado com `[PREENCHER]` no código, mais:
       e manda junto com o lead. UTMs padrão (`utm_source`, `utm_medium`,
       `utm_campaign`) também são capturados automaticamente.
 
-## Como o lead é enviado
+## Como o lead chega (mudou)
 
-    página  →  Apps Script  →  planilha (cópia de segurança)
-                            →  CRM Brota Flow
+**O lead NÃO nasce mais nesta página.** A página não tem formulário.
 
-**A página não pode falar direto com o CRM.** Ela é pública: qualquer visitante
-abre "ver código-fonte" e lê tudo. Se a chave de API do CRM estivesse ali, essa
-pessoa teria acesso ao CRM inteiro da Conhecer. Por isso existe um intermediário
-que guarda a chave do lado do servidor.
+    Anúncio Meta (Click-to-WhatsApp)  →  conversa no WhatsApp  →  CRM
+                                              ↑
+                     a página empurra para cá, com todos os CTAs
 
-O intermediário é o próprio **Apps Script**, não o N8N. Ele roda nos servidores
-do Google, guarda a chave nas Propriedades do Script e chama o CRM com
-`UrlFetchApp`. Uma ferramenta a menos, custo zero, e é a mesma que a Conhecer já
-opera no site dela.
+O lead nasce na conversa e vai para o CRM pela **API oficial do WhatsApp**.
+Quem atende é o agente de IA do CRM, com os consultores, então há cobertura
+fora do horário comercial e a página não precisa de formulário como rede de
+segurança.
 
-A planilha continua sendo gravada mesmo quando o CRM aceita o lead. É de
-propósito: se o CRM cair, o lead não se perde. A coluna **Status CRM** registra
-se o encaminhamento deu certo, então dá para auditar lead a lead.
+**Cada CTA abre uma mensagem diferente**, conforme a seção de onde a pessoa
+clicou (`data-whatsapp` no HTML, `CONFIG.CONVERSAS` no `script.js`). É a
+diferença entre as mensagens que deixa o agente saber o contexto antes de
+responder a primeira vez. Se editar, mantenha todas diferentes entre si.
 
-**Exceção:** se o Brota Flow oferecer um endpoint público de formulário, sem
-chave, a página pode chamar direto e o Apps Script vira só a cópia de segurança.
-Vale perguntar à Brota se existe.
+Quem chega por QR code ou por link com `?canal=` leva esse código discreto no
+fim da mensagem, entre parênteses. É o que separa o panfleto de Ribeirão do
+anúncio. Para tráfego Click-to-WhatsApp isso não é necessário: a Meta entrega
+a origem junto da conversa.
 
-**O que falta para ligar o CRM:** a documentação da rota de entrada de leads do
-Brota Flow (URL, formato do corpo, como autentica). O `enviarParaCRM` em
-`apps-script.js` já está escrito, com um corpo genérico marcado `[AJUSTAR]`.
-A chave **nunca** vai no código: vai em Propriedades do Script, em
-`BROTA_FLOW_URL` e `BROTA_FLOW_TOKEN`.
+**O buraco do funil, e por que o passo 4 existe.** Quando a pessoa sai da
+conversa para o site do Governo, ela some, e ninguém sabe se chegou a se
+inscrever. Não dá para resolver com código: a página do Trilhas é do Governo e
+não temos controle nenhum lá dentro. O que a página faz é **combinar antes**:
+o passo 4 do passo a passo diz que ela volta e manda o print. Isso cria a
+expectativa antes de ela sair. O resto é operação: o atendente cobra o print,
+e o CRM marca quem se inscreveu e quem não, para virar lista de remarketing.
 
-**Por que `mode: 'no-cors'` e `Content-Type: text/plain` no `script.js`**
-
-O navegador tem uma regra de segurança, o CORS. Um POST com
-`Content-Type: application/json` para outro domínio dispara antes um pedido de
-permissão, o preflight `OPTIONS`. O Apps Script não responde a `OPTIONS`, então
-o envio morre antes de chegar lá. Com `text/plain` o navegador trata como pedido
-simples e manda direto. O corpo continua sendo JSON, e o `doPost` faz
-`JSON.parse` normalmente.
-
-**O preço:** `no-cors` devolve resposta opaca. A página não consegue saber se o
-destino aceitou, então o envio é "dispara e segue" e a confirmação aparece de
-qualquer jeito. Se o Apps Script quebrar, o lead some em silêncio.
-
-**Teste obrigatório depois de configurar:** abra a página, preencha com o nome
-"TESTE" e envie. A linha tem que aparecer na planilha em segundos, e a coluna
-Status CRM mostra se o encaminhamento funcionou. Para testar só o CRM, sem
-formulário, rode a função `testarCRM` pelo editor do Apps Script.
+**Sobre busca orgânica:** hoje é praticamente zero, e vai continuar sendo por
+meses. Uma página nova em GitHub Pages não ranqueia para "curso técnico
+gratuito BH". As fontes reais de tráfego são o anúncio, o link mandado na
+conversa, a bio do Instagram e QR codes offline. Não desenhe funil contando
+com busca enquanto não houver domínio próprio e conteúdo.
 
 ## Rastreamento
 
