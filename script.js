@@ -54,6 +54,8 @@ const CONFIG = {
     protocolo:  'Oi! Já fiz minha inscrição no site do Governo. Segue o protocolo: ',
     areas:      'Oi! Vi a página de orientação e não achei meu curso na lista. Pode me ajudar?',
     fechamento: 'Oi! Travei num passo da inscrição e preciso de ajuda.',
+    // Sem botão flutuante na página: esta entrada é só o texto de reserva,
+    // usado se algum botão aparecer sem mensagem própria.
     flutuante:  'Oi! Estou na página de orientação e fiquei com uma dúvida.'
   },
 
@@ -447,6 +449,13 @@ function eventoConversao(secao, origem){
   }
 }
 
+/* Mantém o ano do rodapé atualizado sozinho. O ano está escrito no HTML, então
+   sem JS a pessoa ainda vê um ano, só não o do momento. */
+function atualizaAnoDoRodape(){
+  const alvo = document.querySelector('[data-ano]');
+  if(alvo) alvo.textContent = new Date().getFullYear();
+}
+
 function preencheBadgeStatus(){
   const badge = document.getElementById('badgeStatus');
   if(!badge) return;
@@ -462,6 +471,7 @@ function preencheBadgeStatus(){
 
 document.addEventListener('DOMContentLoaded', () => {
   montaSaudacao();
+  atualizaAnoDoRodape();
   montaVideo();
   montaBotaoInscricao();
   aplicaLinksWhatsapp();
