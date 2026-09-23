@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Curso técnico gratuito pelo Trilhas de Futuro | Conhecer Escola Técnica</title>
-<meta name="description" content="Curso técnico gratuito pelo programa Trilhas de Futuro do Governo de Minas Gerais, na Conhecer Escola Técnica. Cadastre-se e a gente te acompanha na inscrição.">
+<title>Como se inscrever no Trilhas de Futuro | Conhecer Escola Técnica</title>
+<meta name="description" content="O passo a passo para fazer sua inscrição no Trilhas de Futuro, o programa de cursos técnicos gratuitos do Governo de Minas Gerais, escolhendo a Conhecer Escola Técnica.">
 <meta name="theme-color" content="#041C57">
 <link rel="icon" type="image/png" href="assets/logo-conhecer-azul-transparente.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,8 +26,9 @@
                 Onde achar: business.facebook.com > Gerenciador de Eventos >
                 Fontes de dados > o pixel > o número aparece sob o nome.
 
-     O evento de conversão é disparado em script.js, na função
-     eventoConversao: 'generate_lead' no GA4 e 'Lead' no Meta.
+     Os eventos são disparados em script.js: 'video_assistido' quando a
+     pessoa chega aos 75% do vídeo, 'clicou_inscricao' quando ela vai para o
+     site do Governo, e 'generate_lead' / 'Contact' quando volta pro WhatsApp.
      ============================================================ -->
 <script>
   window.RASTREIO = {
@@ -61,54 +62,36 @@
 </head>
 <body>
 
-<!-- ============ HERO: marcas, headline, vídeo e formulário ============ -->
+<!-- ============ HERO: marcas, headline e o vídeo de orientação ============ -->
 <section class="hero">
 
-  <!-- Sem cabeçalho de navegação. Só as duas marcas, lado a lado. -->
   <div class="marcas">
-    <!-- Versão para fundo escuro: o símbolo mantém as duas fitas do original
-         (a da frente branca, a de trás no azul #1988E2). A versão toda branca
-         virava um bloco chapado e perdia essa leitura. -->
     <img class="m-conhecer" src="assets/logo-conhecer-escuro.png" alt="Conhecer Escola Técnica" width="520" height="147">
     <span class="divisor" aria-hidden="true"></span>
     <img class="m-trilhas" src="assets/logo-trilhas-branco.png" alt="Trilhas de Futuro" width="500" height="329">
   </div>
 
   <div class="wrap hero-inner">
-
     <div class="hero-topo">
       <span class="selo-programa" id="badgeStatus">Inscrições abrem em breve</span>
-      <h1>Curso técnico <span class="destaque">100% gratuito</span> pelo Trilhas de Futuro</h1>
-      <p class="hero-sub">Programa do Governo de Minas Gerais na Conhecer Escola Técnica. Cadastre-se e a nossa equipe te acompanha na inscrição do começo ao fim, pra você não perder a vaga por detalhe.</p>
+      <!-- Com ?nome= na URL o título vira "Ana, seu passo a passo...". Sem
+           nome, começa direto no "Seu". Quem troca o S maiúsculo pelo
+           minúsculo é o script.js, ao inserir a saudação. -->
+      <h1><span data-saudacao hidden></span><span data-titulo>Seu passo a passo para</span><span class="destaque"> garantir a vaga</span></h1>
+      <p class="hero-sub">Assiste o vídeo, segue os passos e faz sua inscrição no site oficial do Governo. Qualquer dúvida no meio do caminho, é só voltar no WhatsApp e falar com a gente.</p>
     </div>
 
-    <div class="hero-grid">
-
-      <div>
-        <!-- [PREENCHER] Vídeo de apresentação, ainda vai ser gravado.
-             Quando estiver no YouTube, é só trocar o bloco .video-espera por:
-             <iframe src="https://www.youtube-nocookie.com/embed/ID_DO_VIDEO?rel=0"
-                     title="Conhecer e o Trilhas de Futuro" allowfullscreen></iframe>
-             Recomendado: 60 a 90 segundos, horizontal (16:9). -->
-        <div class="video-caixa">
-          <div class="video-espera">
-            <span class="play" aria-hidden="true"></span>
-            <span>Vídeo de apresentação (em produção)</span>
-          </div>
-        </div>
-        <p class="video-legenda">Em 1 minuto: o que é o programa, quem pode participar e como a Conhecer te ajuda.</p>
+    <!-- [PREENCHER] CONFIG.VIDEO_YOUTUBE no script.js, com o ID do vídeo.
+         Enquanto estiver vazio aparece o espaço reservado. Quando estiver
+         preenchido, o player entra aqui e o progresso é acompanhado: aos 75%
+         o CRM recebe o aviso de que a pessoa assistiu. -->
+    <div class="video-caixa" id="videoCaixa">
+      <div class="video-espera">
+        <span class="play" aria-hidden="true"></span>
+        <span>Vídeo com o passo a passo (em produção)</span>
       </div>
-
-      <!-- O lead nasce na conversa do WhatsApp, não aqui. Todo CTA da página
-           abre o WhatsApp com uma mensagem já escrita, diferente por seção,
-           para o agente de IA do CRM saber de onde a pessoa veio e o que ela
-           estava olhando. Ver CONFIG.CONVERSAS em script.js. -->
-      <div class="hero-acao">
-        <a class="btn btn-acao btn-grande" data-whatsapp="hero">Falar no WhatsApp agora</a>
-        <p class="hero-acao-nota">Atendimento a qualquer hora. A gente confirma se você pode participar, qual curso tem na sua unidade e te acompanha até a inscrição estar feita.</p>
-      </div>
-
     </div>
+    <p class="video-legenda">Por que a Conhecer e como fazer sua inscrição, do começo ao fim.</p>
   </div>
 </section>
 
@@ -125,19 +108,39 @@
   </div>
 </div>
 
+<!-- ============ INSCRIÇÃO ============
+     O coração da página. A pessoa assiste o vídeo e vem para cá fazer. O
+     passo a passo escrito existe porque ninguém volta no vídeo para rever
+     qual campo preencher: ela consulta aqui enquanto faz. -->
+<section class="inscricao" id="inscricao">
+  <div class="wrap">
+    <span class="eyebrow">Passo a passo</span>
+    <h2>Como fazer sua inscrição<span class="t-acento">no site do Governo</span></h2>
+    <p class="section-intro">A inscrição é feita no site oficial do Trilhas de Futuro. Segue esses passos com a página aberta do lado.</p>
 
+    <ol class="passos-lista">
+      <li><strong>Abra o site oficial no botão abaixo.</strong> Ele abre numa aba nova, então esta página continua aqui pra você consultar.</li>
+      <li><strong>Clique em "Estudantes" e depois em "Quero me inscrever".</strong></li>
+      <li><strong>Preencha seus dados pessoais</strong> com atenção ao CPF e à data de nascimento. Erro nesses dois é o que mais derruba inscrição.</li>
+      <li><strong>Na hora de escolher a instituição, procure por "Conhecer Escola Técnica"</strong> e selecione a unidade mais perto de você: Belo Horizonte, Ribeirão das Neves ou Santa Luzia.</li>
+      <li><strong>Escolha o curso</strong> e confira se a unidade continua sendo a que você quer.</li>
+      <li><strong>Finalize e guarde o número do protocolo.</strong> Ele aparece na tela de confirmação.</li>
+      <li><strong>Volte aqui e mande o protocolo pra gente no WhatsApp.</strong> A gente confere se ficou tudo certo, porque erro de preenchimento custa a vaga.</li>
+    </ol>
 
-
-
-
-
-
+    <div class="inscricao-acoes">
+      <a class="btn btn-acao btn-grande" id="botaoInscricao" data-inscricao>Ir para o site oficial</a>
+      <a class="btn btn-contorno" data-whatsapp="protocolo">Já me inscrevi, mandar protocolo</a>
+    </div>
+    <p class="inscricao-nota">O site oficial abre numa aba nova. Esta página fica aberta pra você conferir cada passo.</p>
+  </div>
+</section>
 
 <!-- ============ ÁREAS ============ -->
 <section class="areas">
   <div class="wrap">
     <span class="eyebrow">Áreas de formação</span>
-    <h2>Escolha a área que<span class="t-acento">abre as portas do seu futuro</span></h2>
+    <h2>As áreas em que<span class="t-acento">a Conhecer forma</span></h2>
     <p class="section-intro">A Conhecer forma técnicos em quatro grandes áreas. Os cursos ofertados pelo Trilhas de Futuro saem no edital de cada edição.</p>
 
     <div class="areas-grid" data-auto-passa="7000">
@@ -168,7 +171,7 @@
          Trilhas de Futuro é definida pelo edital de cada edição e pode ser
          diferente. Trocar por cursos reais quando o edital sair. -->
     <p class="areas-nota">Os cursos disponíveis variam por unidade e por edição do programa.</p>
-    <p class="secao-acao"><a class="btn btn-acao" data-whatsapp="areas">Ver os cursos da minha unidade</a></p>
+    <p class="secao-acao"><a class="btn btn-contorno" data-whatsapp="areas">Não achei meu curso, me ajuda?</a></p>
   </div>
 </section>
 
@@ -291,7 +294,7 @@
         <img src="assets/parceiros/parceiro-23.webp" alt="" loading="lazy" width="120" height="50">
       </div>
     </div>
-    <p class="secao-acao"><a class="btn btn-acao" data-whatsapp="parceiros">Saber do estágio garantido</a></p>
+    
   </div>
 </section>
 
@@ -322,29 +325,6 @@
     <p class="section-intro">Alunos da Conhecer contando como foi, na voz deles.</p>
     <div class="depo-grid" id="depoimentos" data-auto-passa="8000"></div>
     <p class="dica-arrasta">Arraste para ver todos</p>
-  </div>
-</section>
-
-<!-- ============ PASSO A PASSO ============
-     Reescrito para o fluxo novo: o lead nasce no WhatsApp, não num
-     formulário. O passo 4 existe de propósito: é onde as pessoas somem, ao
-     sair para o site do Governo. Deixar combinado ANTES que ela volta e
-     manda o print é o que fecha o ciclo. -->
-<section class="passos">
-  <div class="wrap">
-    <span class="eyebrow">Passo a passo</span>
-    <h2>Da primeira mensagem<span class="t-acento">até a vaga garantida</span></h2>
-    <p class="section-intro">A inscrição oficial é no site do Governo de Minas. Você não faz isso sozinho: a gente acompanha do começo ao fim.</p>
-
-    <ol class="passos-lista">
-      <li><strong>Você manda mensagem no WhatsApp.</strong> Pode ser agora, a qualquer hora do dia.</li>
-      <li><strong>A gente confere se você pode participar</strong> e quais cursos têm na unidade mais perto de você.</li>
-      <li><strong>Você recebe o link oficial e o passo a passo</strong> do que preencher, campo por campo.</li>
-      <li><strong>Faz a inscrição no site do Governo e manda o print pra gente.</strong> A gente confere se ficou tudo certo, porque erro de preenchimento custa a vaga.</li>
-      <li><strong>Depois disso é só aguardar o resultado.</strong> A gente te avisa de cada etapa.</li>
-    </ol>
-
-    <p class="secao-acao"><a class="btn btn-acao" data-whatsapp="passos">Começar agora</a></p>
   </div>
 </section>
 
@@ -385,17 +365,13 @@
 </section>
 
 <!-- ============ FECHAMENTO ============
-     Segundo ponto de conversão. Sem ele a pessoa lê a página inteira,
-     se convence, e não tem onde agir: a barra fixa só existe no mobile
-     e joga de volta pro topo. É o mesmo bloco do hero, com outro título. -->
-<!-- ============ FECHAMENTO ============ -->
+     Quem chegou até aqui veio da conversa. O fechamento é o retorno a ela. -->
 <section class="fechamento">
   <div class="wrap">
-    <span class="eyebrow">Última chamada</span>
-    <h2>Sua vaga no Trilhas de Futuro<span class="t-acento">começa com uma conversa</span></h2>
-    <p class="section-intro">Manda mensagem que a gente confirma tudo com você e te acompanha até a inscrição estar feita no site do Governo.</p>
-    <a class="btn btn-acao btn-grande" data-whatsapp="fechamento">Quero minha vaga</a>
-    <p class="fechamento-nota">Resposta na hora, todos os dias.</p>
+    <span class="eyebrow">Qualquer dúvida</span>
+    <h2>Travou em algum passo?<span class="t-acento">A gente resolve com você</span></h2>
+    <p class="section-intro">Manda mensagem que alguém da equipe te ajuda na hora, em qualquer etapa da inscrição.</p>
+    <a class="btn btn-acao btn-grande" data-whatsapp="fechamento">Voltar pro WhatsApp</a>
   </div>
 </section>
 

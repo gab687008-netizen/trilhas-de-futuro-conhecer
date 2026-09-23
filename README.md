@@ -1,9 +1,12 @@
-# Landing Page: Trilhas de Futuro (Escola Técnica Conhecer)
+# Página de orientação: Trilhas de Futuro (Escola Técnica Conhecer)
 
-Página de pré-captura de leads para a campanha do Trilhas de Futuro. Objetivo: capturar
-o contato de quem quer se inscrever **antes** de mandar a pessoa para o site oficial do
-Governo de Minas Gerais, porque quem trava lá no meio simplesmente some, sem deixar
-rastro nenhum pra gente.
+**Esta página não capta lead.** Ela é a página de VSL que o atendente manda dentro da
+conversa do WhatsApp, depois que o lead já entrou no CRM. O trabalho dela é um só:
+fazer a pessoa assistir o vídeo, entender por que escolher a Conhecer, e conseguir
+fazer a própria inscrição no site do Governo sem travar no meio.
+
+Quem chega aqui já é conhecido. Não tem formulário, não tem "cadastre-se", não tem
+apresentação: as mensagens dos botões continuam de onde o atendimento parou.
 
 Arquivos: `index.html`, `style.css`, `script.js`. Sem build, sem dependências. Abre
 direto no navegador pra testar.
@@ -99,25 +102,21 @@ direto no navegador pra testar.
   página pública.
 - **A barra fixa de ação saiu.** Ficou só o botão flutuante do WhatsApp, sem
   fundo atrás.
-- **A página não tem formulário.** Todo CTA abre o WhatsApp. Ver a seção
-  "Como o lead chega" acima.
-- **Ordem das seções, pensada como funil**: hero, áreas, por que a Conhecer,
-  parceiros, estrutura, depoimentos, passo a passo, FAQ, fechamento.
-  As áreas vêm cedo porque a segunda pergunta de quem vê "curso técnico
-  gratuito" é "qual curso?". Depois vêm as provas em escala (parceiros,
-  estrutura, depoimentos), depois a mecânica, depois as objeções, e só então
-  o pedido de ação.
-- **A página não promete vaga por si só.** Falar com a Conhecer não garante
-  vaga: ela depende da inscrição oficial no site do Governo. O passo a passo
-  deixa isso explícito. Não transformar os CTAs em "garanta sua vaga agora"
-  como se o clique resolvesse: é promessa que a página não tem como cumprir.
+- **A página não tem formulário.** Ela não capta nada: o lead já nasceu na
+  conversa do WhatsApp, antes daqui. Ver "O funil de comunicação" abaixo.
+- **Ordem das seções**: vídeo, provas, inscrição, e só depois os argumentos.
+  O porquê está em "Por que a ordem das seções é essa", abaixo.
+- **A página não promete vaga por si só.** Quem garante vaga é a inscrição no
+  site do Governo, feita pela própria pessoa. A página ensina a fazer e confere
+  o protocolo depois. Não transformar os CTAs em "garanta sua vaga agora" como
+  se o clique resolvesse: é promessa que a página não tem como cumprir.
 - **Estrutura da página** (decidida com o Gabriel): sem cabeçalho de navegação e
-  sem rodapé. Só as duas marcas no topo. A ordem é hero com vídeo e formulário,
-  faixa de provas, por que a Conhecer, estrutura em fotos, áreas de formação,
-  depoimentos em vídeo, passo a passo e FAQ. Em telas pequenas aparece uma barra
-  fixa de ação no rodapé da tela.
-- **O aviso de uso de dados saiu do rodapé** e foi para o pé do formulário, que é
-  onde ele tem efeito. Não pode ser removido: é LGPD, não decoração.
+  sem rodapé. Só as duas marcas no topo, Conhecer e Trilhas de Futuro, como uma
+  colaboração.
+- **Não há aviso de LGPD na página.** Ele existia no pé do formulário; sem
+  formulário, a página não coleta dado nenhum digitado pela pessoa. Os avisos
+  que ela manda para o CRM usam um identificador que o próprio CRM gerou, e o
+  consentimento foi dado lá atrás, na conversa.
 - **Depoimentos são vídeos reais** de alunos, os mesmos do site da Conhecer
   (IDs do YouTube em `script.js`, `CONFIG.DEPOIMENTOS_YOUTUBE`). A capa só vira
   player quando a pessoa clica, para não entregar cookie de terceiro sem
@@ -148,10 +147,10 @@ direto no navegador pra testar.
     tinha perdido as duas cores do símbolo.
   - Endereços e cursos por unidade: de `tecnico/js/cursos-tecnicos-data.js`.
 - **WhatsApp único** para todas as unidades (não um número por unidade).
-- **Lead vai pro Brota Flow / CRM da Conhecer**, mas como a chave de API não pode
-  ficar exposta no código da página (é público), o caminho é: página → webhook
-  intermediário (ex: N8N) → N8N chama a API do Brota Flow com a chave guardada no
-  servidor. Ver `CONFIG.WEBHOOK_URL` em `script.js`.
+- **Os avisos vão pro Brota Flow / CRM da Conhecer**, mas como a chave de API não
+  pode ficar exposta no código da página (é público), o caminho é: página →
+  webhook intermediário (ex: N8N) → N8N chama a API do Brota Flow com a chave
+  guardada no servidor. Ver `CONFIG.AVISO_CRM` em `script.js`.
 
 ## Checklist antes de publicar
 
@@ -161,61 +160,126 @@ Tudo marcado com `[PREENCHER]` no código, mais:
       É por aí que o lead entra agora.
 - [ ] **`index.html` → `window.RASTREIO`**: IDs do GA4 e do Meta Pixel.
 - [ ] **`script.js` → `CONFIG.URL_INSCRICAO_OFICIAL`**: preencher só quando o edital
-      abrir de verdade. Antes disso, deixar vazio (a página já lida com isso sozinha).
+      abrir de verdade. Antes disso, deixar vazio: o botão fica desligado e escrito
+      "As inscrições ainda não abriram", sozinho.
+- [ ] **`script.js` → `CONFIG.VIDEO_YOUTUBE`**: o ID do vídeo, só o código. Sem ele
+      aparece o espaço reservado e nada é acompanhado.
+- [ ] **`script.js` → `CONFIG.AVISO_CRM`**: o endpoint que recebe os avisos. Sem ele
+      a página funciona, mas o CRM não fica sabendo de nada.
+- [ ] **CRM montando o link com `?lead=`** para o atendente não copiar ID na mão.
 - [ ] **Confirmar com a Conhecer se ela está credenciada na 7ª edição** e para quais
       cursos e unidades. Sem isso a página não tem destino. Ver a seção de pesquisa.
 - [ ] **`index.html` → benefício "Auxílio financeiro"**: valor e regras reais,
       conforme o edital oficial. **Não publicar um valor sem confirmar no edital**.
 - [ ] **`index.html` → FAQ**: pré-requisitos reais (ensino médio concluído? idade
       mínima?) conforme o edital.
-- [ ] **Vídeo de apresentação**: gravar e trocar o bloco `.video-espera` no
-      `index.html` por um `<iframe>` do YouTube. A instrução exata está no
-      comentário ao lado. Recomendado 60 a 90 segundos, horizontal.
+- [ ] **Vídeo de orientação**: gravar e colocar o ID em `CONFIG.VIDEO_YOUTUBE`.
+      O player entra sozinho no lugar do espaço reservado. Conteúdo: por que a
+      Conhecer, depois o passo a passo da inscrição do começo ao fim, na mesma
+      ordem da lista escrita da página. Horizontal.
 - [ ] **Domínio**: publicar em domínio/hospedagem da própria Conhecer (decidido
       anteriormente). A proposta comercial sugeriu `grupoconhecer.com.br/trilhas-de-
       futuro`, mas isso ainda não está confirmado/registrado.
 
-- [ ] **QR Codes / mídias offline**: gerar cada QR/link com `?canal=` diferente (ex:
-      `?canal=outdoor-bh`, `?canal=panfleto-neves`). A página já captura isso sozinha
-      e manda junto com o lead. UTMs padrão (`utm_source`, `utm_medium`,
-      `utm_campaign`) também são capturados automaticamente.
+- [ ] **QR Codes / mídias offline**: não apontam mais para cá. O destino de mídia
+      offline é o WhatsApp, não esta página — quem chega aqui vem da conversa. A
+      captura de `?canal=` e UTM continua no código, só para o caso de o link
+      vazar para fora da conversa, mas não faz parte do funil planejado.
 
-## Como o lead chega (mudou)
+## O funil de comunicação
 
-**O lead NÃO nasce mais nesta página.** A página não tem formulário.
+    1. Anúncio Meta (Click-to-WhatsApp)
+           ↓
+    2. Conversa no WhatsApp  →  lead cai no CRM pela API oficial
+           ↓
+    3. Atendente (ou o agente de IA) manda o link DESTA página,
+       com ?lead=<id do contato> e &nome=<primeiro nome>
+           ↓
+    4. A pessoa assiste o vídeo  →  aos 75%, o CRM recebe o aviso
+       "fulana assistiu o vídeo"
+           ↓
+    5. A pessoa clica em "Ir para o site oficial"  →  o CRM recebe o aviso
+       e o site do Governo abre EM ABA NOVA (esta página fica aberta atrás,
+       para ela consultar o passo a passo enquanto preenche)
+           ↓
+    6. Ela se inscreve sozinha no site do Governo
+           ↓
+    7. Volta pro WhatsApp e manda o protocolo (botão "Já me inscrevi,
+       mandar protocolo", que já abre a conversa com o texto pronto)
+           ↓
+    8. A equipe confere o protocolo. Quem não voltou, o CRM cobra.
 
-    Anúncio Meta (Click-to-WhatsApp)  →  conversa no WhatsApp  →  CRM
-                                              ↑
-                     a página empurra para cá, com todos os CTAs
+### O link que o atendente manda
 
-O lead nasce na conversa e vai para o CRM pela **API oficial do WhatsApp**.
-Quem atende é o agente de IA do CRM, com os consultores, então há cobertura
-fora do horário comercial e a página não precisa de formulário como rede de
-segurança.
+    https://<dominio>/?lead=CT-8842&nome=Ana%20Clara
 
-**Cada CTA abre uma mensagem diferente**, conforme a seção de onde a pessoa
-clicou (`data-whatsapp` no HTML, `CONFIG.CONVERSAS` no `script.js`). É a
-diferença entre as mensagens que deixa o agente saber o contexto antes de
-responder a primeira vez. Se editar, mantenha todas diferentes entre si.
+- `lead` é o identificador do contato no CRM. **É ele que amarra os avisos desta
+  página ao contato certo.** Sem ele a página funciona igual, só que muda nada
+  no CRM: nenhum aviso é enviado, porque não haveria como dizer quem fez o quê.
+- `nome` é opcional e só muda o título: "Ana, seu passo a passo para garantir a
+  vaga". Aceita o nome completo; a página usa só o primeiro.
 
-Quem chega por QR code ou por link com `?canal=` leva esse código discreto no
-fim da mensagem, entre parênteses. É o que separa o panfleto de Ribeirão do
-anúncio. Para tráfego Click-to-WhatsApp isso não é necessário: a Meta entrega
-a origem junto da conversa.
+O ideal é o próprio CRM montar esse link, para o atendente não ter que copiar ID
+na mão. Isso é configuração do lado do CRM, não desta página.
 
-**O buraco do funil, e por que o passo 4 existe.** Quando a pessoa sai da
-conversa para o site do Governo, ela some, e ninguém sabe se chegou a se
-inscrever. Não dá para resolver com código: a página do Trilhas é do Governo e
-não temos controle nenhum lá dentro. O que a página faz é **combinar antes**:
-o passo 4 do passo a passo diz que ela volta e manda o print. Isso cria a
-expectativa antes de ela sair. O resto é operação: o atendente cobra o print,
-e o CRM marca quem se inscreveu e quem não, para virar lista de remarketing.
+### O que a página avisa para o CRM
 
-**Sobre busca orgânica:** hoje é praticamente zero, e vai continuar sendo por
-meses. Uma página nova em GitHub Pages não ranqueia para "curso técnico
-gratuito BH". As fontes reais de tráfego são o anúncio, o link mandado na
-conversa, a bio do Instagram e QR codes offline. Não desenhe funil contando
-com busca enquanto não houver domínio próprio e conteúdo.
+Três eventos, todos com `{ lead, evento, em, pagina_url }` num POST para
+`CONFIG.AVISO_CRM`:
+
+| evento | quando |
+|---|---|
+| `pagina_aberta` | a pessoa abriu o link que o atendente mandou |
+| `video_75` | assistiu 75% do vídeo |
+| `clicou_inscricao` | clicou para ir ao site do Governo |
+
+**Por que 75% e não o play nem o fim.** No play o atendente cobraria enquanto a
+pessoa ainda está assistindo, o que irrita. No fim quase ninguém bate: muita
+gente sai nos últimos segundos, depois de já ter entendido tudo, e o CRM nunca
+receberia o aviso. Aos 75% a pessoa já viu o passo a passo inteiro.
+
+**Limitação conhecida:** o envio usa `mode: 'no-cors'`, igual ao envio de lead
+antigo. A resposta vem opaca, então a página **não tem como saber se o aviso
+chegou**. Quem confere é o CRM. Se um dia precisar de confirmação, o endpoint
+tem que devolver os cabeçalhos CORS certos e o `mode` sai daqui.
+
+**Chave de API nunca entra aqui.** Esta página é pública: qualquer pessoa lê o
+`script.js`. Se o CRM exigir autenticação, `CONFIG.AVISO_CRM` tem que apontar
+para um intermediário (um Apps Script, uma função serverless) que guarde a
+chave do lado do servidor.
+
+### O buraco do funil, e o que a página faz com ele
+
+Entre o passo 6 e o 7 a pessoa está no site do Governo, onde não temos controle
+nenhum. Não dá para resolver com código. O que a página faz é **combinar antes**:
+o passo 7 do passo a passo escrito já diz que ela volta e manda o protocolo,
+e o botão ao lado do CTA principal deixa isso a um toque de distância. O resto
+é operação: o CRM sabe quem clicou em "ir para o site" (evento
+`clicou_inscricao`) e não voltou com protocolo — essa é a lista de cobrança.
+
+### Por que a ordem das seções é essa
+
+    hero (vídeo)  →  provas  →  INSCRIÇÃO  →  áreas  →  porque  →
+    parceiros  →  estrutura  →  depoimentos  →  faq  →  fechamento
+
+O vídeo é o produto da página, então ocupa o topo inteiro, sem nada ao lado
+disputando atenção. A **inscrição vem logo em seguida**, antes de qualquer
+argumento de venda, porque quem assistiu o vídeo já está convencido e só quer
+fazer. O passo a passo escrito repete o que o vídeo explica **de propósito**:
+ninguém volta no vídeo para rever qual campo preencher, mas todo mundo relê
+uma lista enquanto digita.
+
+Tudo abaixo da inscrição é para quem ainda não se convenceu: áreas (que também
+serve de consulta para o passo 5), por que a Conhecer, parceiros, estrutura,
+depoimentos e FAQ. O fechamento não pede nada novo — devolve a pessoa para a
+conversa de onde ela veio.
+
+### Sobre busca orgânica
+
+Continua praticamente zero, e vai continuar sendo por meses. Mas agora isso não
+importa: **o único tráfego previsto para esta página é o link mandado dentro da
+conversa.** Quem chega sem `?lead=` vê a página funcionando normalmente, só não
+gera aviso nenhum no CRM.
 
 ## Rastreamento
 
@@ -223,10 +287,17 @@ com busca enquanto não houver domínio próprio e conteúdo.
 `metaPixel`. Preencheu, o carregador injeta o script sozinho. Deixou vazio,
 aquele pixel não carrega. Não precisa descomentar nada.
 
-O evento de conversão sai em `script.js`, na função `eventoConversao`:
-`generate_lead` no GA4 e `Lead` no Meta, os dois com unidade, curso e canal.
-Verificado em navegador: com os IDs preenchidos o `generate_lead` entra no
-`dataLayer` com os campos certos.
+Os eventos saem do `script.js`:
+
+| evento | GA4 | Meta | quando |
+|---|---|---|---|
+| assistiu o vídeo | `video_assistido` | — | aos 75% |
+| foi se inscrever | `clicou_inscricao` | `InitiateCheckout` | clique no CTA principal |
+| voltou pro WhatsApp | `generate_lead` | `Contact` | clique em qualquer botão de WhatsApp |
+
+`generate_lead` aqui **não significa lead novo** — o lead já existia antes desta
+página. É a etapa "voltou para a conversa". Quem tem o número real de leads é o
+CRM, e é com ele que estes números devem ser conferidos de tempos em tempos.
 
 ## Pesquisa sobre o edital (base de referência, NÃO publicar ainda)
 
@@ -261,8 +332,8 @@ para escrever na página.
    **edital de credenciamento das instituições seria reaberto no 2º semestre de 2026**.
    Ou seja: antes de a Conhecer receber aluno pelo programa, ela precisa estar
    credenciada nesta edição. **Confirmar com a Conhecer se o credenciamento dela já
-   saiu e para quais cursos e unidades**. Se não saiu, a página não tem para onde
-   mandar o lead, e isso muda o prazo do projeto inteiro.
+   saiu e para quais cursos e unidades**. Se não saiu, não há inscrição para
+   ensinar, e isso muda o prazo do projeto inteiro.
 
 Fontes: [SEE/MG: cursos prioritários da 7ª edição](https://www.educacao.mg.gov.br/governo-de-minas-publica-lista-de-cursos-profissionalizantes-prioritarios-para-a-7a-edicao-do-trilhas-de-futuro/) ·
 [SEE/MG: dúvidas frequentes](https://www.educacao.mg.gov.br/veja-respostas-as-principais-duvidas-sobre-o-programa-trilhas-de-futuro/) ·
@@ -275,11 +346,15 @@ Fontes: [SEE/MG: cursos prioritários da 7ª edição](https://www.educacao.mg.g
 Abra `index.html` direto no navegador, ou rode um servidor simples:
 
 ```bash
-cd "Landing Page Trilhas do Futuro"
+cd trilhas-de-futuro-conhecer
 python3 -m http.server 8000
 # depois abra http://localhost:8000
 ```
 
-Com `CONFIG.WEBHOOK_URL` vazio, o envio do formulário funciona normalmente (mostra a
-tela de confirmação) mas só avisa no console do navegador que nada foi enviado de
-verdade. Não precisa do webhook pronto pra testar o resto da página.
+Para testar como a pessoa vê, use a URL com os parâmetros do atendente:
+
+    http://localhost:8000/?lead=TESTE-1&nome=Ana%20Clara
+
+Com `CONFIG.AVISO_CRM` vazio nada é enviado, e com `CONFIG.VIDEO_YOUTUBE` vazio
+aparece o espaço reservado no lugar do player. A página inteira funciona assim:
+não precisa do CRM nem do vídeo prontos pra testar o resto.

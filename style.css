@@ -130,14 +130,10 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
 }
 .hero-topo{ text-align: center; }
 
-/* vídeo + formulário lado a lado */
-.hero-grid{
-  display: grid; grid-template-columns: 1.25fr .75fr; gap: 28px;
-  align-items: start; margin-top: 36px;
-}
-@media (max-width: 940px){ .hero-grid{ grid-template-columns: 1fr; gap: 24px; } }
-
+/* O vídeo é o produto da página: ocupa a largura toda, sem nada ao lado
+   disputando atenção. */
 .video-caixa{
+  margin-top: 34px;
   position: relative; aspect-ratio: 16/9; border-radius: var(--raio-g); overflow: hidden;
   background: rgba(0,0,0,.28); border: 1px solid rgba(255,255,255,.16);
   box-shadow: var(--sombra-g);
@@ -159,15 +155,18 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
 }
 .video-legenda{ margin-top: 12px; font-size: 13.5px; color: rgba(255,255,255,.7); text-align: center; }
 
-/* ---------- chamada para o WhatsApp ----------
-   Substituiu o formulário: o lead nasce na conversa, não aqui.
-   ============================================================ */
-.hero-acao{ text-align: center; margin-top: 30px; }
 .btn-grande{ font-size: 17px; padding: 18px 40px; }
-.hero-acao-nota{
-  color: rgba(255,255,255,.76); font-size: 14.5px;
-  max-width: 460px; margin: 16px auto 0;
+
+/* Botão secundário sobre fundo claro. Existe para a pessoa que já se
+   inscreveu voltar ao WhatsApp sem competir com o CTA amarelo. */
+.btn-contorno{
+  background: transparent; color: var(--azul-700); border-color: var(--azul-700);
 }
+.btn-contorno:hover{ background: var(--azul-nevoa); transform: translateY(-2px); }
+
+/* Saudação com o primeiro nome, quando o link do atendente traz ?nome=.
+   Fica escondida por padrão: sem nome, o título começa direto. */
+[data-saudacao]{ color: var(--amarelo); }
 .secao-acao{ text-align: center; margin-top: 30px; }
 
 /* ============================================================
@@ -284,9 +283,12 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
 }
 
 /* ============================================================
-   PASSO A PASSO
+   INSCRIÇÃO: o passo a passo escrito
+   Fica logo abaixo do vídeo porque é onde a pessoa age. O texto repete o
+   que o vídeo explica de propósito: ninguém volta no vídeo para rever qual
+   campo preencher, mas todo mundo relê uma lista.
    ============================================================ */
-.passos{ background: var(--fundo-alt); }
+.inscricao{ background: var(--fundo-alt); }
 .passos-lista{ max-width: 640px; margin: 0 auto; list-style: none; counter-reset: passo; }
 .passos-lista li{
   counter-increment: passo; position: relative;
@@ -301,6 +303,21 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
   display: flex; align-items: center; justify-content: center;
 }
 .passos-lista strong{ color: var(--tinta); font-weight: 700; }
+
+.inscricao-acoes{
+  display: flex; flex-wrap: wrap; gap: 14px; justify-content: center;
+  margin-top: 34px;
+}
+.inscricao-nota{
+  text-align: center; color: var(--texto-suave); font-size: 14px;
+  max-width: 460px; margin: 16px auto 0;
+}
+/* No celular os dois botões empilham na largura toda: alvo de toque maior
+   e nenhum deles fica espremido. */
+@media (max-width: 560px){
+  .inscricao-acoes{ flex-direction: column; }
+  .inscricao-acoes .btn{ width: 100%; }
+}
 
 /* ============================================================
    FAQ
@@ -466,9 +483,6 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
 .fechamento > .wrap > h2{ color: #fff; }
 .fechamento > .wrap > h2 .t-acento{ color: var(--amarelo); }
 .fechamento .section-intro{ color: rgba(255,255,255,.76); margin-bottom: 30px; }
-.fechamento-nota{
-  color: rgba(255,255,255,.66); font-size: 13.5px; margin-top: 16px;
-}
 
 
 /* ============================================================
