@@ -88,10 +88,24 @@ direto no navegador pra testar.
 - **Números da faixa de provas contam quando entram na tela.** O valor final
   está escrito no HTML, então sem JS a pessoa vê o número certo, parado. Não
   anima em `prefers-reduced-motion`.
-- **Os carrosséis passam sozinhos a cada 3 segundos** (`data-auto-passa`, em
-  milissegundos) e **param de vez no primeiro toque, clique ou arrasto**. É de
-  propósito: se a pessoa interagiu foi porque quer ler com calma, e voltar a
-  andar sozinho atrapalharia. A esteira de parceiros segue a mesma regra.
+- **Os carrosséis deslizam sem parar** (`data-desliza`), a 58 px/s — a mesma
+  velocidade da esteira de parceiros, medida no navegador. O conteúdo é
+  duplicado e, quando a rolagem passa da metade, volta metade para trás: como as
+  metades são idênticas, o laço não tem emenda. A rolagem é nativa, então a
+  pessoa continua arrastando com o dedo; por isso o movimento soma ao
+  `scrollLeft` a cada quadro em vez de usar animação de CSS, que brigaria com a
+  rolagem pelo mesmo eixo. O `scroll-snap` fica desligado nesses três, senão
+  puxaria de volta a cada quadro. **Param de vez no primeiro toque**, porque
+  quem interagiu quer ler com calma.
+- **No desktop eles não viram esteira.** Ali os blocos são grade e não rolam;
+  duplicar mostraria cada card duas vezes. O JS só monta a esteira onde há
+  conteúdo além da borda.
+- **A barra de ação fixa voltou**, agora como o único botão de inscrição da
+  página: o de cima leva ao site do Governo, o de baixo, menor, abre o WhatsApp.
+  Os CTAs espalhados pelas seções saíram. Sem `URL_INSCRICAO_OFICIAL` o botão de
+  cima não fica apagado, ele troca de trabalho e vira "Quero ser avisado quando
+  abrir" — barra fixa acompanhando a página inteira com botão morto é pior que
+  não ter barra.
 - **Os depoimentos são a exceção: não passam sozinhos.** São vídeos, e carrossel
   que anda sozinho enquanto a pessoa assiste tira ela de perto justamente do que
   ela escolheu ver. Ali quem passa é ela, arrastando. Para voltar atrás, basta
