@@ -386,6 +386,12 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
     flex: 0 0 auto;
   }
 
+  /* Quem desliza sozinho não pode ter encaixe: o scroll-snap puxa de volta a
+     cada quadro e o movimento sai tremido. Os depoimentos, que a pessoa arrasta
+     na mão, mantêm o encaixe. */
+  [data-desliza]{ scroll-snap-type: none; }
+  [data-desliza] > *{ scroll-snap-align: none; }
+
   /* zera a margem que o grid do desktop deixa embaixo, senão a dica de
      arrastar fica jogada 40px para baixo, longe dos cards */
   .porque-grid{ margin-bottom: 0; }
@@ -470,7 +476,31 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
 .fechamento > .wrap > h2{ color: #fff; }
 .fechamento > .wrap > h2 .t-acento{ color: var(--amarelo); }
 .fechamento > .wrap{ text-align: center; }
-.fechamento .section-intro{ color: rgba(255,255,255,.76); margin-bottom: 30px; }
+.fechamento .section-intro{ color: rgba(255,255,255,.76); margin-bottom: 18px; }
+.fechamento-nota{ color: var(--amarelo); font-weight: 700; font-size: 15px; }
+
+/* ---------- barra de ação fixa ----------
+   Acompanha a página do início ao fim. Dois botões empilhados: o de inscrição
+   e, menor embaixo, a saída para o WhatsApp. */
+.barra-acao{
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--borda);
+  box-shadow: 0 -8px 28px rgba(11,23,51,.10);
+}
+.barra-acao .btn{ width: 100%; max-width: 420px; padding: 15px 28px; font-size: 16px; }
+.barra-duvida{
+  font-size: 13px; font-weight: 700; color: var(--texto-suave);
+  text-decoration: none; padding: 2px 8px;
+}
+.barra-duvida:hover{ color: var(--azul-700); text-decoration: underline; }
+
+/* A página inteira ganha folga embaixo, senão a barra cobre o fim do rodapé. */
+body{ padding-bottom: 104px; }
+@media (min-width: 761px){ body{ padding-bottom: 96px; } }
 
 /* ---------- rodapé, dentro do azul ----------
    Separado do CTA por uma linha clara em cima do próprio gradiente, para

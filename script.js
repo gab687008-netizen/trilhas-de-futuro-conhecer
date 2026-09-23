@@ -51,12 +51,12 @@ const CONFIG = {
      então nada aqui se apresenta de novo: as mensagens continuam de onde o
      atendimento parou. */
   CONVERSAS: {
-    protocolo:  'Oi! Já fiz minha inscrição no site do Governo. Segue o protocolo: ',
-    areas:      'Oi! Vi a página de orientação e não achei meu curso na lista. Pode me ajudar?',
-    fechamento: 'Oi! Travei num passo da inscrição e preciso de ajuda.',
-    // Sem botão flutuante na página: esta entrada é só o texto de reserva,
-    // usado se algum botão aparecer sem mensagem própria.
-    flutuante:  'Oi! Estou na página de orientação e fiquei com uma dúvida.'
+    duvida:   'Oi! Estou na página de orientação e fiquei com uma dúvida.',
+    // Usada quando as inscrições ainda não abriram: o botão de cima vira
+    // pedido de aviso em vez de mandar a pessoa para um site fechado.
+    avisar:   'Oi! Quero ser avisado assim que as inscrições do Trilhas abrirem.',
+    // Texto de reserva, para o caso de algum botão aparecer sem mensagem própria.
+    flutuante: 'Oi! Estou na página de orientação e fiquei com uma dúvida.'
   },
 
   // Depoimentos em vídeo de alunos, os mesmos que a Conhecer usa no site dela.
@@ -190,11 +190,16 @@ function montaBotaoInscricao(){
   const botao = document.getElementById('botaoInscricao');
   if(!botao) return;
 
+  /* Sem URL oficial, o botão não some nem fica apagado: ele troca de trabalho.
+     Uma barra fixa que acompanha a página inteira com um botão morto é pior
+     que não ter barra, e "me avisa quando abrir" é o que essa pessoa pode
+     fazer hoje. */
   if(!CONFIG.URL_INSCRICAO_OFICIAL){
-    botao.textContent = 'As inscrições ainda não abriram';
-    botao.setAttribute('aria-disabled', 'true');
-    botao.style.opacity = '.55';
-    botao.style.pointerEvents = 'none';
+    botao.textContent = 'Quero ser avisado quando abrir';
+    botao.href = montaLinkWhatsapp('avisar');
+    botao.target = '_blank';
+    botao.rel = 'noopener';
+    botao.addEventListener('click', () => eventoConversao('avisar'));
     return;
   }
 
@@ -300,43 +305,66 @@ function montaNumerosAnimados(){
   alvos.forEach(el => { el.textContent = (el.dataset.prefixo || '') + '0' + (el.dataset.sufixo || ''); observador.observe(el); });
 }
 
-/* ---------- carrosséis que passam sozinhos ----------
-   Andam de um card por vez, no intervalo que o data-auto-passa define em
-   milissegundos. Ao chegar no fim, voltam ao começo.
+/* ---------- carrosséis que deslizam sem parar ----------
+   Mesmo princípio da esteira de parceiros: o conteúdo é duplicado e, quando a
+   rolagem passa da metade, volta metade para trás. Como as duas metades são
+   idênticas, o salto é invisível e o laço não tem emenda.
 
-   Qualquer toque, clique ou arrasto PARA o carrossel de vez, e ele não volta
-   a andar sozinho. É de propósito: se a pessoa interagiu, foi porque quer ler
-   com calma, e um carrossel que volta a andar sozinho atrapalha. */
-function montaCarrosseisAutomaticos(){
+   A diferença para a esteira é que aqui a rolagem é nativa (overflow-x), então
+   a pessoa continua podendo arrastar com o dedo. Por isso o movimento é feito
+   somando ao scrollLeft a cada quadro, e não com animação de CSS: animação de
+   CSS e rolagem nativa brigam pelo mesmo eixo.
+
+   Parou no dedo, parou de vez: quem tocou quer ler com calma, e voltar a andar
+   sozinho atrapalharia. */
+const VELOCIDADE_CARROSSEL = 58;   // px por segundo, medido na esteira de parceiros
+
+function montaCarrosseisContinuos(){
   const semMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  document.querySelectorAll('[data-auto-passa]').forEach(trilho => {
-    const intervalo = parseInt(trilho.dataset.autoPassa, 10) || 6000;
+  document.querySelectorAll('[data-desliza]').forEach(trilho => {
+    const original = Array.from(trilho.children);
+    if(!original.length) return;
+
+    /* No desktop estes blocos são grade, não carrossel: não rolam, e duplicar
+       ali mostraria cada card duas vezes na tela. Só vira esteira o que de
+       fato tem conteúdo além da borda. */
+    if(trilho.scrollWidth <= trilho.clientWidth + 4) return;
+
+    // Duplica o conteúdo. Sem a cópia, chegar ao fim e voltar ao começo seria
+    // um pulo visível.
+    original.forEach(item => {
+      const copia = item.cloneNode(true);
+      copia.setAttribute('aria-hidden', 'true');   // leitor de tela não lê duas vezes
+      trilho.appendChild(copia);
+    });
+
     let parado = semMovimento;
-    let relogio = null;
+    let posicao = 0;
+    let anterior = null;
 
-    const rolavel = () => trilho.scrollWidth > trilho.clientWidth + 4;
-
-    const passo = () => {
-      if(parado || !rolavel()) return;
-      const cards = trilho.children;
-      if(!cards.length) return;
-      const largura = cards[0].getBoundingClientRect().width
-                    + parseFloat(getComputedStyle(trilho).columnGap || 0);
-      const fim = trilho.scrollLeft + trilho.clientWidth >= trilho.scrollWidth - 8;
-      trilho.scrollTo({ left: fim ? 0 : trilho.scrollLeft + largura, behavior: 'smooth' });
-    };
-
-    const parar = () => {
-      parado = true;
-      if(relogio){ clearInterval(relogio); relogio = null; }
-    };
+    const parar = () => { parado = true; };
     ['pointerdown','touchstart','wheel','keydown'].forEach(ev =>
       trilho.addEventListener(ev, parar, { passive: true }));
+    trilho.addEventListener('mouseenter', () => { parado = true; });
 
-    if(!parado) relogio = setInterval(passo, intervalo);
-    trilho.dataset.pararCarrossel = '1';
-    trilho.pararCarrossel = parar;
+    function quadro(agora){
+      if(anterior === null) anterior = agora;
+      const segundos = Math.min((agora - anterior) / 1000, 0.05);  // aba em segundo plano não acumula salto
+      anterior = agora;
+
+      if(!parado){
+        const metade = trilho.scrollWidth / 2;
+        if(metade > 0){
+          posicao += VELOCIDADE_CARROSSEL * segundos;
+          if(posicao >= metade) posicao -= metade;
+          trilho.scrollLeft = posicao;
+        }
+      }
+      requestAnimationFrame(quadro);
+    }
+
+    if(!semMovimento) requestAnimationFrame(quadro);
   });
 }
 
@@ -479,7 +507,7 @@ document.addEventListener('DOMContentLoaded', () => {
   preencheBadgeStatus();
   montaDepoimentos();
   montaNumerosAnimados();
-  montaCarrosseisAutomaticos();
+  montaCarrosseisContinuos();
   paraEsteiraNoToque();
   montaVisorDeFotos();
   dissuadeDownload();
