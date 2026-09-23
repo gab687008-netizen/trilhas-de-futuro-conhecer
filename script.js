@@ -2,16 +2,19 @@
    CONFIGURAÇÃO. Preencher antes de publicar a página
    ============================================================
 
-   O lead desta campanha NÃO nasce nesta página. Ele nasce na conversa do
-   WhatsApp e vai para o CRM pela API oficial. A página é apoio: ela convence
-   e empurra para a conversa. Por isso não existe formulário aqui.
+   Esta página NÃO capta lead. Ele nasceu na conversa do WhatsApp, pelo anúncio
+   Click-to-WhatsApp, e já está no CRM. O atendente manda o link desta página
+   dentro da conversa, com ?lead=<id do contato> na URL. Daqui a página faz três
+   coisas: mostra o vídeo, ensina o passo a passo da inscrição no site do
+   Governo, e avisa o CRM do que a pessoa fez. Por isso não existe formulário.
 
    WHATSAPP_NUMERO
      Número com DDI+DDD, só dígitos. Ex: "5531999999999".
 
    CONVERSAS
      A mensagem que já vai escrita quando a pessoa abre o WhatsApp, uma por
-     seção da página.
+     seção da página. Como ela já está em conversa, são mensagens de retorno,
+     não de apresentação.
 
    URL_INSCRICAO_OFICIAL
      Link do site do Governo de Minas para a inscrição. Só existe quando o
@@ -20,28 +23,160 @@
 const CONFIG = {
 
   // Número do técnico da Conhecer, (31) 3222-9330, confirmado pelo Gabriel.
-  // É fixo com WhatsApp, o mesmo que o site deles usa nos links wa.me.
   WHATSAPP_NUMERO: '553132229330',
-  URL_INSCRICAO_OFICIAL: '',    // [PREENCHER] quando o edital abrir
 
-  /* Uma mensagem por seção da página. O agente de IA do CRM usa esse texto
-     para saber o contexto antes mesmo de responder a primeira vez.
-     Se editar, mantenha cada uma DIFERENTE das outras: é a diferença entre
-     elas que permite classificar de onde a pessoa veio. */
+  // [PREENCHER] ID do vídeo no YouTube, só o código. Ex: 'dQw4w9WgXcQ'.
+  // Vazio = aparece o espaço reservado e nada é acompanhado.
+  VIDEO_YOUTUBE: '',
+
+  // [PREENCHER] quando o edital abrir. Enquanto vazio, o botão "Ir para o
+  // site oficial" fica desligado e avisa que as inscrições ainda não abriram.
+  URL_INSCRICAO_OFICIAL: '',
+
+  /* [PREENCHER] Endpoint do CRM que recebe os avisos desta página.
+     A página manda um POST com { lead, evento, em } nestes momentos:
+       pagina_aberta     a pessoa abriu o link que o atendente mandou
+       video_75          assistiu 75% do vídeo
+       clicou_inscricao  clicou para ir ao site do Governo
+
+     O lead vem do ?lead= na URL. Sem ele a página funciona igual, só não
+     tem como dizer QUEM fez o quê, então nada é enviado.
+
+     NUNCA coloque chave de API aqui: esta página é pública. Se o CRM exigir
+     autenticação, o endpoint precisa ser um intermediário que guarde a chave
+     do lado do servidor. */
+  AVISO_CRM: '',
+
+  /* Mensagens do WhatsApp, por seção. Quem abre esta página VEIO da conversa,
+     então nada aqui se apresenta de novo: as mensagens continuam de onde o
+     atendimento parou. */
   CONVERSAS: {
-    hero:       'Oi! Vim pela página do Trilhas de Futuro e quero me inscrever.',
-    areas:      'Oi! Vim pela página do Trilhas de Futuro e queria saber quais cursos têm na minha unidade.',
-    parceiros:  'Oi! Vim pela página do Trilhas de Futuro e queria saber sobre o estágio garantido.',
-    passos:     'Oi! Vim pela página do Trilhas de Futuro e quero começar minha inscrição.',
-    fechamento: 'Oi! Vim pela página do Trilhas de Futuro e quero garantir minha vaga.',
-    flutuante:  'Oi! Vim pela página do Trilhas de Futuro e queria tirar uma dúvida.'
+    protocolo:  'Oi! Já fiz minha inscrição no site do Governo. Segue o protocolo: ',
+    areas:      'Oi! Vi a página de orientação e não achei meu curso na lista. Pode me ajudar?',
+    fechamento: 'Oi! Travei num passo da inscrição e preciso de ajuda.',
+    flutuante:  'Oi! Estou na página de orientação e fiquei com uma dúvida.'
   },
 
-  // Depoimentos em vídeo de alunos, os mesmos que a Conhecer usa no site dela
-  // (unifecaf-conhecer/tecnico/js/cursos-ui.js). São vídeos reais: nenhum
-  // depoimento desta página é escrito por nós.
+  // Depoimentos em vídeo de alunos, os mesmos que a Conhecer usa no site dela.
   DEPOIMENTOS_YOUTUBE: ['NqhLLb2UfaM', 'OGjDdv7uhBY', 'X39J3C-ZSAY', 'j_aSTsi5jwA']
 };
+
+/* ---------- quem está vendo ----------
+   O atendente manda o link com ?lead=ID e, se quiser, &nome=Ana Clara.
+   O ID é o que amarra os avisos desta página ao contato certo no CRM. */
+function dadosDoLead(){
+  const p = new URLSearchParams(window.location.search);
+  return { lead: p.get('lead') || '', nome: (p.get('nome') || '').trim() };
+}
+
+/* ---------- avisos para o CRM ----------
+   Dispara e segue, igual ao envio de lead de antes: com no-cors a resposta é
+   opaca e a página não consegue saber se chegou. Quem confere é o CRM.
+   Sem AVISO_CRM configurado ou sem ?lead= na URL, não envia nada. */
+function avisaCRM(evento, extra){
+  const { lead } = dadosDoLead();
+  if(!CONFIG.AVISO_CRM || !lead) return;
+
+  fetch(CONFIG.AVISO_CRM, {
+    method: 'POST',
+    mode: 'no-cors',
+    keepalive: true,
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(Object.assign({
+      lead: lead,
+      evento: evento,
+      em: new Date().toISOString(),
+      pagina_url: window.location.href
+    }, extra || {}))
+  }).catch(() => {});
+}
+
+/* ---------- saudação com o nome ---------- */
+function montaSaudacao(){
+  const { nome } = dadosDoLead();
+  const alvo = document.querySelector('[data-saudacao]');
+  if(!alvo || !nome) return;
+
+  alvo.textContent = nome.split(' ')[0] + ', ';
+  alvo.hidden = false;
+
+  // "Ana, Seu passo a passo" fica errado: com a saudação na frente, o título
+  // vira continuação da frase e começa em minúscula.
+  const titulo = document.querySelector('[data-titulo]');
+  if(titulo) titulo.textContent = titulo.textContent.charAt(0).toLowerCase() + titulo.textContent.slice(1);
+}
+
+/* ---------- o vídeo, com acompanhamento de progresso ----------
+   Usa a API de iframe do YouTube para saber quanto a pessoa já assistiu. Aos
+   75% o CRM é avisado.
+
+   Por que 75% e não o play nem o fim: no play o atendente cobraria enquanto a
+   pessoa ainda assiste; no fim quase ninguém bate, porque muita gente sai nos
+   últimos segundos depois de já ter entendido tudo. */
+function montaVideo(){
+  const caixa = document.getElementById('videoCaixa');
+  if(!caixa || !CONFIG.VIDEO_YOUTUBE) return;
+
+  caixa.innerHTML = '<div id="playerVideo"></div>';
+
+  const script = document.createElement('script');
+  script.src = 'https://www.youtube.com/iframe_api';
+  document.head.appendChild(script);
+
+  window.onYouTubeIframeAPIReady = function(){
+    let avisou = false;
+    let relogio = null;
+
+    const player = new window.YT.Player('playerVideo', {
+      videoId: CONFIG.VIDEO_YOUTUBE,
+      host: 'https://www.youtube-nocookie.com',
+      playerVars: { rel: 0, modestbranding: 1, playsinline: 1 },
+      events: {
+        onStateChange: (e) => {
+          if(e.data === window.YT.PlayerState.PLAYING){
+            if(relogio) return;
+            relogio = setInterval(() => {
+              const total = player.getDuration();
+              if(!total || avisou) return;
+              if(player.getCurrentTime() / total >= 0.75){
+                avisou = true;
+                clearInterval(relogio); relogio = null;
+                avisaCRM('video_75');
+                if(typeof window.gtag === 'function') window.gtag('event', 'video_assistido');
+              }
+            }, 1000);
+          } else if(relogio){
+            clearInterval(relogio); relogio = null;
+          }
+        }
+      }
+    });
+  };
+}
+
+/* ---------- botão do site oficial ---------- */
+function montaBotaoInscricao(){
+  const botao = document.getElementById('botaoInscricao');
+  if(!botao) return;
+
+  if(!CONFIG.URL_INSCRICAO_OFICIAL){
+    botao.textContent = 'As inscrições ainda não abriram';
+    botao.setAttribute('aria-disabled', 'true');
+    botao.style.opacity = '.55';
+    botao.style.pointerEvents = 'none';
+    return;
+  }
+
+  botao.href = CONFIG.URL_INSCRICAO_OFICIAL;
+  botao.target = '_blank';      // aba nova: a pessoa não perde esta página
+  botao.rel = 'noopener';
+  botao.addEventListener('click', () => {
+    avisaCRM('clicou_inscricao');
+    if(typeof window.gtag === 'function') window.gtag('event', 'clicou_inscricao');
+    if(typeof window.fbq === 'function') window.fbq('track', 'InitiateCheckout');
+  });
+}
+
 
 /* ---------- depoimentos em vídeo ----------
    Só carrega a capa. O iframe do YouTube entra quando a pessoa clica, para
@@ -71,7 +206,10 @@ function montaDepoimentos(){
   });
 }
 
-/* ---------- captura de UTM / origem (QR Code, mídias offline) ---------- */
+/* ---------- captura de UTM / origem ----------
+   Fora do funil planejado: quem chega aqui veio da conversa, não de um anúncio.
+   Fica de pé só para o caso de o link vazar para fora dela (alguém repassa para
+   um amigo, a Conhecer cola no Instagram), para o tráfego não virar "direto". */
 function capturaOrigem(){
   const params = new URLSearchParams(window.location.search);
   const origem = {
@@ -82,7 +220,7 @@ function capturaOrigem(){
     canal: params.get('canal') || ''   // uso livre: "outdoor", "panfleto-bh", "influencer-x" etc.
   };
   // guarda no localStorage pra não perder a origem se a pessoa navegar
-  // pela página antes de preencher o formulário
+  // pela página antes de clicar em alguma coisa
   try{
     const existente = JSON.parse(localStorage.getItem('trilhas.origem') || 'null');
     const temAlgumValor = Object.values(origem).some(v => v);
@@ -239,17 +377,13 @@ function dissuadeDownload(){
    clicou (o atributo data-whatsapp). É assim que o agente de IA do CRM sabe o
    contexto antes de responder.
 
-   Quem chega por QR code ou por link com ?canal= leva esse código discreto no
-   fim da mensagem: é o que separa o panfleto de Ribeirão do anúncio. Para
-   tráfego de anúncio Click-to-WhatsApp isso não é necessário, porque a própria
-   Meta entrega a origem junto da conversa. */
-function montaLinkWhatsapp(secao, origem){
+   Todo mundo que abre esta página veio da conversa, então as mensagens não se
+   apresentam: continuam de onde o atendimento parou. Quem é a pessoa, o CRM já
+   sabe pelo ?lead= da URL, não pelo texto da mensagem. */
+function montaLinkWhatsapp(secao){
   if(!CONFIG.WHATSAPP_NUMERO) return '#';
 
-  let texto = CONFIG.CONVERSAS[secao] || CONFIG.CONVERSAS.flutuante;
-  const marca = (origem && (origem.canal || origem.utm_source)) || '';
-  if(marca) texto += ' (ref: ' + marca + ')';
-
+  const texto = CONFIG.CONVERSAS[secao] || CONFIG.CONVERSAS.flutuante;
   return 'https://wa.me/' + CONFIG.WHATSAPP_NUMERO + '?text=' + encodeURIComponent(texto);
 }
 
@@ -258,7 +392,7 @@ function aplicaLinksWhatsapp(){
 
   document.querySelectorAll('[data-whatsapp]').forEach(botao => {
     const secao = botao.dataset.whatsapp;
-    botao.href = montaLinkWhatsapp(secao, origem);
+    botao.href = montaLinkWhatsapp(secao);
     botao.target = '_blank';
     botao.rel = 'noopener';
     botao.addEventListener('click', () => eventoConversao(secao, origem));
@@ -266,10 +400,10 @@ function aplicaLinksWhatsapp(){
 }
 
 /* ---------- eventos de conversão (GA4 e Meta) ----------
-   Sem formulário, a conversão que a página consegue medir é o clique que abre
-   o WhatsApp. Isso NÃO é a mesma coisa que um lead: a pessoa pode abrir e não
-   mandar a mensagem. O número real de conversas está no CRM, e é com ele que
-   estes números devem ser conferidos de tempos em tempos. */
+   Aqui o lead já existe: ele nasceu no anúncio Click-to-WhatsApp, antes desta
+   página. O que estes eventos medem é a etapa, não a entrada: voltou pro
+   WhatsApp, assistiu o vídeo, clicou pra se inscrever. O número que vale é o
+   do CRM, e é com ele que estes devem ser conferidos de tempos em tempos. */
 function eventoConversao(secao, origem){
   if(typeof window.gtag === 'function'){
     window.gtag('event', 'generate_lead', {
@@ -298,7 +432,11 @@ function preencheBadgeStatus(){
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  montaSaudacao();
+  montaVideo();
+  montaBotaoInscricao();
   aplicaLinksWhatsapp();
+  avisaCRM('pagina_aberta');
   preencheBadgeStatus();
   montaDepoimentos();
   montaNumerosAnimados();
