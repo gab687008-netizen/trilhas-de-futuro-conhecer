@@ -244,9 +244,30 @@ chegou**. Quem confere é o CRM. Se um dia precisar de confirmação, o endpoint
 tem que devolver os cabeçalhos CORS certos e o `mode` sai daqui.
 
 **Chave de API nunca entra aqui.** Esta página é pública: qualquer pessoa lê o
-`script.js`. Se o CRM exigir autenticação, `CONFIG.AVISO_CRM` tem que apontar
-para um intermediário (um Apps Script, uma função serverless) que guarde a
-chave do lado do servidor.
+`script.js`. Por isso `CONFIG.AVISO_CRM` aponta para o `apps-script.js` deste
+repositório, que roda no Google e guarda a chave nas Propriedades do Script.
+
+    página  →  apps-script.js  →  planilha (sempre)
+                              →  Brota Flow (quando configurado)
+
+O passo a passo de instalação está no topo do próprio `apps-script.js`. Leva uns
+15 minutos e **não precisa do Brota Flow pronto**: com `BROTA_FLOW_URL` vazia o
+script só grava na planilha, e a planilha sozinha já mostra quem abriu, quem
+assistiu e quem foi se inscrever. Dá para subir hoje e ligar o CRM depois.
+
+**Avisos repetidos.** A página não manda o mesmo aviso duas vezes para o mesmo
+lead: `pagina_aberta` só se repete depois de 6 horas, `video_75` e
+`clicou_inscricao` são marcos e vão uma vez só. A memória é o `localStorage`, que
+é por navegador — quem abre no celular e depois no computador gera dois avisos.
+A deduplicação que vale é a do CRM; a da página só tira o grosso do ruído.
+
+**O endpoint é público e dá para falsificar aviso.** Quem ler o `script.js` acha
+a URL e consegue mandar "o lead X assistiu o vídeo". Não tem solução em página
+estática: o que o navegador precisa saber para se autenticar, o visitante
+também sabe. O `apps-script.js` limita o dano (só aceita os três eventos
+conhecidos, só aceita lead com formato de identificador, ignora corpo grande),
+e o resto é regra de negócio: **esses avisos são sinal para o atendente, não
+verdade que dispare cobrança automática ou mude status de matrícula.**
 
 ### O buraco do funil, e o que a página faz com ele
 
