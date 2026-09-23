@@ -104,8 +104,15 @@ direto no navegador pra testar.
   a área de trabalho e toque longo no celular. É dissuasão, não proteção. Se
   alguma foto não puder circular de jeito nenhum, ela não pode estar numa
   página pública.
-- **A barra fixa de ação saiu.** Ficou só o botão flutuante do WhatsApp, sem
-  fundo atrás.
+- **A barra fixa de ação saiu, e o botão flutuante do WhatsApp também.** Ele
+  cobria conteúdo no rodapé e era redundante: a página já tem chamada para o
+  WhatsApp nas áreas, na inscrição e no fechamento.
+- **O rodapé tem só o necessário para uma página de VSL**: o aviso de que o
+  Trilhas é do Governo e esta página não é o site oficial, os direitos
+  reservados e o crédito da Brota Web. Sem menu, sem redes sociais, sem links
+  institucionais — cada link ali é uma porta de saída a centímetros do único
+  botão que importa. Fica dentro do azul do fechamento, separado por uma linha
+  clara, para encerrar a página sem abrir um bloco novo de outra cor.
 - **A página não tem formulário.** Ela não capta nada: o lead já nasceu na
   conversa do WhatsApp, antes daqui. Ver "O funil de comunicação" abaixo.
 - **Ordem das seções**: vídeo, provas, inscrição, e só depois os argumentos.

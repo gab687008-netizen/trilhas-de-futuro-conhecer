@@ -340,19 +340,6 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
    WHATSAPP FLUTUANTE
    Sem a barra fixa atrás: o botão fica sozinho sobre a página.
    ============================================================ */
-.whatsapp-flutuante{
-  position: fixed; right: 18px; bottom: calc(18px + env(safe-area-inset-bottom)); z-index: 50;
-  width: 56px; height: 56px; border-radius: 50%; background: var(--whatsapp);
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 10px 28px rgba(37,211,102,.42);
-  transition: transform .15s ease;
-}
-.whatsapp-flutuante:hover{ transform: scale(1.07); }
-
-/* assinatura discreta, sem rodapé */
-.assinatura{ text-align: center; padding: 0 20px 28px; }
-.assinatura a{ font-size: 11.5px; color: var(--texto-suave); text-decoration: none; font-weight: 600; }
-.assinatura a:hover{ color: var(--azul-700); }
 
 /* ============================================================
    CARROSSÉIS NO MOBILE
@@ -482,7 +469,31 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
 .fechamento .eyebrow{ color: var(--amarelo); }
 .fechamento > .wrap > h2{ color: #fff; }
 .fechamento > .wrap > h2 .t-acento{ color: var(--amarelo); }
+.fechamento > .wrap{ text-align: center; }
 .fechamento .section-intro{ color: rgba(255,255,255,.76); margin-bottom: 30px; }
+
+/* ---------- rodapé, dentro do azul ----------
+   Separado do CTA por uma linha clara em cima do próprio gradiente, para
+   encerrar a página sem abrir um bloco novo de outra cor. */
+.rodape{
+  position: relative; z-index: 1; text-align: center;
+  margin-top: clamp(40px, 5vw, 60px);
+  padding-top: clamp(24px, 3vw, 32px);
+  border-top: 1px solid rgba(255,255,255,.14);
+}
+.rodape-aviso{
+  color: rgba(255,255,255,.58); font-size: 12.5px; line-height: 1.6;
+  max-width: 560px; margin: 0 auto 16px;
+}
+.rodape-legal{
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: 8px 18px;
+  color: rgba(255,255,255,.5); font-size: 12px;
+}
+.rodape-legal a{
+  color: rgba(255,255,255,.66); text-decoration: none; font-weight: 600;
+}
+.rodape-legal a:hover{ color: var(--amarelo); }
 
 
 /* ============================================================
