@@ -73,9 +73,38 @@ function dadosDoLead(){
    Dispara e segue, igual ao envio de lead de antes: com no-cors a resposta é
    opaca e a página não consegue saber se chegou. Quem confere é o CRM.
    Sem AVISO_CRM configurado ou sem ?lead= na URL, não envia nada. */
+/* Quantas horas esperar antes de repetir o mesmo aviso para o mesmo lead.
+   Sem isso, cada recarga da página vira um aviso novo e o atendente vê
+   "Ana Clara abriu a página" oito vezes seguidas, o que é pior que não ver
+   nada: ele para de olhar.
+
+   pagina_aberta se repete depois de 6 horas porque voltar na página no dia
+   seguinte é informação de verdade. Os outros dois são marcos: aconteceram
+   uma vez e pronto.
+
+   A memória disso é o localStorage, que é por navegador. Quem abre no celular
+   e depois no computador gera dois avisos. A deduplicação que vale é a do
+   CRM; esta aqui só tira o grosso do ruído. */
+const JANELA_DO_AVISO = { pagina_aberta: 6, video_75: Infinity, clicou_inscricao: Infinity };
+
+function jaAvisou(evento, lead){
+  const chave = 'trilhas.aviso.' + lead + '.' + evento;
+  const horas = JANELA_DO_AVISO[evento];
+  try{
+    const ultimo = Number(localStorage.getItem(chave) || 0);
+    if(ultimo && (horas === Infinity || Date.now() - ultimo < horas * 3600000)) return true;
+    localStorage.setItem(chave, String(Date.now()));
+  }catch(e){
+    // Navegador anônimo ou storage bloqueado: manda mesmo assim. Aviso
+    // repetido incomoda; aviso que nunca chega quebra o funil.
+  }
+  return false;
+}
+
 function avisaCRM(evento, extra){
   const { lead } = dadosDoLead();
   if(!CONFIG.AVISO_CRM || !lead) return;
+  if(jaAvisou(evento, lead)) return;
 
   fetch(CONFIG.AVISO_CRM, {
     method: 'POST',
