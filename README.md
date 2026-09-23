@@ -88,10 +88,14 @@ direto no navegador pra testar.
 - **Números da faixa de provas contam quando entram na tela.** O valor final
   está escrito no HTML, então sem JS a pessoa vê o número certo, parado. Não
   anima em `prefers-reduced-motion`.
-- **Os carrosséis passam sozinhos** (`data-auto-passa`, em milissegundos) e
-  **param de vez no primeiro toque, clique ou arrasto**. É de propósito: se a
-  pessoa interagiu foi porque quer ler com calma, e voltar a andar sozinho
-  atrapalharia. A esteira de parceiros segue a mesma regra.
+- **Os carrosséis passam sozinhos a cada 3 segundos** (`data-auto-passa`, em
+  milissegundos) e **param de vez no primeiro toque, clique ou arrasto**. É de
+  propósito: se a pessoa interagiu foi porque quer ler com calma, e voltar a
+  andar sozinho atrapalharia. A esteira de parceiros segue a mesma regra.
+- **Os depoimentos são a exceção: não passam sozinhos.** São vídeos, e carrossel
+  que anda sozinho enquanto a pessoa assiste tira ela de perto justamente do que
+  ela escolheu ver. Ali quem passa é ela, arrastando. Para voltar atrás, basta
+  devolver o `data-auto-passa` ao `.depo-grid` no `index.html`.
 - **As fotos abrem ampliadas** ao clique, num visor que fecha no X, no fundo
   ou no Esc.
 - **Sobre "bloquear download": não existe bloqueio real numa página web.**
