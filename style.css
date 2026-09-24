@@ -493,6 +493,64 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
 }
 .barra-acao .btn-acao:hover{ box-shadow: 0 12px 30px rgba(252,184,21,.5); }
 
+/* O botão respira: um halo que cresce e some, a cada 2,6s.
+
+   É pulso, não pisca. Piscar chama atenção uma vez e irrita da segunda em
+   diante, e conteúdo que pisca rápido é um problema real de acessibilidade —
+   a recomendação é nunca passar de três piscadas por segundo. O halo aparece
+   sem mexer no próprio botão, então o alvo do dedo não muda de tamanho
+   enquanto a pessoa tenta acertá-lo. */
+.barra-acao .btn-acao{ position: relative; }
+.barra-acao .btn-acao::after{
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  box-shadow: 0 0 0 0 rgba(252,184,21,.65);
+  animation: pulsa 2.6s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes pulsa{
+  0%   { box-shadow: 0 0 0 0 rgba(252,184,21,.6); }
+  70%  { box-shadow: 0 0 0 16px rgba(252,184,21,0); }
+  100% { box-shadow: 0 0 0 0 rgba(252,184,21,0); }
+}
+@media (prefers-reduced-motion: reduce){
+  .barra-acao .btn-acao::after{ animation: none; }
+}
+
+/* ---------- triagem antes de sair ---------- */
+.triagem{ align-items: center; }
+.triagem-caixa{
+  background: var(--fundo); border-radius: var(--raio-g);
+  padding: clamp(26px, 5vw, 40px) clamp(20px, 4vw, 36px);
+  max-width: 520px; width: 100%;
+  box-shadow: 0 30px 80px rgba(0,0,0,.45);
+  max-height: 86vh; overflow-y: auto;
+}
+.triagem-caixa h2{ font-size: clamp(22px, 4.6vw, 28px); }
+.triagem-caixa .section-intro{ margin-bottom: 24px; font-size: 15px; }
+.triagem-acoes{ display: flex; flex-direction: column; gap: 10px; }
+.triagem-acoes .btn{ width: 100%; }
+.triagem-campo{ display: block; margin-bottom: 18px; }
+.triagem-campo textarea{
+  width: 100%; font-family: inherit; font-size: 16px;   /* 16px evita o zoom automático do iOS */
+  color: var(--tinta); background: var(--fundo-alt);
+  border: 2px solid var(--borda); border-radius: var(--raio);
+  padding: 14px 16px; resize: vertical;
+}
+.triagem-campo textarea:focus{
+  outline: none; border-color: var(--azul-600); background: var(--fundo);
+}
+.visualmente-oculto{
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* Botão secundário sobre fundo claro, usado na triagem. */
+.btn-contorno{
+  background: transparent; color: var(--azul-700); border-color: var(--azul-700);
+}
+.btn-contorno:hover{ background: var(--azul-nevoa); }
+.btn-grande{ font-size: 17px; padding: 17px 32px; }
+
 .barra-duvida{
   display: inline-flex; align-items: center;
   background: #fff; color: var(--azul-800);
@@ -503,13 +561,15 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
 }
 .barra-duvida:hover{ color: var(--azul-600); transform: translateY(-2px); }
 
-/* Folga no fim da página para os botões não taparem o rodapé. Com a faixa
-   branca de antes bastava a altura dela; agora que os botões flutuam, o
-   conteúdo passa por trás e a folga precisa cobrir a barra inteira mais um
-   respiro. Em telas estreitas o botão quebra em duas linhas e a barra passa de
-   120px para quase 150px, por isso o valor maior ali. */
-body{ padding-bottom: 176px; }
-@media (min-width: 420px){ body{ padding-bottom: 150px; } }
+/* Folga no fim da página para os botões não taparem o rodapé.
+
+   A folga fica no fechamento, não no body: assim ela herda o azul do gradiente
+   e a página termina em azul, em vez de abrir uma tira branca embaixo do
+   rodapé. Precisa cobrir a barra inteira mais um respiro, porque os botões
+   flutuam e o conteúdo passa por trás deles. Em telas estreitas o botão quebra
+   em duas linhas e a barra passa de 122px para 148px, daí o valor maior. */
+.fechamento{ padding-bottom: 176px; }
+@media (min-width: 420px){ .fechamento{ padding-bottom: 150px; } }
 
 /* ---------- rodapé, dentro do azul ----------
    Separado do CTA por uma linha clara em cima do próprio gradiente, para

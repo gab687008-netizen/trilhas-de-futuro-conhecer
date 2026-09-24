@@ -58,7 +58,7 @@ const CONFIG = {
      então nada aqui se apresenta de novo: as mensagens continuam de onde o
      atendimento parou. */
   CONVERSAS: {
-    duvida:   'Oi! Estou na página de orientação e fiquei com uma dúvida.',
+    duvida:   'Oi! Estou na página de orientação e fiquei com uma dúvida:',
     // Usada quando as inscrições ainda não abriram: o botão de cima vira
     // pedido de aviso em vez de mandar a pessoa para um site fechado.
     avisar:   'Oi! Quero ser avisado assim que as inscrições do Trilhas abrirem.',
@@ -192,32 +192,104 @@ function montaVideo(){
   };
 }
 
-/* ---------- botão do site oficial ---------- */
+/* ---------- botão de inscrição e triagem antes de sair ----------
+   O botão não leva direto ao site do Governo: abre uma pergunta só, "ficou
+   alguma dúvida?". É o último momento em que ainda falamos com a pessoa, já
+   que dentro do site do Governo não temos nada.
+
+   O custo disso é um clique a mais no caminho de quem já decidiu, então o
+   caminho "não tenho dúvida" é o botão grande e é um link de verdade: abre no
+   próprio clique, sem risco de o navegador barrar como janela automática.
+
+   Sem URL_INSCRICAO_OFICIAL não há para onde mandar ninguém, e o botão troca
+   de papel: vira pedido de aviso pelo WhatsApp, sem triagem. */
 function montaBotaoInscricao(){
   const botao = document.getElementById('botaoInscricao');
   if(!botao) return;
 
-  /* Sem URL oficial, o botão não some nem fica apagado: ele troca de trabalho.
-     Uma barra fixa que acompanha a página inteira com um botão morto é pior
-     que não ter barra, e "me avisa quando abrir" é o que essa pessoa pode
-     fazer hoje. */
   if(!CONFIG.URL_INSCRICAO_OFICIAL){
-    botao.textContent = 'Quero ser avisado quando abrir';
-    botao.href = montaLinkWhatsapp('avisar');
-    botao.target = '_blank';
-    botao.rel = 'noopener';
-    botao.addEventListener('click', () => eventoConversao('avisar'));
+    const link = document.createElement('a');
+    link.className = botao.className;
+    link.id = botao.id;
+    link.textContent = 'Quero ser avisado quando abrir';
+    link.href = montaLinkWhatsapp('avisar');
+    link.target = '_blank';
+    link.rel = 'noopener';
+    link.addEventListener('click', () => eventoConversao('avisar'));
+    botao.replaceWith(link);
     return;
   }
 
-  botao.href = CONFIG.URL_INSCRICAO_OFICIAL;
-  botao.target = '_blank';      // aba nova: a pessoa não perde esta página
-  botao.rel = 'noopener';
-  botao.addEventListener('click', () => {
+  botao.addEventListener('click', () => abreTriagem());
+}
+
+function montaTriagem(){
+  const caixa = document.getElementById('triagem');
+  if(!caixa) return;
+
+  const sair     = caixa.querySelector('.visor-fechar');
+  const pergunta = caixa.querySelector('[data-etapa="pergunta"]');
+  const duvida   = caixa.querySelector('[data-etapa="duvida"]');
+  const seguir   = document.getElementById('triagemSeguir');
+  const enviar   = document.getElementById('triagemEnviar');
+  const texto    = document.getElementById('triagemTexto');
+  let ultimoFoco = null;
+
+  seguir.href = CONFIG.URL_INSCRICAO_OFICIAL;
+  seguir.addEventListener('click', () => {
     avisaCRM('clicou_inscricao');
     if(typeof window.gtag === 'function') window.gtag('event', 'clicou_inscricao');
     if(typeof window.fbq === 'function') window.fbq('track', 'InitiateCheckout');
+    fecha();
   });
+
+  // Mostra a etapa da dúvida e leva o foco para o campo, para quem está no
+  // teclado não ter que procurar onde escrever.
+  caixa.querySelector('[data-abre-duvida]').addEventListener('click', () => {
+    pergunta.hidden = true; duvida.hidden = false;
+    texto.focus();
+    avisaCRM('tem_duvida');
+    if(typeof window.gtag === 'function') window.gtag('event', 'declarou_duvida');
+  });
+
+  caixa.querySelector('[data-volta-pergunta]').addEventListener('click', () => {
+    duvida.hidden = true; pergunta.hidden = false;
+  });
+
+  /* O link do WhatsApp é montado no momento do clique, com o que a pessoa
+     acabou de escrever. Campo vazio manda só a abertura: melhor uma conversa
+     sem detalhe do que nenhuma. */
+  enviar.addEventListener('click', () => {
+    const escrito = (texto.value || '').trim();
+    const base = CONFIG.CONVERSAS.duvida;
+    const msg = escrito ? base + ' ' + escrito : base;
+    enviar.href = 'https://wa.me/' + CONFIG.WHATSAPP_NUMERO + '?text=' + encodeURIComponent(msg);
+    enviar.target = '_blank';
+    enviar.rel = 'noopener';
+    eventoConversao('duvida');
+    fecha();
+  });
+
+  function fecha(){
+    caixa.hidden = true;
+    duvida.hidden = true; pergunta.hidden = false;
+    document.body.style.overflow = '';
+    if(ultimoFoco && ultimoFoco.focus) ultimoFoco.focus();
+  }
+
+  caixa.addEventListener('click', (e) => {
+    if(e.target === caixa || e.target === sair) fecha();
+  });
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape' && !caixa.hidden) fecha();
+  });
+
+  window.abreTriagem = function(){
+    caixa.hidden = false;
+    document.body.style.overflow = 'hidden';
+    ultimoFoco = document.activeElement;
+    sair.focus();
+  };
 }
 
 
@@ -575,6 +647,7 @@ document.addEventListener('DOMContentLoaded', () => {
   montaSaudacao();
   atualizaAnoDoRodape();
   montaVideo();
+  montaTriagem();
   montaBotaoInscricao();
   aplicaLinksWhatsapp();
   avisaCRM('pagina_aberta');
