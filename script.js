@@ -279,6 +279,7 @@ function montaNumerosAnimados(){
 
   const conta = (el) => {
     const destino = parseInt(el.dataset.numero, 10);
+    if(!Number.isFinite(destino)) return;
     const prefixo = el.dataset.prefixo || '';
     const sufixo  = el.dataset.sufixo  || '';
     const duracao = 1100;
@@ -300,53 +301,60 @@ function montaNumerosAnimados(){
       observador.unobserve(en.target);
       conta(en.target);
     });
-  }, { threshold: 0.6 });
+  }, { threshold: 0.35 });
 
-  alvos.forEach(el => { el.textContent = (el.dataset.prefixo || '') + '0' + (el.dataset.sufixo || ''); observador.observe(el); });
+  /* Os números NÃO são zerados aqui.
+
+     A versão anterior zerava todos de cara e contava depois, quando o elemento
+     entrasse na tela. O problema é que o valor final está escrito no HTML
+     justamente para aparecer certo se o JS falhar — e zerar de cara jogava essa
+     proteção fora: bastava o observador não disparar para a faixa exibir
+     "0 unidades na região de BH" para sempre. Foi o que aconteceu.
+
+     Agora quem zera é a própria contagem, no primeiro quadro, já com a certeza
+     de que vai contar até o fim. Observador que não dispara deixa o número
+     certo parado, que é o comportamento correto. */
+  alvos.forEach(el => observador.observe(el));
 }
 
 /* ---------- carrosséis que deslizam sem parar ----------
-   Mesmo princípio da esteira de parceiros: o conteúdo é duplicado e, quando a
-   rolagem passa da metade, volta metade para trás. Como as duas metades são
-   idênticas, o salto é invisível e o laço não tem emenda.
+   Vai até a última carta, inverte e volta. Sem duplicar nada.
 
-   A diferença para a esteira é que aqui a rolagem é nativa (overflow-x), então
-   a pessoa continua podendo arrastar com o dedo. Por isso o movimento é feito
-   somando ao scrollLeft a cada quadro, e não com animação de CSS: animação de
-   CSS e rolagem nativa brigam pelo mesmo eixo.
+   A primeira versão copiava o conteúdo e voltava metade para trás ao passar da
+   metade, como a esteira de parceiros. Funciona lá porque a esteira não é
+   arrastável: ninguém alcança a cópia. Aqui a rolagem é nativa, então bastava
+   parar no toque e arrastar para o fim para ver todos os cards repetidos. O
+   laço invisível só existia enquanto o script mandava na posição.
 
-   Parou no dedo, parou de vez: quem tocou quer ler com calma, e voltar a andar
-   sozinho atrapalharia. */
-const VELOCIDADE_CARROSSEL = 58;   // px por segundo, medido na esteira de parceiros
+   Trocando por vaivém, o que a pessoa arrasta é exatamente o que existe: nada
+   se repete, e o movimento também não tem emenda, porque inverter no limite não
+   dá salto nenhum.
+
+   O movimento soma ao scrollLeft a cada quadro em vez de usar animação de CSS,
+   porque animação de CSS e rolagem nativa brigam pelo mesmo eixo. */
+const VELOCIDADE_CARROSSEL = 58;   // px por segundo, o mesmo ritmo da esteira de parceiros
 
 function montaCarrosseisContinuos(){
   const semMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(semMovimento) return;
 
   document.querySelectorAll('[data-desliza]').forEach(trilho => {
-    const original = Array.from(trilho.children);
-    if(!original.length) return;
+    if(!trilho.children.length) return;
 
-    /* No desktop estes blocos são grade, não carrossel: não rolam, e duplicar
-       ali mostraria cada card duas vezes na tela. Só vira esteira o que de
-       fato tem conteúdo além da borda. */
+    /* No desktop estes blocos são grade, não carrossel: não rolam, e não há
+       para onde deslizar. */
     if(trilho.scrollWidth <= trilho.clientWidth + 4) return;
 
-    // Duplica o conteúdo. Sem a cópia, chegar ao fim e voltar ao começo seria
-    // um pulo visível.
-    original.forEach(item => {
-      const copia = item.cloneNode(true);
-      copia.setAttribute('aria-hidden', 'true');   // leitor de tela não lê duas vezes
-      trilho.appendChild(copia);
-    });
-
-    let parado = semMovimento;
-    let posicao = 0;
+    let parado = false;
+    let posicao = trilho.scrollLeft;
+    let sentido = 1;               // 1 vai para a direita, -1 volta
     let anterior = null;
 
+    // Parou no dedo, parou de vez: quem tocou quer ler com calma.
     const parar = () => { parado = true; };
     ['pointerdown','touchstart','wheel','keydown'].forEach(ev =>
       trilho.addEventListener(ev, parar, { passive: true }));
-    trilho.addEventListener('mouseenter', () => { parado = true; });
+    trilho.addEventListener('mouseenter', parar);
 
     function quadro(agora){
       if(anterior === null) anterior = agora;
@@ -354,27 +362,21 @@ function montaCarrosseisContinuos(){
       anterior = agora;
 
       if(!parado){
-        const metade = trilho.scrollWidth / 2;
-        if(metade > 0){
-          posicao += VELOCIDADE_CARROSSEL * segundos;
-          if(posicao >= metade) posicao -= metade;
+        const limite = trilho.scrollWidth - trilho.clientWidth;
+        if(limite > 0){
+          posicao += VELOCIDADE_CARROSSEL * segundos * sentido;
+          if(posicao >= limite){ posicao = limite; sentido = -1; }
+          else if(posicao <= 0){ posicao = 0; sentido = 1; }
           trilho.scrollLeft = posicao;
         }
       }
       requestAnimationFrame(quadro);
     }
 
-    if(!semMovimento) requestAnimationFrame(quadro);
+    requestAnimationFrame(quadro);
   });
 }
 
-/* a esteira de parceiros também para quando alguém toca nela */
-function paraEsteiraNoToque(){
-  const janela = document.querySelector('.parceiros-janela');
-  if(!janela) return;
-  ['pointerdown','touchstart'].forEach(ev =>
-    janela.addEventListener(ev, () => janela.classList.add('parado'), { passive: true, once: true }));
-}
 
 /* ---------- visor de foto ampliada ----------
    As fotos com data-ampliar abrem num visor sobre a página. Fecha no X, no
@@ -508,7 +510,6 @@ document.addEventListener('DOMContentLoaded', () => {
   montaDepoimentos();
   montaNumerosAnimados();
   montaCarrosseisContinuos();
-  paraEsteiraNoToque();
   montaVisorDeFotos();
   dissuadeDownload();
 });
