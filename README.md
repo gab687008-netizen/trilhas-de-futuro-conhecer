@@ -100,6 +100,14 @@ direto no navegador pra testar.
 - **No desktop eles não viram esteira.** Ali os blocos são grade e não rolam;
   duplicar mostraria cada card duas vezes. O JS só monta a esteira onde há
   conteúdo além da borda.
+- **Os botões fixos não têm faixa atrás.** A faixa branca cortava a página em
+  duas e tapava conteúdo. Sem fundo, cada botão precisa se sustentar sozinho
+  sobre o que passa atrás, que ora é branco, ora azul-escuro, ora foto: os dois
+  são sólidos e carregam sombra própria, e o de ação tem contorno branco por
+  causa de um trecho só, a faixa de provas, onde o amarelo se dissolveria no
+  amarelo. O container não recebe clique, só os botões, senão viraria uma tira
+  invisível segurando toques destinados ao conteúdo. A folga no fim da página
+  cobre a barra inteira mais um respiro, porque agora o conteúdo passa por trás.
 - **A barra de ação fixa voltou**, agora como o único botão de inscrição da
   página: o de cima leva ao site do Governo, o de baixo, menor, abre o WhatsApp.
   Os CTAs espalhados pelas seções saíram. Sem `URL_INSCRICAO_OFICIAL` o botão de

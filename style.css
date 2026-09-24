@@ -463,27 +463,53 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
 .fechamento-nota{ color: var(--amarelo); font-weight: 700; font-size: 15px; }
 
 /* ---------- barra de ação fixa ----------
-   Acompanha a página do início ao fim. Dois botões empilhados: o de inscrição
-   e, menor embaixo, a saída para o WhatsApp. */
+   Acompanha a página do início ao fim. Dois botões soltos, sem faixa atrás:
+   a faixa branca cortava a página em duas e tapava o conteúdo.
+
+   Sem fundo, cada botão precisa se sustentar sozinho sobre o que estiver
+   passando atrás — que aqui é ora branco, ora azul-escuro, ora foto. Os dois
+   são sólidos e carregam sombra própria: é a sombra que descola o branco da
+   seção branca, onde ele sumiria.
+
+   O container não recebe clique (pointer-events: none), só os botões. Sem isso
+   ele viraria uma tira invisível na largura toda segurando toques que eram
+   para o conteúdo atrás. */
 .barra-acao{
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
-  display: flex; flex-direction: column; align-items: center; gap: 6px;
-  padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
-  background: rgba(255,255,255,.92);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  border-top: 1px solid var(--borda);
-  box-shadow: 0 -8px 28px rgba(11,23,51,.10);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 0 16px calc(14px + env(safe-area-inset-bottom));
+  pointer-events: none;
 }
-.barra-acao .btn{ width: 100%; max-width: 420px; padding: 15px 28px; font-size: 16px; }
-.barra-duvida{
-  font-size: 13px; font-weight: 700; color: var(--texto-suave);
-  text-decoration: none; padding: 2px 8px;
-}
-.barra-duvida:hover{ color: var(--azul-700); text-decoration: underline; }
+.barra-acao > *{ pointer-events: auto; }
 
-/* A página inteira ganha folga embaixo, senão a barra cobre o fim do rodapé. */
-body{ padding-bottom: 104px; }
-@media (min-width: 761px){ body{ padding-bottom: 96px; } }
+.barra-acao .btn{
+  width: 100%; max-width: 420px; padding: 16px 28px; font-size: 16px;
+  box-shadow: 0 8px 26px rgba(11,23,51,.28);
+  /* O contorno branco existe por causa de um trecho só: a faixa de provas é
+     amarela, e sem ele o botão amarelo se dissolve nela ao passar por cima.
+     Sobre o azul vira um detalhe; sobre o branco, desaparece sem prejuízo,
+     porque ali o amarelo já se separa sozinho. */
+  border-color: rgba(255,255,255,.92);
+}
+.barra-acao .btn-acao:hover{ box-shadow: 0 12px 30px rgba(252,184,21,.5); }
+
+.barra-duvida{
+  display: inline-flex; align-items: center;
+  background: #fff; color: var(--azul-800);
+  font-size: 13px; font-weight: 700; text-decoration: none;
+  padding: 9px 20px; border-radius: var(--raio-pill);
+  box-shadow: 0 6px 20px rgba(11,23,51,.22);
+  transition: transform .15s ease, color .15s ease;
+}
+.barra-duvida:hover{ color: var(--azul-600); transform: translateY(-2px); }
+
+/* Folga no fim da página para os botões não taparem o rodapé. Com a faixa
+   branca de antes bastava a altura dela; agora que os botões flutuam, o
+   conteúdo passa por trás e a folga precisa cobrir a barra inteira mais um
+   respiro. Em telas estreitas o botão quebra em duas linhas e a barra passa de
+   120px para quase 150px, por isso o valor maior ali. */
+body{ padding-bottom: 176px; }
+@media (min-width: 420px){ body{ padding-bottom: 150px; } }
 
 /* ---------- rodapé, dentro do azul ----------
    Separado do CTA por uma linha clara em cima do próprio gradiente, para
