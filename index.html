@@ -105,13 +105,15 @@
          tela. O texto dentro do <strong> é o estado final e fica visível se o
          JS não rodar. "MEC" não é número, então não anima. -->
     <div><strong data-numero="100" data-sufixo="%">100%</strong><span>Gratuito, do início ao fim</span></div>
-    <!-- [CONFIRMAR NO EDITAL] Valor informado pela Conhecer: R$ 20 por dia
-         letivo presencial, até R$ 400 num mês de 20 dias de aula, com pagamento
-         condicionado à frequência. Fora do ar até alguém conferir no edital da
-         edição: valor de auxílio do Governo anunciado errado vira reclamação.
-         Confirmado, é só voltar para:
-         <strong data-prefixo="R$ " data-numero="20">R$ 20</strong><span>Por dia de aula, até R$ 400/mês</span> -->
-    <div><strong>Auxílio</strong><span>Ajuda de custo por dia de aula</span></div>
+    <!-- R$ 20 por dia frequentado, para transporte e alimentação, condicionado
+         à frequência. Confirmado em 24/09/2026 em material do próprio programa,
+         não só na informação da escola.
+
+         O texto diz "por dia de aula" e não promete total no mês de propósito:
+         os R$ 400 são conta derivada (20 dias x R$ 20) e dependem de quantos
+         dias letivos o mês tem e de a pessoa ir a todos. A conta aparece no
+         FAQ, onde cabe explicar a condição junto. -->
+    <div><strong data-prefixo="R$ " data-numero="20">R$ 20</strong><span>Por dia de aula que você frequentar</span></div>
     <div><strong>MEC</strong><span>Diploma reconhecido</span></div>
     <div><strong data-numero="3">3</strong><span>Unidades na região de BH</span></div>
   </div>
@@ -353,14 +355,11 @@
       </details>
       <details class="faq-item">
         <summary>Existe algum auxílio financeiro?</summary>
-        <!-- [CONFIRMAR NO EDITAL] Valor informado pela Conhecer: R$ 20 por dia
-             letivo presencial, chegando a R$ 400 num mês de 20 dias de aula, com
-             pagamento condicionado à frequência. Confirmado no edital, troque a
-             resposta abaixo por: "Sim: R$ 20 por dia de aula presencial, para
-             transporte e alimentação, o que pode chegar a R$ 400 por mês. O
-             pagamento é feito pelo programa e depende da sua frequência nas
-             aulas, conforme as regras do edital." -->
-        <p>Sim, o programa paga uma ajuda de custo por dia de aula presencial, para transporte e alimentação, e o pagamento depende da sua frequência. O valor exato sai no edital da edição. Assim que ele for publicado a gente te passa o número certinho.</p>
+        <!-- "Pode chegar a R$ 400" e não "são R$ 400": o total depende de
+             quantos dias letivos o mês tem e de a pessoa ir a todos. Afirmar o
+             teto como se fosse fixo é o tipo de promessa que a escola não tem
+             como cumprir, porque quem paga é o programa. -->
+        <p>Sim: <strong>R$ 20 por dia de aula que você frequentar</strong>, para transporte e alimentação. Num mês com 20 dias de aula, isso pode chegar a R$ 400. O pagamento é feito pelo programa e depende da sua frequência, conforme as regras do edital.</p>
       </details>
       <details class="faq-item">
         <summary>Onde ficam as unidades da Conhecer?</summary>
@@ -391,7 +390,7 @@
       </details>
       <details class="faq-item">
         <summary>E se eu travar no meio da inscrição?</summary>
-        <p>É só usar o botão &ldquo;Ainda tenho dúvidas&rdquo;, que fica sempre na tela, que alguém da nossa equipe te ajuda ao vivo pelo WhatsApp.</p>
+        <p>Clica no botão que fica sempre na tela. Antes de te mandar para o site do Governo, a gente pergunta se ficou alguma dúvida — é só escrever ali que alguém da equipe te responde no WhatsApp.</p>
       </details>
     </div>
   </div>
@@ -404,7 +403,7 @@
     <span class="eyebrow">Qualquer dúvida</span>
     <h2>Travou em algum passo?<span class="t-acento">A gente resolve com você</span></h2>
     <p class="section-intro">Manda mensagem que alguém da equipe te ajuda na hora, em qualquer etapa da inscrição.</p>
-    <p class="fechamento-nota">É só usar o botão &ldquo;Ainda tenho dúvidas&rdquo; aqui embaixo.</p>
+    <p class="fechamento-nota">Clica no botão aqui embaixo: antes de ir pro site, a gente pergunta se ficou dúvida.</p>
   </div>
 
   <!-- ============ RODAPÉ ============
@@ -439,8 +438,51 @@
      pelo WhatsApp, porque mandar a pessoa para um site que ainda não abriu é
      pior do que não ter botão. Quem troca o texto é o script.js. -->
 <div class="barra-acao">
-  <a class="btn btn-acao" id="botaoInscricao" data-inscricao>Quero fazer minha inscrição</a>
-  <a class="barra-duvida" data-whatsapp="duvida">Ainda tenho dúvidas</a>
+  <button type="button" class="btn btn-acao" id="botaoInscricao">Quero fazer minha inscrição</button>
+</div>
+
+<!-- ============ TRIAGEM ANTES DE SAIR ============
+     Abre no clique do botão. A pessoa está de saída para o site do Governo, e
+     é o último momento em que ainda falamos com ela: lá dentro não temos nada.
+
+     Por isso o caminho de quem NÃO tem dúvida é um clique só, num link de
+     verdade que já leva ao site. Quem tem dúvida escreve aqui e cai no
+     WhatsApp com a pergunta já digitada, em vez de travar sozinha no
+     formulário e sumir. -->
+<div class="visor triagem" id="triagem" hidden role="dialog" aria-modal="true" aria-labelledby="triagemTitulo">
+  <button type="button" class="visor-fechar" aria-label="Fechar">&times;</button>
+  <div class="triagem-caixa">
+
+    <div data-etapa="pergunta">
+      <span class="eyebrow">Antes de você ir</span>
+      <h2 id="triagemTitulo">Ficou alguma dúvida<span class="t-acento">sobre a inscrição?</span></h2>
+      <p class="section-intro">No site do Governo a gente não consegue te ajudar. Se tiver qualquer dúvida, é melhor resolver agora.</p>
+
+      <div class="triagem-acoes">
+        <!-- Link de verdade, não botão com JS: abre na hora do clique, sem
+             risco de o navegador barrar como janela automática. -->
+        <a class="btn btn-acao btn-grande" id="triagemSeguir" target="_blank" rel="noopener">Não, quero me inscrever agora</a>
+        <button type="button" class="btn btn-contorno" data-abre-duvida>Sim, tenho uma dúvida</button>
+      </div>
+    </div>
+
+    <div data-etapa="duvida" hidden>
+      <span class="eyebrow">Sua dúvida</span>
+      <h2>Escreve aqui<span class="t-acento">que a gente te responde</span></h2>
+      <p class="section-intro">Manda a pergunta que alguém da equipe te ajuda no WhatsApp.</p>
+
+      <label class="triagem-campo">
+        <span class="visualmente-oculto">Escreva sua dúvida</span>
+        <textarea id="triagemTexto" rows="3" placeholder="Ex: não sei qual curso escolher, posso me inscrever em dois?"></textarea>
+      </label>
+
+      <div class="triagem-acoes">
+        <a class="btn btn-acao btn-grande" id="triagemEnviar">Mandar no WhatsApp</a>
+        <button type="button" class="btn btn-contorno" data-volta-pergunta>Voltar</button>
+      </div>
+    </div>
+
+  </div>
 </div>
 
 <!-- Visor de foto ampliada. Fica vazio até alguém clicar numa foto. -->

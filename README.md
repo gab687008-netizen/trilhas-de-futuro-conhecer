@@ -116,6 +116,20 @@ direto no navegador pra testar.
   amarelo. O container não recebe clique, só os botões, senão viraria uma tira
   invisível segurando toques destinados ao conteúdo. A folga no fim da página
   cobre a barra inteira mais um respiro, porque agora o conteúdo passa por trás.
+- **Um botão só, e ele abre uma triagem antes de mandar a pessoa embora.** No
+  clique aparece uma pergunta única: "ficou alguma dúvida sobre a inscrição?".
+  Quem não tem segue num clique, por um link de verdade que abre o site do
+  Governo. Quem tem escreve ali e cai no WhatsApp com a pergunta já digitada.
+  A razão é o buraco do funil: depois que a pessoa entra no site do Governo não
+  temos mais nada, e esse é o último momento em que ainda falamos com ela.
+  O custo é um clique a mais para quem já decidiu, e é por isso que o caminho
+  "não tenho dúvida" é o botão grande e primeiro.
+- **O botão pulsa, não pisca.** Um halo que cresce e some a cada 2,6s, feito em
+  `::after` para não mexer no tamanho do próprio botão enquanto o dedo mira
+  nele. Piscar chama atenção uma vez e irrita da segunda em diante, e piscar
+  rápido é problema de acessibilidade. Respeita `prefers-reduced-motion`.
+- **A folga do fim da página mora no fechamento, não no body**, para herdar o
+  azul do gradiente. No body ela abria uma tira branca embaixo do rodapé.
 - **A barra de ação fixa voltou**, agora como o único botão de inscrição da
   página: o de cima leva ao site do Governo, o de baixo, menor, abre o WhatsApp.
   Os CTAs espalhados pelas seções saíram. Sem `URL_INSCRICAO_OFICIAL` o botão de
@@ -210,8 +224,11 @@ Tudo marcado com `[PREENCHER]` no código, mais:
 - [ ] **CRM montando o link com `?lead=`** para o atendente não copiar ID na mão.
 - [ ] **Confirmar com a Conhecer se ela está credenciada na 7ª edição** e para quais
       cursos e unidades. Sem isso a página não tem destino. Ver a seção de pesquisa.
-- [ ] **`index.html` → benefício "Auxílio financeiro"**: valor e regras reais,
-      conforme o edital oficial. **Não publicar um valor sem confirmar no edital**.
+- [x] **Auxílio financeiro**: R$ 20 por dia frequentado, para transporte e
+      alimentação, condicionado à frequência. Confirmado em 24/09/2026 em
+      material do próprio programa. A página não promete total mensal: os
+      R$ 400 aparecem no FAQ como conta derivada ("pode chegar a"), porque
+      dependem de quantos dias letivos o mês tem e de a pessoa ir a todos.
 - [ ] **`index.html` → FAQ**: pré-requisitos reais (ensino médio concluído? idade
       mínima?) conforme o edital.
 - [ ] **Vídeo de orientação**: gravar e colocar o ID em `CONFIG.VIDEO_YOUTUBE`.
