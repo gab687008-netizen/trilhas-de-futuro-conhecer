@@ -155,19 +155,10 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
 }
 .video-legenda{ margin-top: 12px; font-size: 13.5px; color: rgba(255,255,255,.7); text-align: center; }
 
-.btn-grande{ font-size: 17px; padding: 18px 40px; }
-
-/* Botão secundário sobre fundo claro. Existe para a pessoa que já se
-   inscreveu voltar ao WhatsApp sem competir com o CTA amarelo. */
-.btn-contorno{
-  background: transparent; color: var(--azul-700); border-color: var(--azul-700);
-}
-.btn-contorno:hover{ background: var(--azul-nevoa); transform: translateY(-2px); }
 
 /* Saudação com o primeiro nome, quando o link do atendente traz ?nome=.
    Fica escondida por padrão: sem nome, o título começa direto. */
 [data-saudacao]{ color: var(--amarelo); }
-.secao-acao{ text-align: center; margin-top: 30px; }
 
 /* ============================================================
    FAIXA DE PROVA
@@ -304,20 +295,11 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
 }
 .passos-lista strong{ color: var(--tinta); font-weight: 700; }
 
-.inscricao-acoes{
-  display: flex; flex-wrap: wrap; gap: 14px; justify-content: center;
-  margin-top: 34px;
-}
 .inscricao-nota{
   text-align: center; color: var(--texto-suave); font-size: 14px;
   max-width: 460px; margin: 16px auto 0;
 }
-/* No celular os dois botões empilham na largura toda: alvo de toque maior
-   e nenhum deles fica espremido. */
-@media (max-width: 560px){
-  .inscricao-acoes{ flex-direction: column; }
-  .inscricao-acoes .btn{ width: 100%; }
-}
+
 
 /* ============================================================
    FAQ
@@ -435,9 +417,10 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
   display: flex; width: max-content;
   animation: desfila 52s linear infinite;
 }
-.parceiros-janela:hover .parceiros-trilho{ animation-play-state: paused; }
-/* .parado é posto pelo JS quando alguém toca na faixa */
-.parceiros-janela.parado .parceiros-trilho{ animation-play-state: paused; }
+/* A faixa não para e não responde a toque: é enfeite de prova social, não
+   conteúdo para interagir. Parar no clique dava a impressão de que a página
+   tinha travado. */
+.parceiros-janela{ pointer-events: none; }
 .parceiros-grupo{ display: flex; align-items: center; gap: clamp(30px, 4vw, 52px); padding-right: clamp(30px, 4vw, 52px); }
 .parceiros-grupo img{
   height: 38px; width: auto; display: block; flex-shrink: 0;
