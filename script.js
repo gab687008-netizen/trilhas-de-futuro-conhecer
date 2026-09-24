@@ -29,9 +29,16 @@ const CONFIG = {
   // Vazio = aparece o espaço reservado e nada é acompanhado.
   VIDEO_YOUTUBE: '',
 
-  // [PREENCHER] quando o edital abrir. Enquanto vazio, o botão "Ir para o
-  // site oficial" fica desligado e avisa que as inscrições ainda não abriram.
-  URL_INSCRICAO_OFICIAL: '',
+  /* Destino do botão principal.
+
+     Hoje aponta para a página do programa, que é o caminho oficial: é por ali
+     que a pessoa chega em "Estudantes > Quero me inscrever". Quando o edital
+     abrir e existir o endereço direto do formulário, troque aqui e o passo a
+     passo continua valendo — ele já descreve essa navegação.
+
+     Vazio faz o botão trocar de papel e virar "Quero ser avisado quando
+     abrir", pelo WhatsApp. */
+  URL_INSCRICAO_OFICIAL: 'https://www.trilhasdefuturo.mg.gov.br/',
 
   /* [PREENCHER] Endpoint do CRM que recebe os avisos desta página.
      A página manda um POST com { lead, evento, em } nestes momentos:
@@ -215,8 +222,13 @@ function montaBotaoInscricao(){
 
 
 /* ---------- depoimentos em vídeo ----------
-   Só carrega a capa. O iframe do YouTube entra quando a pessoa clica, para
-   não pesar o carregamento nem entregar cookie de terceiro sem interação. */
+   A capa é só a miniatura do YouTube com um botão de play. O vídeo em si
+   carrega apenas quando alguém clica: até lá nenhum cookie de terceiro é
+   posto, e a página não paga o peso de quatro players.
+
+   Ao clicar, o vídeo abre num visor sobre a página, não dentro do card. Dentro
+   do card ele ficaria do tamanho de um selo, e ainda por cima dentro de um
+   carrossel que anda sozinho. */
 function montaDepoimentos(){
   const alvo = document.getElementById('depoimentos');
   if(!alvo || !CONFIG.DEPOIMENTOS_YOUTUBE.length) return;
@@ -226,19 +238,47 @@ function montaDepoimentos(){
       <img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="" loading="lazy">
       <span class="play-mini" aria-hidden="true"></span>
     </button>`).join('');
+}
 
-  alvo.addEventListener('click', (e) => {
-    const botao = e.target.closest('button.depo[data-youtube]');
-    if(!botao) return;
+function montaVisorDeVideo(){
+  const visor = document.getElementById('visorVideo');
+  if(!visor) return;
+  const palco = visor.querySelector('.visor-palco-video');
+  const sair  = visor.querySelector('.visor-fechar');
+  let ultimoFoco = null;
+
+  function abre(botao){
+    const id = botao.dataset.youtube;
+    if(!id) return;
+
     const iframe = document.createElement('iframe');
-    iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(botao.dataset.youtube)}?autoplay=1&rel=0`;
+    iframe.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(id) + '?autoplay=1&rel=0&playsinline=1';
     iframe.title = botao.getAttribute('aria-label') || 'Depoimento';
     iframe.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen';
     iframe.allowFullscreen = true;
-    const caixa = document.createElement('div');
-    caixa.className = botao.className;
-    caixa.appendChild(iframe);
-    botao.replaceWith(caixa);
+    palco.replaceChildren(iframe);
+
+    visor.hidden = false;
+    document.body.style.overflow = 'hidden';
+    ultimoFoco = document.activeElement;
+    sair.focus();
+  }
+
+  function fecha(){
+    visor.hidden = true;
+    // Tira o iframe do ar: sem isso o vídeo segue tocando atrás da página.
+    palco.replaceChildren();
+    document.body.style.overflow = '';
+    if(ultimoFoco && ultimoFoco.focus) ultimoFoco.focus();
+  }
+
+  document.addEventListener('click', (e) => {
+    const botao = e.target.closest('button.depo[data-youtube]');
+    if(botao){ e.preventDefault(); abre(botao); return; }
+    if(e.target === visor || e.target === sair) fecha();
+  });
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape' && !visor.hidden) fecha();
   });
 }
 
@@ -318,21 +358,20 @@ function montaNumerosAnimados(){
 }
 
 /* ---------- carrosséis que deslizam sem parar ----------
-   Vai até a última carta, inverte e volta. Sem duplicar nada.
+   Vai até a última carta, inverte e volta. Sem duplicar nada: uma versão
+   anterior copiava o conteúdo para fechar o laço, mas como a rolagem aqui é
+   nativa, bastava arrastar até o fim para ver todos os cards repetidos.
 
-   A primeira versão copiava o conteúdo e voltava metade para trás ao passar da
-   metade, como a esteira de parceiros. Funciona lá porque a esteira não é
-   arrastável: ninguém alcança a cópia. Aqui a rolagem é nativa, então bastava
-   parar no toque e arrastar para o fim para ver todos os cards repetidos. O
-   laço invisível só existia enquanto o script mandava na posição.
-
-   Trocando por vaivém, o que a pessoa arrasta é exatamente o que existe: nada
-   se repete, e o movimento também não tem emenda, porque inverter no limite não
-   dá salto nenhum.
+   Para enquanto o dedo está em cima e volta a andar quando ele sai. A espera
+   depois de soltar não é enfeite: o navegador continua rolando por inércia
+   mais um tempo, e retomar no meio disso faria o script e o embalo disputarem
+   o mesmo eixo. Então o movimento só é retomado quando a rolagem para de
+   mudar sozinha.
 
    O movimento soma ao scrollLeft a cada quadro em vez de usar animação de CSS,
    porque animação de CSS e rolagem nativa brigam pelo mesmo eixo. */
 const VELOCIDADE_CARROSSEL = 58;   // px por segundo, o mesmo ritmo da esteira de parceiros
+const ESPERA_ANTES_DE_VOLTAR = 900; // ms de quietude antes de retomar
 
 function montaCarrosseisContinuos(){
   const semMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -346,15 +385,48 @@ function montaCarrosseisContinuos(){
     if(trilho.scrollWidth <= trilho.clientWidth + 4) return;
 
     let parado = false;
+    let dedoEmCima = false;
     let posicao = trilho.scrollLeft;
     let sentido = 1;               // 1 vai para a direita, -1 volta
     let anterior = null;
+    let relogio = null;
 
-    // Parou no dedo, parou de vez: quem tocou quer ler com calma.
-    const parar = () => { parado = true; };
+    const para = () => {
+      parado = true;
+      if(relogio){ clearTimeout(relogio); relogio = null; }
+    };
+
+    /* Só volta a andar depois de ESPERA_ANTES_DE_VOLTAR sem nenhuma rolagem.
+       Cada rolagem nova reinicia a contagem, então a inércia do dedo segura a
+       retomada pelo tempo que durar. */
+    const agendaVolta = () => {
+      if(dedoEmCima) return;
+      if(relogio) clearTimeout(relogio);
+      relogio = setTimeout(() => {
+        relogio = null;
+        posicao = trilho.scrollLeft;   // retoma de onde a pessoa deixou
+        anterior = null;               // não conta o tempo parado como movimento
+        parado = false;
+      }, ESPERA_ANTES_DE_VOLTAR);
+    };
+
     ['pointerdown','touchstart','wheel','keydown'].forEach(ev =>
-      trilho.addEventListener(ev, parar, { passive: true }));
-    trilho.addEventListener('mouseenter', parar);
+      trilho.addEventListener(ev, () => { dedoEmCima = (ev === 'pointerdown' || ev === 'touchstart'); para(); }, { passive: true }));
+
+    ['pointerup','pointercancel','touchend','touchcancel'].forEach(ev =>
+      trilho.addEventListener(ev, () => { dedoEmCima = false; agendaVolta(); }, { passive: true }));
+
+    // roda do mouse e teclado não têm "soltar": a própria rolagem agenda a volta
+    trilho.addEventListener('scroll', () => { if(parado) agendaVolta(); }, { passive: true });
+
+    /* No computador, o ponteiro em cima segura e sair devolve o movimento.
+       Só em aparelho com ponteiro de verdade: o navegador do celular emula
+       mouseenter no toque e muitas vezes não manda o mouseleave depois, o que
+       deixaria o carrossel parado para sempre no primeiro toque. */
+    if(window.matchMedia('(hover: hover)').matches){
+      trilho.addEventListener('mouseenter', () => { dedoEmCima = true; para(); });
+      trilho.addEventListener('mouseleave', () => { dedoEmCima = false; agendaVolta(); });
+    }
 
     function quadro(agora){
       if(anterior === null) anterior = agora;
@@ -511,5 +583,6 @@ document.addEventListener('DOMContentLoaded', () => {
   montaNumerosAnimados();
   montaCarrosseisContinuos();
   montaVisorDeFotos();
+  montaVisorDeVideo();
   dissuadeDownload();
 });
