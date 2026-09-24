@@ -327,7 +327,7 @@
     <span class="eyebrow">Depoimentos</span>
     <h2>Quem conhece, confia</h2>
     <p class="section-intro">Alunos da Conhecer contando como foi, na voz deles.</p>
-    <!-- Sem data-auto-passa de propósito: são vídeos, e carrossel que anda
+    <!-- Sem data-desliza de propósito: são vídeos, e carrossel que anda
          sozinho enquanto a pessoa assiste é o pior dos dois mundos. Aqui quem
          passa é ela. -->
     <div class="depo-grid" id="depoimentos"></div>
@@ -450,6 +450,15 @@
     <img src="" alt="" draggable="false">
     <figcaption></figcaption>
   </figure>
+</div>
+
+<!-- Visor de vídeo. O depoimento abre aqui, sobre a página, em vez de tocar
+     dentro do card: no card ele fica do tamanho de um selo e ainda por cima
+     dentro de um carrossel que anda. O iframe é criado ao abrir e destruído ao
+     fechar, senão o áudio continua tocando por trás da página fechada. -->
+<div class="visor visor-video" id="visorVideo" hidden role="dialog" aria-modal="true" aria-label="Depoimento em vídeo">
+  <button type="button" class="visor-fechar" aria-label="Fechar">&times;</button>
+  <div class="visor-palco-video"></div>
 </div>
 
 <script src="script.js"></script>

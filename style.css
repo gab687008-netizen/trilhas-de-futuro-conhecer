@@ -570,6 +570,17 @@ img[data-ampliar]{ cursor: zoom-in; -webkit-touch-callout: none; }
 }
 .visor-fechar:hover{ background: rgba(255,255,255,.26); }
 
-/* o carrossel rola sozinho, então a rolagem precisa ser suave */
-[data-auto-passa]{ scroll-behavior: smooth; }
-@media (prefers-reduced-motion: reduce){ [data-auto-passa]{ scroll-behavior: auto; } }
+/* Regra do tempo em que o carrossel andava em saltos, quando a rolagem suave
+   escondia o pulo entre um card e outro. Agora o deslize é contínuo, e
+   scroll-behavior: smooth aqui seria um desastre: cada atribuição de
+   scrollLeft, sessenta por segundo, viraria uma animação própria disputando
+   com a seguinte. Fica registrado para ninguém reintroduzir. */
+
+/* ---------- visor de vídeo ----------
+   Mesma moldura do visor de fotos, com o palco em 16:9. */
+.visor-palco-video{
+  width: 100%; max-width: 900px; aspect-ratio: 16/9;
+  border-radius: var(--raio); overflow: hidden;
+  background: #000; box-shadow: 0 30px 80px rgba(0,0,0,.5);
+}
+.visor-palco-video iframe{ width: 100%; height: 100%; border: 0; display: block; }

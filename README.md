@@ -95,8 +95,16 @@ direto no navegador pra testar.
   pessoa continua arrastando com o dedo; por isso o movimento soma ao
   `scrollLeft` a cada quadro em vez de usar animação de CSS, que brigaria com a
   rolagem pelo mesmo eixo. O `scroll-snap` fica desligado nesses três, senão
-  puxaria de volta a cada quadro. **Param de vez no primeiro toque**, porque
-  quem interagiu quer ler com calma.
+  puxaria de volta a cada quadro. **Param enquanto o dedo está em cima e voltam
+  a andar quando ele sai.** A espera de 900ms antes de retomar não é enfeite: o
+  navegador continua rolando por inércia depois que o dedo sai, e retomar no
+  meio disso faria o script e o embalo disputarem o mesmo eixo. O pausar por
+  hover só é ligado em aparelho com ponteiro de verdade (`hover: hover`), porque
+  o navegador do celular emula `mouseenter` no toque e muitas vezes não manda o
+  `mouseleave` depois — o que deixaria o carrossel parado para sempre.
+- **Os depoimentos abrem num visor sobre a página**, não dentro do card, onde
+  ficariam do tamanho de um selo. O iframe nasce ao abrir e é destruído ao
+  fechar: sem isso o áudio continua tocando por trás da página fechada.
 - **No desktop eles não viram esteira.** Ali os blocos são grade e não rolam;
   duplicar mostraria cada card duas vezes. O JS só monta a esteira onde há
   conteúdo além da borda.
