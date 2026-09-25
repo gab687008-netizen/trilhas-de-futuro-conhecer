@@ -171,6 +171,17 @@ direto no navegador pra testar.
   conversa do WhatsApp, antes daqui. Ver "O funil de comunicação" abaixo.
 - **Ordem das seções**: vídeo, provas, inscrição, e só depois os argumentos.
   O porquê está em "Por que a ordem das seções é essa", abaixo.
+- **NADA na página promete vaga. É a regra de copy mais importante daqui.**
+  A inscrição é feita no site do Governo e a seleção é dele, por critérios do
+  edital: na 5ª edição foram 346 mil inscrições para 50 mil vagas. "Garanta sua
+  vaga" seria promessa que nem a escola nem nós temos como cumprir, e quem
+  levaria a culpa é a Conhecer. O que a página promete é o que entrega: ajudar
+  a pessoa a se inscrever sem errar, porque erro de preenchimento elimina antes
+  mesmo da classificação. Existe um FAQ dedicado a isso, logo no começo, para
+  ninguém descobrir depois.
+- **O selo do topo tem chave própria** (`INSCRICOES_ABERTAS`), separada da URL
+  de inscrição. Quando as duas eram a mesma coisa, preencher a URL fez o selo
+  anunciar "Inscrições abertas" antes de o edital sair.
 - **A página não promete vaga por si só.** Quem garante vaga é a inscrição no
   site do Governo, feita pela própria pessoa. A página ensina a fazer e confere
   o protocolo depois. Não transformar os CTAs em "garanta sua vaga agora" como
