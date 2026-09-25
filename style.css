@@ -2,7 +2,8 @@
    DESIGN SYSTEM
    Colaboração de duas marcas:
    - Conhecer Escola Técnica: azul #0A3DAE (base, estrutura, texto)
-   - Trilhas de Futuro: amarelo #FCB815 (ação, destaque) + rosa,
+   - Ação e destaque: azul #0A3DAE e verde #34D888, do portal da Conhecer
+     (o amarelo do Trilhas saiu a pedido do cliente) + rosa,
      ciano e laranja como acentos pontuais.
    Amostrados por pixel do material oficial dos dois.
    ============================================================ */
@@ -16,8 +17,16 @@
   --azul-nevoa: #E8EEFB;
 
   /* Trilhas: a ação */
-  --amarelo:  #FCB815;
-  --amarelo-escuro: #E0A00A;
+  /* Ação e destaque vêm do portal da Conhecer, feito pela Brota Web: botão
+     azul com texto branco, e o verde reservado a destaque sobre fundo escuro.
+     O amarelo do Trilhas saiu a pedido do cliente.
+
+     O verde NUNCA vai sobre fundo claro: contraste de 1,85:1 sobre branco,
+     reprovado. Sobre o azul profundo dá 8,65:1. É por isso que ele só aparece
+     em eyebrow, acento de título e nota dentro das seções escuras. */
+  --acao: #0A3DAE;
+  --acao-escura: #072D85;
+  --destaque-escuro: #34D888;
   --rosa:     #DB5C93;
   --ciano:    #23B2D0;
   --laranja:  #F48222;
@@ -85,9 +94,16 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
   transition: transform .16s ease, box-shadow .16s ease, background .16s ease;
   text-align: center;
 }
-/* CTA principal: o amarelo do Trilhas sobre o azul da Conhecer */
-.btn-acao{ background: var(--amarelo); color: var(--azul-900); }
-.btn-acao:hover{ background: var(--amarelo-escuro); transform: translateY(-2px); box-shadow: 0 14px 30px rgba(252,184,21,.42); }
+/* CTA principal: o verde com texto azul escuro do portal da Conhecer, o mesmo
+   .btn--verde de lá.
+
+   Azul foi tentado primeiro, por ser a cor de botão padrão do portal. Não
+   serve aqui: este botão acompanha a página inteira e passa por cima do hero
+   e do fechamento, que terminam exatamente no mesmo azul — o botão sumia,
+   sobrando só o contorno. O verde é a outra cor da casa e se separa dos dois
+   fundos, o azul e o branco. */
+.btn-acao{ background: var(--destaque-escuro); color: var(--azul-900); }
+.btn-acao:hover{ background: #22BD71; transform: translateY(-2px); box-shadow: 0 14px 30px rgba(52,216,136,.42); }
 
 /* ============================================================
    TOPO: só as marcas, sem menu
@@ -123,14 +139,14 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
 .selo-programa{
   display: inline-flex; align-items: center; gap: 8px;
   font-size: 12.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
-  color: var(--azul-900); background: var(--amarelo);
+  color: var(--azul-900); background: var(--azul-claro);
   border-radius: var(--raio-pill); padding: 8px 18px; margin-bottom: 20px;
 }
 .hero h1{
   color: #fff; font-size: clamp(30px, 4.6vw, 48px); letter-spacing: -.03em;
   max-width: 760px; margin: 0 auto;
 }
-.hero h1 .destaque{ color: var(--amarelo); }
+.hero h1 .destaque{ color: var(--destaque-escuro); }
 .hero-sub{
   color: rgba(255,255,255,.84); max-width: 600px; margin: 18px auto 0; font-size: 16.5px;
 }
@@ -152,7 +168,7 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
 }
 .video-espera .play{
   width: 66px; height: 66px; border-radius: 50%;
-  background: var(--amarelo); display: flex; align-items: center; justify-content: center;
+  background: #fff; display: flex; align-items: center; justify-content: center;
 }
 .video-espera .play::before{
   content: ""; width: 0; height: 0; margin-left: 5px;
@@ -164,12 +180,12 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
 
 /* Saudação com o primeiro nome, quando o link do atendente traz ?nome=.
    Fica escondida por padrão: sem nome, o título começa direto. */
-[data-saudacao]{ color: var(--amarelo); }
+[data-saudacao]{ color: var(--destaque-escuro); }
 
 /* ============================================================
    FAIXA DE PROVA
    ============================================================ */
-.provas{ background: var(--amarelo); padding: 22px 0; }
+.provas{ background: var(--azul-nevoa); padding: 22px 0; }
 .provas-grid{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
 .provas-grid div{ text-align: center; padding: 6px 10px; }
 .provas-grid div + div{ border-left: 1px solid rgba(4,28,87,.16); }
@@ -197,7 +213,10 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
   display: flex; align-items: center; justify-content: center;
 }
 .pilar-icone svg{ width: 24px; height: 24px; }
-.i-amarelo{ background: #FFF3D4; color: var(--amarelo-escuro); }
+/* Era o ícone amarelo. Vira verde, a outra cor do portal da Conhecer, para os
+   quatro pilares não ficarem com dois ícones idênticos. O tom do traço é mais
+   fechado que o --destaque-escuro porque aqui o fundo é claro. */
+.i-verde  { background: #DCF6E8; color: #15803D; }
 .i-azul   { background: var(--azul-nevoa); color: var(--azul-700); }
 .i-rosa   { background: #FBE7F0; color: var(--rosa); }
 .i-ciano  { background: #DFF3F8; color: #1A8FA8; }
@@ -235,7 +254,7 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
   border-radius: var(--raio); padding: 26px 20px; text-align: center; color: #fff;
   background: linear-gradient(150deg, var(--azul-800), var(--azul-700));
 }
-.area-card:nth-child(2){ background: linear-gradient(150deg, #B57F06, var(--amarelo)); color: var(--azul-900); }
+.area-card:nth-child(2){ background: linear-gradient(150deg, var(--azul-600), var(--azul-700)); color: #fff; }
 .area-card:nth-child(3){ background: linear-gradient(150deg, #1A8FA8, var(--ciano)); }
 .area-card:nth-child(4){ background: linear-gradient(150deg, #B7406F, var(--rosa)); }
 .area-card svg{ width: 30px; height: 30px; margin-bottom: 12px; }
@@ -248,7 +267,7 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
    ============================================================ */
 .depoimentos{ background: var(--azul-900); color: #fff; }
 .depoimentos h2, .depoimentos .eyebrow{ color: #fff; }
-.depoimentos .eyebrow{ color: var(--amarelo); }
+.depoimentos .eyebrow{ color: var(--destaque-escuro); }
 .depoimentos .section-intro{ color: rgba(255,255,255,.72); }
 .depo-grid{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
 @media(max-width: 820px){ .depo-grid{ grid-template-columns: repeat(2, 1fr); } }
@@ -268,7 +287,7 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
 .depo iframe{ position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .depo .play-mini{
   position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
-  width: 52px; height: 52px; border-radius: 50%; background: var(--amarelo);
+  width: 52px; height: 52px; border-radius: 50%; background: #fff;
   display: flex; align-items: center; justify-content: center;
   transition: transform .16s ease;
 }
@@ -296,7 +315,7 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
 .passos-lista li::before{
   content: counter(passo); position: absolute; left: 0; top: 13px;
   width: 32px; height: 32px; border-radius: 50%;
-  background: var(--amarelo); color: var(--azul-900); font-weight: 800; font-size: 13.5px;
+  background: var(--acao); color: #fff; font-weight: 800; font-size: 13.5px;
   display: flex; align-items: center; justify-content: center;
 }
 .passos-lista strong{ color: var(--tinta); font-weight: 700; }
@@ -461,12 +480,12 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
   border: 1px solid rgba(255,255,255,.10); left: -260px; bottom: -340px; pointer-events: none;
 }
 .fechamento .wrap{ position: relative; z-index: 1; }
-.fechamento .eyebrow{ color: var(--amarelo); }
+.fechamento .eyebrow{ color: var(--destaque-escuro); }
 .fechamento > .wrap > h2{ color: #fff; }
-.fechamento > .wrap > h2 .t-acento{ color: var(--amarelo); }
+.fechamento > .wrap > h2 .t-acento{ color: var(--destaque-escuro); }
 .fechamento > .wrap{ text-align: center; }
 .fechamento .section-intro{ color: rgba(255,255,255,.76); margin-bottom: 18px; }
-.fechamento-nota{ color: var(--amarelo); font-weight: 700; font-size: 15px; }
+.fechamento-nota{ color: var(--destaque-escuro); font-weight: 700; font-size: 15px; }
 
 /* ---------- barra de ação fixa ----------
    Acompanha a página do início ao fim. Dois botões soltos, sem faixa atrás:
@@ -491,13 +510,11 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
 .barra-acao .btn{
   width: 100%; max-width: 420px; padding: 16px 28px; font-size: 16px;
   box-shadow: 0 8px 26px rgba(11,23,51,.28);
-  /* O contorno branco existe por causa de um trecho só: a faixa de provas é
-     amarela, e sem ele o botão amarelo se dissolve nela ao passar por cima.
-     Sobre o azul vira um detalhe; sobre o branco, desaparece sem prejuízo,
-     porque ali o amarelo já se separa sozinho. */
-  border-color: rgba(255,255,255,.92);
+  /* O contorno some: o verde já se separa sozinho do azul e do branco, e uma
+     borda branca em volta dele só sujaria a forma. */
+  border-color: transparent;
 }
-.barra-acao .btn-acao:hover{ box-shadow: 0 12px 30px rgba(252,184,21,.5); }
+.barra-acao .btn-acao:hover{ box-shadow: 0 12px 30px rgba(52,216,136,.5); }
 
 /* O botão respira: um halo que cresce e some, a cada 2,6s.
 
@@ -509,14 +526,14 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
 .barra-acao .btn-acao{ position: relative; }
 .barra-acao .btn-acao::after{
   content: ""; position: absolute; inset: 0; border-radius: inherit;
-  box-shadow: 0 0 0 0 rgba(252,184,21,.65);
+  box-shadow: 0 0 0 0 rgba(52,216,136,.75);
   animation: pulsa 2.6s ease-out infinite;
   pointer-events: none;
 }
 @keyframes pulsa{
-  0%   { box-shadow: 0 0 0 0 rgba(252,184,21,.6); }
-  70%  { box-shadow: 0 0 0 16px rgba(252,184,21,0); }
-  100% { box-shadow: 0 0 0 0 rgba(252,184,21,0); }
+  0%   { box-shadow: 0 0 0 0 rgba(52,216,136,.65); }
+  70%  { box-shadow: 0 0 0 16px rgba(52,216,136,0); }
+  100% { box-shadow: 0 0 0 0 rgba(52,216,136,0); }
 }
 @media (prefers-reduced-motion: reduce){
   .barra-acao .btn-acao::after{ animation: none; }
@@ -598,7 +615,7 @@ h3{ font-size: 18px; letter-spacing: -.01em; margin-bottom: 8px; }
 .rodape-legal a{
   color: rgba(255,255,255,.66); text-decoration: none; font-weight: 600;
 }
-.rodape-legal a:hover{ color: var(--amarelo); }
+.rodape-legal a:hover{ color: var(--destaque-escuro); }
 
 
 /* ============================================================
@@ -670,4 +687,4 @@ img[data-ampliar]{ cursor: zoom-in; -webkit-touch-callout: none; }
   display: block; text-align: center; margin-top: 14px;
   color: rgba(255,255,255,.7); font-size: 13px; font-weight: 600; text-decoration: none;
 }
-.visor-escape:hover{ color: var(--amarelo); }
+.visor-escape:hover{ color: var(--destaque-escuro); }
