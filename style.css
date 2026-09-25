@@ -653,10 +653,21 @@ img[data-ampliar]{ cursor: zoom-in; -webkit-touch-callout: none; }
 
    Se um dia entrar um depoimento gravado na horizontal, troque para 16/9 —
    não dá para descobrir a orientação pelo ID do vídeo sem chamar a API. */
+/* Empilha o palco e o link de saída; sem isso o flex do visor os põe lado a
+   lado. A conta usa 78vh, não a altura toda, para sobrar espaço ao link. */
+.visor-video{ flex-direction: column; }
 .visor-palco-video{
   aspect-ratio: 9/16;
-  width: min(100%, calc(84vh * 9 / 16));
+  width: min(100%, calc(78vh * 9 / 16));
   border-radius: var(--raio); overflow: hidden;
   background: #000; box-shadow: 0 30px 80px rgba(0,0,0,.5);
 }
 .visor-palco-video iframe{ width: 100%; height: 100%; border: 0; display: block; }
+
+/* Saída discreta para quando o embed não rolar. Fica sempre visível porque não
+   dá para saber, de fora de um iframe de outro domínio, se ele carregou. */
+.visor-escape{
+  display: block; text-align: center; margin-top: 14px;
+  color: rgba(255,255,255,.7); font-size: 13px; font-weight: 600; text-decoration: none;
+}
+.visor-escape:hover{ color: var(--amarelo); }

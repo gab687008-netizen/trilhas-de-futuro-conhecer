@@ -325,19 +325,33 @@ function montaDepoimentos(){
 function montaVisorDeVideo(){
   const visor = document.getElementById('visorVideo');
   if(!visor) return;
-  const palco = visor.querySelector('.visor-palco-video');
-  const sair  = visor.querySelector('.visor-fechar');
+  const palco  = visor.querySelector('.visor-palco-video');
+  const sair   = visor.querySelector('.visor-fechar');
+  const escape = visor.querySelector('[data-abrir-youtube]');
   let ultimoFoco = null;
 
   function abre(botao){
     const id = botao.dataset.youtube;
     if(!id) return;
 
+    /* Sem autoplay de propósito.
+
+       Com autoplay=1 o vídeo ficava preto no iPhone: o iOS não deixa um vídeo
+       começar sozinho com som, e o player do YouTube, barrado, não desenha nem
+       a capa. Sem autoplay ele sempre pinta a capa com o botão de play, e o
+       toque da pessoa inicia com som — que num depoimento é o conteúdo todo.
+
+       Custa um toque a mais e vale: player preto não tem contorno. */
     const iframe = document.createElement('iframe');
-    iframe.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(id) + '?autoplay=1&rel=0&playsinline=1';
+    iframe.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(id) + '?rel=0&playsinline=1';
     iframe.title = botao.getAttribute('aria-label') || 'Depoimento';
     iframe.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen';
     iframe.allowFullscreen = true;
+
+    // Saída caso o embed não role — vídeo com incorporação desativada, por
+    // exemplo. Sem isso a pessoa fica olhando um retângulo preto sem ação.
+    escape.href = 'https://www.youtube.com/watch?v=' + encodeURIComponent(id);
+
     palco.replaceChildren(iframe);
 
     visor.hidden = false;
