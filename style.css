@@ -45,11 +45,17 @@
 }
 
 *, *::before, *::after{ box-sizing: border-box; margin: 0; padding: 0; }
+/* O fundo padrão do documento é o azul do fechamento, não branco. Toda seção
+   clara declara o próprio fundo, então no meio da página nada muda; o azul só
+   aparece onde não há conteúdo — abaixo do fim do documento e no repique do
+   overscroll. Antes ali ficava uma tira branca embaixo do rodapé, porque os
+   botões flutuam e deixam ver o que está atrás. */
+html, body{ background: var(--azul-800); }
 html{ scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce){ html{ scroll-behavior: auto; } }
 
 body{
-  font-family: var(--fonte); color: var(--texto); background: var(--fundo);
+  font-family: var(--fonte); color: var(--texto);
   line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden;
 }
 
@@ -637,9 +643,19 @@ img[data-ampliar]{ cursor: zoom-in; -webkit-touch-callout: none; }
    com a seguinte. Fica registrado para ninguém reintroduzir. */
 
 /* ---------- visor de vídeo ----------
-   Mesma moldura do visor de fotos, com o palco em 16:9. */
+   Palco em 9:16, porque os depoimentos da Conhecer são Shorts, gravados na
+   vertical. Num palco 16:9 o vídeo aparecia como uma tarja no meio da tela,
+   cercado de preto dos dois lados.
+
+   A largura é a menor entre a tela e o que couber na altura: assim o vídeo
+   cresce até encostar na borda mais apertada, seja ela a lateral do celular ou
+   o topo e a base da janela. A altura vem sozinha pelo aspect-ratio.
+
+   Se um dia entrar um depoimento gravado na horizontal, troque para 16/9 —
+   não dá para descobrir a orientação pelo ID do vídeo sem chamar a API. */
 .visor-palco-video{
-  width: 100%; max-width: 900px; aspect-ratio: 16/9;
+  aspect-ratio: 9/16;
+  width: min(100%, calc(84vh * 9 / 16));
   border-radius: var(--raio); overflow: hidden;
   background: #000; box-shadow: 0 30px 80px rgba(0,0,0,.5);
 }

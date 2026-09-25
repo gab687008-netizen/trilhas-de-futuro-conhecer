@@ -129,7 +129,17 @@ direto no navegador pra testar.
   nele. Piscar chama atenção uma vez e irrita da segunda em diante, e piscar
   rápido é problema de acessibilidade. Respeita `prefers-reduced-motion`.
 - **A folga do fim da página mora no fechamento, não no body**, para herdar o
-  azul do gradiente. No body ela abria uma tira branca embaixo do rodapé.
+  azul do gradiente, e **o fundo padrão do documento é azul**, não branco. Toda
+  seção clara declara o próprio fundo, então no meio da página nada muda: o
+  azul só aparece onde não há conteúdo, abaixo do fim do documento e no repique
+  do overscroll. Sem isso sobrava uma tira branca embaixo do rodapé, porque os
+  botões flutuam e deixam ver o que está atrás deles.
+- **O visor de vídeo é 9:16**, porque os depoimentos da Conhecer são Shorts,
+  gravados na vertical. Num palco 16:9 o vídeo virava uma tarja no meio da tela,
+  cercada de preto. A largura é a menor entre a tela e o que couber na altura, e
+  a altura vem do `aspect-ratio`. Se um dia entrar depoimento na horizontal,
+  troque para 16/9: não dá para descobrir a orientação pelo ID sem chamar a API
+  do YouTube.
 - **A barra de ação fixa voltou**, agora como o único botão de inscrição da
   página: o de cima leva ao site do Governo, o de baixo, menor, abre o WhatsApp.
   Os CTAs espalhados pelas seções saíram. Sem `URL_INSCRICAO_OFICIAL` o botão de
