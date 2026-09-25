@@ -29,6 +29,16 @@ const CONFIG = {
   // Vazio = aparece o espaço reservado e nada é acompanhado.
   VIDEO_YOUTUBE: '',
 
+  /* As inscrições estão abertas agora?
+
+     Controla o selo do topo e o título da aba. É uma chave separada da URL de
+     propósito: ter o endereço do site do programa não quer dizer que a inscrição
+     esteja aberta. Quando isso era a mesma coisa, o selo anunciou "Inscrições
+     abertas" antes de o edital sair.
+
+     Vire para true no dia em que o edital abrir. */
+  INSCRICOES_ABERTAS: false,
+
   /* Destino do botão principal.
 
      Hoje aponta para a página do programa, que é o caminho oficial: é por ali
@@ -635,12 +645,12 @@ function preencheBadgeStatus(){
   if(!badge) return;
   // texto curto de propósito: o badge do hero é um pill de uma linha.
   // O convite pra se cadastrar já está no subtítulo e nos botões.
-  badge.textContent = CONFIG.URL_INSCRICAO_OFICIAL
+  badge.textContent = CONFIG.INSCRICOES_ABERTAS
     ? 'Inscrições abertas'
     : 'Inscrições abrem em breve';
-  document.title = CONFIG.URL_INSCRICAO_OFICIAL
-    ? 'Inscrições abertas | Curso técnico gratuito na Conhecer'
-    : document.title;
+  if(CONFIG.INSCRICOES_ABERTAS){
+    document.title = 'Inscrições abertas | Curso técnico gratuito na Conhecer';
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
