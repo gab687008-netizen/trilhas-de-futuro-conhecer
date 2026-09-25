@@ -15,9 +15,10 @@ direto no navegador pra testar.
 
 - **Identidade visual**: colaboração de duas marcas.
   - **Conhecer** é a base: azul `#0A3DAE` e família, estrutura, texto, fundos.
-  - **Trilhas de Futuro** é a ação: amarelo `#FCB815` nos CTAs, selos e destaques,
-    com rosa, ciano e laranja como acentos pontuais. Amostrados por pixel do
-    material oficial do programa.
+  - **O amarelo do Trilhas saiu a pedido do Samuel.** A ação e o destaque passam
+    a vir do portal da Conhecer que a Brota Web fez, de onde as cores foram lidas
+    direto do CSS, não de print: azul `#0A3DAE` e verde `#34D888`. Fontes, raios
+    e azuis já eram os mesmos dos dois lados.
   - O Gabriel confirmou que a Conhecer tem autorização para usar a marca do
     Trilhas de Futuro.
   - Paleta (em `style.css`, `:root`):
@@ -25,11 +26,19 @@ direto no navegador pra testar.
     |---|---|---|
     | `--azul-900` | `#041C57` | gradiente do hero, seção de depoimentos |
     | `--azul-700` | `#0A3DAE` | azul de marca da Conhecer |
-    | `--amarelo` | `#FCB815` | **cor de ação**: botões, selos, números dos passos |
+    | `--acao` | `#0A3DAE` | números dos passos, ícones, botão secundário |
+    | `--destaque-escuro` | `#34D888` | **CTA principal**, e destaque de texto em seção escura |
     | `--rosa` | `#DB5C93` | acento |
     | `--ciano` | `#23B2D0` | acento |
-    | `--laranja` | `#F48222` | acento |
     | `--grafite` | `#343838` | cor do wordmark do Trilhas |
+  - **O CTA é verde, não azul, e isso foi medido.** Azul é a cor de botão padrão
+    do portal, e foi a primeira tentativa. Não serve aqui: o botão acompanha a
+    página inteira e passa por cima do hero e do fechamento, que terminam
+    exatamente no mesmo `#0A3DAE` — o botão sumia, sobrando só o contorno. O
+    verde é a outra cor da casa (o `.btn--verde` do portal) e se separa do azul
+    e do branco. Texto azul escuro sobre ele dá 8,9:1.
+  - **O verde nunca vai sobre fundo claro**: 1,85:1 sobre branco, reprovado. Só
+    em seção escura, que é como o portal o usa (`--cor-titulo-escuro`).
   - **Assinatura no topo**: Conhecer e Trilhas de Futuro lado a lado,
     separadas por um divisor, as duas sobre o azul do hero.
   - **A Conhecer usa `logo-conhecer-escuro.png`, não a versão toda branca.**
